@@ -164,7 +164,7 @@
 						.unbind_events()
 						.empty()
 						.append( orgContent )
-						.attr( 'style', $dot.data( 'dotdotdot-style' ) )
+						.attr( 'style', $dot.data( 'dotdotdot-style' ) || '' )
 						.data( 'dotdotdot', false );
 				}
 			);
