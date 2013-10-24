@@ -1,5 +1,5 @@
 /*	
- *	jQuery dotdotdot 1.6.5
+ *	jQuery dotdotdot 1.6.6
  *	
  *	Copyright (c) 2013 Fred Heusschen
  *	www.frebsite.nl
@@ -47,7 +47,7 @@
 			$dot.trigger( 'destroy.dot' );
 		}
 
-		$dot.data( 'dotdotdot-style', $dot.attr( 'style' ) );
+		$dot.data( 'dotdotdot-style', $dot.attr( 'style' ) || '' );
 		$dot.css( 'word-wrap', 'break-word' );
 		if ($dot.css( 'white-space' ) === 'nowrap')
 		{
