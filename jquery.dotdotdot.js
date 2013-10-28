@@ -403,6 +403,16 @@
 			midPos		= -1,
 			startPos	= 0,
 			endPos		= textArr.length - 1;
+			
+			if ( o.fallbackToLetter && endPos == 0 && endPos == startPos )
+			{
+				separator	= '';
+				textArr		= txt.split(separator);
+				position 	= -1;
+				midPos		= -1;
+				startPos	= 0;
+				endPos		= textArr.length - 1;
+			}
 
 		while ( startPos <= endPos && !( startPos == 0 && endPos == 0 ) )
 		{
@@ -423,15 +433,6 @@
 			else
 			{
 				endPos = midPos;
-			}
-			if ( endPos == startPos && endPos == 0 && o.fallbackToLetter )
-			{
-				separator	= '';
-				textArr		= textArr[0].split(separator);
-				position 	= -1;
-				midPos		= -1;
-				startPos	= 0;
-				endPos		= textArr.length - 1;
 			}
 		}
 	
