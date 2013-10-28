@@ -1,0 +1,7 @@
+{
+    "name": "dotdotdot",
+    "version": "1.6.6",
+    "main": "./jquery.dotdotdot.min.js",
+    "dependencies": {
+    }
+}
