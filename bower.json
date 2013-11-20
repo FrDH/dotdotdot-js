@@ -10,7 +10,10 @@
   "keywords": [
     "ellipsis",
     "dotdotdot",
-    "multiline"
+    "multiline",
+    "text-overflow",
+    "overflow",
+    "dots"
   ],
   "dependencies": {
     "jquery": ">= 1.4.3"
