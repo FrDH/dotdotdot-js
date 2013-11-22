@@ -15,6 +15,12 @@
     "overflow",
     "dots"
   ],
+  "ignore": [
+    ".jshintrc",
+    "index.html",
+    "*.json",
+    "README.md"
+  ],
   "dependencies": {
     "jquery": ">= 1.4.3"
   }
