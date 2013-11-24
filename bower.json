@@ -1,6 +1,6 @@
 {
   "name": "jQuery.dotdotdot",
-  "main": "jquery.dotdotdot.js",
+  "main": "src/js/jquery.dotdotdot.js",
   "version": "1.6.7",
   "homepage": "http://dotdotdot.frebsite.nl/",
   "authors": [
@@ -11,12 +11,14 @@
     "ellipsis",
     "dotdotdot",
     "multiline",
+    "text",
     "text-overflow",
     "overflow",
     "dots"
   ],
   "ignore": [
     ".jshintrc",
+    "Guardfile",
     "index.html",
     "*.json",
     "README.md"
