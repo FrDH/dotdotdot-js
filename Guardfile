@@ -6,6 +6,6 @@
 guard :concat, type: "js", files: %w(jquery.dotdotdot), input_dir: "src/js", output: "src/js/jquery.dotdotdot.min"
 
 # Minify the file
-guard 'uglify', :destination_file => "src/jquery.dotdotdot.min.js" do
+guard 'uglify', :destination_file => "src/js/jquery.dotdotdot.min.js" do
   watch ('src/js/jquery.dotdotdot.min.js')
 end
