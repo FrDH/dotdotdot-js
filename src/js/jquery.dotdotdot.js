@@ -1,5 +1,5 @@
 /*	
- *	jQuery dotdotdot 1.6.7
+ *	jQuery dotdotdot 1.6.8
  *	
  *	Copyright (c) 2013 Fred Heusschen
  *	www.frebsite.nl
@@ -23,10 +23,7 @@
 	{
 		if ( this.length == 0 )
 		{
-			if ( !o || o.debug !== false )
-			{
-				debug( true, 'No element found for "' + this.selector + '".' );
-			}
+			$.fn.dotdotdot.debug( 'No element found for "' + this.selector + '".' );
 			return this;
 		}
 		if ( this.length > 1 )
@@ -102,6 +99,7 @@
 					    after.show();
 						conf.afterElement.remove();
 					}
+
 					if ( test( $inr, opts ) )
 					{
 						if ( opts.wrap == 'children' )
@@ -115,7 +113,7 @@
 					}
 					$inr.replaceWith( $inr.contents() );
 					$inr = null;
-					
+
 					if ( $.isFunction( opts.callback ) )
 					{
 						opts.callback.call( $dot[ 0 ], trunc, orgContent );
@@ -284,8 +282,7 @@
 		'after'				: null,
 		'height'			: null,
 		'watch'				: false,
-		'windowResizeFix'	: true,
-		'debug'				: false
+		'windowResizeFix'	: true
 	};
 	$.fn.dotdotdot.defaultArrays = {
 		'lastCharacter'		: {
@@ -293,6 +290,7 @@
 			'noEllipsis'		: []
 		}
 	};
+	$.fn.dotdotdot.debug = function( msg ) {};
 
 
 	//	private
@@ -603,30 +601,6 @@
 			h -= m;
 		}
 		return h;
-	}
-	function debug( d, m )
-	{
-		if ( !d )
-		{
-			return false;
-		}
-		if ( typeof m == 'string' )
-		{
-			m = 'dotdotdot: ' + m;
-		}
-		else
-		{
-			m = [ 'dotdotdot:', m ];
-		}
-
-		if ( typeof window.console != 'undefined' )
-		{
-			if ( typeof window.console.log != 'undefined' )
-			{
-				window.console.log( m );
-			}
-		}
-		return false;
 	}
 	
 
