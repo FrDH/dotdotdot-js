@@ -1,5 +1,5 @@
 /*	
- *	jQuery dotdotdot 1.6.8
+ *	jQuery dotdotdot 1.6.9
  *	
  *	Copyright (c) 2013 Fred Heusschen
  *	www.frebsite.nl
@@ -402,7 +402,9 @@
 			startPos	= 0,
 			endPos		= textArr.length - 1;
 			
-		if ( o.fallbackToLetter && endPos == 0 && endPos == startPos )
+
+		//	Only one word
+		if ( o.fallbackToLetter && startPos == 0 && endPos == 0 )
 		{
 			separator	= '';
 			textArr		= txt.split( separator );
@@ -428,6 +430,17 @@
 			else
 			{
 				endPos = midPos;
+
+				//	Fallback to letter
+				if (o.fallbackToLetter && startPos == 0 && endPos == 0 )
+				{
+					separator	= '';
+					textArr		= textArr[ 0 ].split( separator );
+					position	= -1;
+					midPos		= -1;
+					startPos	= 0;
+					endPos		= textArr.length - 1;
+				}
 			}
 		}
 	
