@@ -1,5 +1,5 @@
 /*	
- *	jQuery dotdotdot 1.6.9
+ *	jQuery dotdotdot 1.6.10
  *	
  *	Copyright (c) 2013 Fred Heusschen
  *	www.frebsite.nl
@@ -79,7 +79,9 @@
 					}
 
 					$inr = $dot.wrapInner( '<div class="dotdotdot" />' ).children();
-					$inr.empty()
+					$inr.contents()
+						.detach()
+						.end()
 						.append( orgContent.clone( true ) )
 						.find( 'br' ).replaceWith( '  <br />  ' ).end()
 						.css({
@@ -97,7 +99,7 @@
 					{
 						after = conf.afterElement.clone( true );
 					    after.show();
-						conf.afterElement.remove();
+						conf.afterElement.detach();
 					}
 
 					if ( test( $inr, opts ) )
@@ -160,7 +162,9 @@
 
 					$dot.unwatch()
 						.unbind_events()
-						.empty()
+						.contents()
+						.detach()
+						.end()
 						.append( orgContent )
 						.attr( 'style', $dot.data( 'dotdotdot-style' ) || '' )
 						.data( 'dotdotdot', false );
@@ -329,59 +333,72 @@
 	}
 	function ellipsis( $elem, $d, $i, o, after )
 	{
-		var $elements 	= $elem.contents(),
-			isTruncated	= false;
+		var isTruncated	= false;
 
-		$elem.empty();
-
+		//	Don't put the ellipsis directly inside these elements
 		var notx = 'table, thead, tbody, tfoot, tr, col, colgroup, object, embed, param, ol, ul, dl, blockquote, select, optgroup, option, textarea, script, style';
-		for ( var a = 0, l = $elements.length; a < l; a++ )
-		{
 
-			if ( isTruncated )
-			{
-				break;
-			}
+		//	Don't remove these elements even if they are after the ellipsis
+		var noty = 'script';
 
-			var e	= $elements[ a ],
-				$e	= $(e);
-
-			if ( typeof e == 'undefined' || ( e.nodeType == 3 && $.trim( e.data ).length == 0 ) )
-			{
-				continue;
-			}
-
-			$elem.append( $e );
-			if ( after )
-			{
-				$elem[ $elem.is( notx ) ? 'after' : 'append' ]( after );
-			}
-			if ( test( $i, o ) )
-			{
-				if ( e.nodeType == 3 ) // node is TEXT
+		$elem
+			.contents()
+			.detach()
+			.each(
+				function()
 				{
-					isTruncated = ellipsisElement( $e, $d, $i, o, after );
-				}
-				else
-				{
-					isTruncated = ellipsis( $e, $d, $i, o, after );
-				}
 
-				if ( !isTruncated )
-				{
-					$e.remove();
-					isTruncated = true;
-				}
-			}
+					var e	= this,
+						$e	= $(e);
 
-			if ( !isTruncated )
-			{
-				if ( after )
-				{
-					after.detach();
+					if ( typeof e == 'undefined' || ( e.nodeType == 3 && $.trim( e.data ).length == 0 ) )
+					{
+						return true;
+					}
+					else if ( $e.is( noty ) )
+					{
+						$elem.append( $e );
+					}
+					else if ( isTruncated )
+					{
+						return true;
+					}
+					else
+					{
+						$elem.append( $e );
+						if ( after )
+						{
+							$elem[ $elem.is( notx ) ? 'after' : 'append' ]( after );
+						}
+						if ( test( $i, o ) )
+						{
+							if ( e.nodeType == 3 ) // node is TEXT
+							{
+								isTruncated = ellipsisElement( $e, $d, $i, o, after );
+							}
+							else
+							{
+								isTruncated = ellipsis( $e, $d, $i, o, after );
+							}
+
+							if ( !isTruncated )
+							{
+								$e.detach();
+								isTruncated = true;
+							}
+						}
+		
+						if ( !isTruncated )
+						{
+							if ( after )
+							{
+								after.detach();
+							}
+						}
+					}
 				}
-			}
-		}
+			);
+
 		return isTruncated;
 	}
 	function ellipsisElement( $e, $d, $i, o, after )
@@ -452,7 +469,7 @@
 		else
 		{
 			var $w = $e.parent();
-			$e.remove();
+			$e.detach();
 
 			var afterLength = ( after && after.closest($w).length ) ? after.length : 0;
 
@@ -465,7 +482,7 @@
 				e = findLastTextNode( $w, $d, true );
 				if ( !afterLength )
 				{
-					$w.remove();
+					$w.detach();
 				}
 			}
 			if ( e )
