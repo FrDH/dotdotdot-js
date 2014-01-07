@@ -333,7 +333,10 @@
 	}
 	function ellipsis( $elem, $d, $i, o, after )
 	{
-		var isTruncated	= false;
+		if ( !$elem.contents().length )
+		{
+			return false;
+		}
 
 		//	Don't put the ellipsis directly inside these elements
 		var notx = 'table, thead, tbody, tfoot, tr, col, colgroup, object, embed, param, ol, ul, dl, blockquote, select, optgroup, option, textarea, script, style';
@@ -345,65 +348,51 @@
 			.contents()
 			.detach()
 			.each(
-				function()
+				function(index)
 				{
-
 					var e	= this,
-						$e	= $(e);
+						$e	= $(e),
+						ellipsisFn = e.nodeType === 3 ? ellipsisElement : ellipsis;
 
 					if ( typeof e == 'undefined' || ( e.nodeType == 3 && $.trim( e.data ).length == 0 ) )
 					{
-						return true;
+						return;
 					}
-					else if ( $e.is( noty ) )
-					{
-						$elem.append( $e );
-					}
-					else if ( isTruncated )
-					{
-						return true;
-					}
-					else
-					{
-						$elem.append( $e );
-						if ( after )
-						{
-							$elem[ $elem.is( notx ) ? 'after' : 'append' ]( after );
-						}
-						if ( test( $i, o ) )
-						{
-							if ( e.nodeType == 3 ) // node is TEXT
-							{
-								isTruncated = ellipsisElement( $e, $d, $i, o, after );
-							}
-							else
-							{
-								isTruncated = ellipsis( $e, $d, $i, o, after );
-							}
 
-							if ( !isTruncated )
-							{
-								$e.detach();
-								isTruncated = true;
-							}
-						}
-						else
-						{
-							isTruncated = true;
-						}
+					$elem.append( $e );
 
-						if ( !isTruncated )
-						{
-							if ( after )
-							{
-								after.detach();
-							}
-						}
+					if ( $e.is( noty ) )
+					{
+						return;
 					}
+
+					if ( after )
+					{
+						$elem[ $elem.is( notx ) ? 'after' : 'append' ]( after );
+					}
+
+					if ( !test( $i, o ) )
+					{
+						return;
+					}
+
+					if ( ellipsisFn.call( this, $e, $d, $i, o, after ) )
+					{
+						return;
+					}
+
+					$e.detach();
+
+					if ( after )
+					{
+						after.detach();
+					}
+
+					return false;
 				}
 			);
 
-		return isTruncated;
+		return true;
 	}
 	function ellipsisElement( $e, $d, $i, o, after )
 	{
