@@ -1,7 +1,7 @@
 /*
- *	jQuery dotdotdot 1.6.10
+ *	jQuery dotdotdot 1.6.11
  *
- *	Copyright (c) 2013 Fred Heusschen
+ *	Copyright (c) Fred Heusschen
  *	www.frebsite.nl
  *
  *	Plugin website:
