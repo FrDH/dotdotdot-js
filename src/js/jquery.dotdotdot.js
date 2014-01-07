@@ -1,6 +1,6 @@
-/*	
+/*
  *	jQuery dotdotdot 1.6.10
- *	
+ *
  *	Copyright (c) 2013 Fred Heusschen
  *	www.frebsite.nl
  *
@@ -60,8 +60,8 @@
 					e.preventDefault();
 					e.stopPropagation();
 
-					opts.maxHeight = ( typeof opts.height == 'number' ) 
-						? opts.height 
+					opts.maxHeight = ( typeof opts.height == 'number' )
+						? opts.height
 						: getTrueInnerHeight( $dot );
 
 					opts.maxHeight += opts.tolerance;
@@ -186,7 +186,7 @@
 			{
 				var $window = $(window),
 					_wWidth = $window.width(),
-					_wHeight = $window.height(); 
+					_wHeight = $window.height();
 
 				$window.bind(
 					'resize.dot' + conf.dotId,
@@ -196,7 +196,7 @@
 						{
 							_wWidth = $window.width();
 							_wHeight = $window.height();
-	
+
 							if ( watchInt )
 							{
 								clearInterval( watchInt );
@@ -387,7 +387,11 @@
 								isTruncated = true;
 							}
 						}
-		
+						else
+						{
+							isTruncated = true;
+						}
+
 						if ( !isTruncated )
 						{
 							if ( after )
@@ -418,7 +422,7 @@
 			midPos		= -1,
 			startPos	= 0,
 			endPos		= textArr.length - 1;
-			
+
 
 		//	Only one word
 		if ( o.fallbackToLetter && startPos == 0 && endPos == 0 )
@@ -431,7 +435,7 @@
 		while ( startPos <= endPos && !( startPos == 0 && endPos == 0 ) )
 		{
 			var m = Math.floor( ( startPos + endPos ) / 2 );
-			if ( m == midPos ) 
+			if ( m == midPos )
 			{
 				break;
 			}
@@ -442,7 +446,7 @@
 			if ( !test( $i, o ) )
 			{
 				position = midPos;
-				startPos = midPos; 
+				startPos = midPos;
 			}
 			else
 			{
@@ -460,7 +464,7 @@
 				}
 			}
 		}
-	
+
 		if ( position != -1 && !( textArr.length == 1 && textArr[ 0 ].length == 0 ) )
 		{
 			txt = addEllipsis( textArr.slice( 0, position + 1 ).join( separator ), o );
@@ -609,7 +613,7 @@
 		{
 			e = $(e, $i);
 			return ( e.length )
-				? e 
+				? e
 				: false;
 		}
 		return !e.jquery
@@ -632,7 +636,7 @@
 		}
 		return h;
 	}
-	
+
 
 	//	override jQuery.html
 	var _orgHtml = $.fn.html;
