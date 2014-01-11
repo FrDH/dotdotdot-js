@@ -15,13 +15,40 @@
     <div id="qunit-fixture"></div>
     <script src="./qunit.js"></script>
     <script src="jquery-1.10.2.js"></script>
-    <!-- <script src="../src/js/jquery.dotdotdot.js"></script> -->
-    <!-- <script src="./jquery.dotdotdot.js"></script> -->
-    <script src="./jquery.dotdotdot.old.js"></script>
+    <script src="../src/js/jquery.dotdotdot.js"></script>
+
+    <div class="hide" id="ellipsis-miscalculation">
+        <style>
+            #ellipsis-miscalculation #wrapper {
+                width: 200px;
+                height: 70px;
+                border: 1px solid red;
+                display: block;
+            }            
+            #ellipsis-miscalculation p {
+                padding: 0;
+                margin: 0;
+            }
+        </style>
+        <div id="wrapper">
+            <p>dasdasdasdas  das das das<br> das das das das asda s<br>asd das das das </p>
+            <a id="more" href="#">
+                read more
+            </a>
+        </div>
+    </div>
+    <script>
+        $("#ellipsis-miscalculation #wrapper").dotdotdot({
+            after: 'a#more'
+        });
+        test('Ellipsis muscalculation bug', function () {
+            equal($('#ellipsis-miscalculation p > *').length, 3);
+        });
+    </script>
 
     <div class="hide" id="dont-truncate-after">
         <style>
-            #wrapper {
+            #dont-truncate-after #wrapper {
                 width: 200px;
                 height: 70px;
                 border: 1px solid red;
@@ -32,7 +59,7 @@
             <span id="dealDescriptionText">
                 sddsddfasdfsasdfasdfdf asd asdf asdf asdf adsf asdf asdf sdf sdf asdf asdg sd sdf asdasd sdfsdg ASD asdf
             </span>
-            <a id="what" href="/test">
+            <a id="what" href="#">
                 read more
             </a>
         </div>
@@ -48,7 +75,7 @@
 
     <div class="hide" id="first-child-bug">
         <style>
-            #wrapper {
+            #first-child-bug #wrapper {
                 width: 200px;
                 height: 70px;
                 border: 1px solid red;
@@ -58,7 +85,7 @@
         <div id="wrapper">
             <span>asdasd  das d dasdasda sdf sfsdgdsdasf dasf dasdsf dsf s</span>
             <span>foo foo foo foo foo foofoo foo foofoo foo foofoo foo foo</span>
-            <a id="what" href="/test">
+            <a id="what" href="#">
                 read more
             </a>
         </div>
