@@ -17,6 +17,38 @@
     <script src="jquery-1.10.2.js"></script>
     <script src="../src/js/jquery.dotdotdot.js"></script>
 
+    <div class="hide" id="disappearing-after">
+        <style>
+            #disappearing-after #wrapper {
+                width: 200px;
+                height: 70px;
+                border: 1px solid red;
+                display: block;
+            }            
+            #disappearing-after p {
+                padding: 0;
+                margin: 0;
+            }
+        </style>
+        <div id="wrapper">
+            <p>
+                dasdasdasdas  das das das<br> 
+                das das das das asda s<br>
+                asd das das das<br>
+                asdsad
+            </p>
+            <a id="more" href="#">read more</a>
+        </div>
+    </div>
+    <script>
+        $("#disappearing-after #wrapper").dotdotdot({
+            after: 'a#more'
+        });
+        test('Disappearing after', function () {
+            equal($('#disappearing-after #more').length, 1);
+        });
+    </script>
+
     <div class="hide" id="ellipsis-miscalculation">
         <style>
             #ellipsis-miscalculation #wrapper {
