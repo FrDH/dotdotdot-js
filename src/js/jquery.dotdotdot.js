@@ -382,12 +382,7 @@
 					}
 
 					$e.detach();
-
-					if ( after )
-					{
-						after.detach();
-					}
-
+					
 					return false;
 				}
 			);
