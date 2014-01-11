@@ -378,7 +378,7 @@
 
 					if ( ellipsisFn.call( this, $e, $d, $i, o, after ) )
 					{
-						return;
+						return false;
 					}
 
 					$e.detach();
