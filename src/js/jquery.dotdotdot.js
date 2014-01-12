@@ -1,5 +1,5 @@
 /*
- *	jQuery dotdotdot 1.6.11
+ *	jQuery dotdotdot 1.6.12
  *
  *	Copyright (c) Fred Heusschen
  *	www.frebsite.nl
@@ -386,10 +386,6 @@
 								$e.detach();
 								isTruncated = true;
 							}
-						}
-						else
-						{
-							isTruncated = true;
 						}
 
 						if ( !isTruncated )
