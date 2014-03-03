@@ -1,5 +1,5 @@
 /*
- *	jQuery dotdotdot 1.6.12
+ *	jQuery dotdotdot 1.6.13
  *
  *	Copyright (c) Fred Heusschen
  *	www.frebsite.nl
@@ -500,7 +500,7 @@
 	}
 	function test( $i, o )
 	{
-		return $i.innerHeight() >= o.maxHeight;
+		return $i.innerHeight() > o.maxHeight;
 	}
 	function addEllipsis( txt, o )
 	{
