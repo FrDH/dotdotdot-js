@@ -217,12 +217,13 @@
 				watchInt = setInterval(
 					function()
 					{
-						var watchNew = getSizes( $dot );
+						var $visDot = $dot.filter(':visible');
+						var watchNew = getSizes( $visDot );
 						if ( watchOrg.width  != watchNew.width ||
 							 watchOrg.height != watchNew.height )
 						{
-							$dot.trigger( 'update.dot' );
-							watchOrg = getSizes( $dot );
+							$visDot.trigger( 'update.dot' );
+							watchOrg = getSizes( $visDot );
 						}
 					}, 100
 				);
