@@ -222,7 +222,7 @@
 						if ( watchOrg.width  != watchNew.width ||
 							 watchOrg.height != watchNew.height )
 						{
-							$dot.trigger( 'update.dot' );
+							$visDot.trigger( 'update.dot' );
 							watchOrg = getSizes( $visDot );
 						}
 					}, 100
