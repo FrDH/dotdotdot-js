@@ -1,5 +1,5 @@
 /*
- *	jQuery dotdotdot 1.6.13
+ *	jQuery dotdotdot 1.6.14
  *
  *	Copyright (c) Fred Heusschen
  *	www.frebsite.nl
@@ -205,7 +205,7 @@
 								function()
 								{
 									$dot.trigger( 'update.dot' );
-								}, 10
+								}, 100
 							);
 						}
 					}
@@ -217,14 +217,17 @@
 				watchInt = setInterval(
 					function()
 					{
-						var watchNew = getSizes( $dot );
-						if ( watchOrg.width  != watchNew.width ||
-							 watchOrg.height != watchNew.height )
+						if ( $dot.is( ':visible' ) )
 						{
-							$dot.trigger( 'update.dot' );
-							watchOrg = getSizes( $dot );
+							var watchNew = getSizes( $dot );
+							if ( watchOrg.width  != watchNew.width ||
+								 watchOrg.height != watchNew.height )
+							{
+								$dot.trigger( 'update.dot' );
+								watchOrg = watchNew;
+							}
 						}
-					}, 100
+					}, 500
 				);
 			}
 			return $dot;
