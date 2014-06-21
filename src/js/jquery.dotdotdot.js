@@ -1,5 +1,5 @@
 /*
- *	jQuery dotdotdot 1.6.14
+ *	jQuery dotdotdot 1.6.15
  *
  *	Copyright (c) Fred Heusschen
  *	www.frebsite.nl
@@ -83,7 +83,9 @@
 						.detach()
 						.end()
 						.append( orgContent.clone( true ) )
-						.find( 'br' ).replaceWith( '  <br />  ' ).end()
+						.find( 'br' )
+						.replaceWith( '  <br />  ' )
+						.end()
 						.css({
 							'height'	: 'auto',
 							'width'		: 'auto',
@@ -342,7 +344,7 @@
 		var notx = 'table, thead, tbody, tfoot, tr, col, colgroup, object, embed, param, ol, ul, dl, blockquote, select, optgroup, option, textarea, script, style';
 
 		//	Don't remove these elements even if they are after the ellipsis
-		var noty = 'script';
+		var noty = 'script, :hidden';
 
 		$elem
 			.contents()
