@@ -1,5 +1,5 @@
 /*
- *	jQuery dotdotdot 1.6.15
+ *	jQuery dotdotdot 1.6.16
  *
  *	Copyright (c) Fred Heusschen
  *	www.frebsite.nl
@@ -344,7 +344,7 @@
 		var notx = 'table, thead, tbody, tfoot, tr, col, colgroup, object, embed, param, ol, ul, dl, blockquote, select, optgroup, option, textarea, script, style';
 
 		//	Don't remove these elements even if they are after the ellipsis
-		var noty = 'script, :hidden';
+		var noty = 'script, .dotdotdot-keep';
 
 		$elem
 			.contents()
