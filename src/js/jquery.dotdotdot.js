@@ -653,14 +653,14 @@
 
 	//	override jQuery.text
 	var _orgText = $.fn.text;
-	$.fn.text = function( str )
+	$.fn.text = function( str, skipDotdotdot )
 	{
-		if ( str != undef && !$.isFunction( str ) && this.data( 'dotdotdot' ) )
+		if ( str != undef && !$.isFunction( str ) && this.data( 'dotdotdot' ) && skipDotdotdot !== true )
 		{
 			str = $( '<div />' ).text( str ).html();
 			return this.trigger( 'update.dot', [ str ] );
 		}
-		return _orgText.apply( this, arguments );
+		return _orgText.apply( this, skipDotdotdot != null ? [str] : arguments );
 	};
 
 
