@@ -1,2 +1,6 @@
 # Ignore Mac system files.
 ._*
+
+# IDEA IntelliJ
+.idea
+atlassian-ide-plugin.xml
