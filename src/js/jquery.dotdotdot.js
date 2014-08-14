@@ -645,7 +645,7 @@
 	{
 		if ( str != undef && !$.isFunction( str ) && this.data( 'dotdotdot' ) )
 		{
-			return this.trigger( 'update', [ str ] );
+			return this.trigger( 'update.dot', [ str ] );
 		}
 		return _orgHtml.apply( this, arguments );
 	};
@@ -658,7 +658,7 @@
 		if ( str != undef && !$.isFunction( str ) && this.data( 'dotdotdot' ) )
 		{
 			str = $( '<div />' ).text( str ).html();
-			return this.trigger( 'update', [ str ] );
+			return this.trigger( 'update.dot', [ str ] );
 		}
 		return _orgText.apply( this, arguments );
 	};
