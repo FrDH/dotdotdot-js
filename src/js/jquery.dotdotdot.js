@@ -403,7 +403,7 @@
 					}
 				}
 			);
-
+		$d.addClass("is-truncated");
 		return isTruncated;
 	}
 	function ellipsisElement( $e, $d, $i, o, after )
