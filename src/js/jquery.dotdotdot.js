@@ -57,6 +57,7 @@
 				'update.dot',
 				function( e, c )
 				{
+					$dot.removeClass("is-truncated");
 					e.preventDefault();
 					e.stopPropagation();
 
