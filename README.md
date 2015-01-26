@@ -38,6 +38,5 @@ $(document).ready(function() {
 Please visit http://dotdotdot.frebsite.nl
 
 ### Licence
-The jQuery.dotdotdot plugin is dual licensed under the MIT and GPL licenses:
-+ http://en.wikipedia.org/wiki/MIT_License
-+ http://en.wikipedia.org/wiki/GNU_General_Public_License
+The jQuery.dotdotdot plugin is licensed under the MIT license:
+http://en.wikipedia.org/wiki/MIT_License

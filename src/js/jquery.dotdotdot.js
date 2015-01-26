@@ -1,5 +1,5 @@
 /*
- *	jQuery dotdotdot 1.6.16
+ *	jQuery dotdotdot 1.7.0
  *
  *	Copyright (c) Fred Heusschen
  *	www.frebsite.nl
@@ -7,9 +7,8 @@
  *	Plugin website:
  *	dotdotdot.frebsite.nl
  *
- *	Dual licensed under the MIT and GPL licenses.
+ *	Licensed under the MIT license.
  *	http://en.wikipedia.org/wiki/MIT_License
- *	http://en.wikipedia.org/wiki/GNU_General_Public_License
  */
 
 (function( $, undef )
