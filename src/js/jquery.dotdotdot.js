@@ -345,6 +345,12 @@
 		//	Don't remove these elements even if they are after the ellipsis
 		var noty = 'script, .dotdotdot-keep';
 
+		var addAfter = function(elem) {
+			if ( after ) {
+				elem[ elem.is( notx ) ? 'after' : 'append' ]( after );
+			}
+		};
+
 		$elem
 			.contents()
 			.detach()
@@ -370,10 +376,7 @@
 					else
 					{
 						$elem.append( $e );
-						if ( after )
-						{
-							$elem[ $elem.is( notx ) ? 'after' : 'append' ]( after );
-						}
+						addAfter( $elem );
 						if ( test( $i, o ) )
 						{
 							if ( e.nodeType == 3 ) // node is TEXT
@@ -387,7 +390,7 @@
 
 							if ( !isTruncated )
 							{
-								$e.detach();
+								addAfter($($elem.contents().last()));
 								isTruncated = true;
 							}
 						}
