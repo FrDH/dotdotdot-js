@@ -1,5 +1,5 @@
 /*
- *	jQuery dotdotdot 1.7.0
+ *	jQuery dotdotdot 1.7.1
  *
  *	Copyright (c) Fred Heusschen
  *	www.frebsite.nl
