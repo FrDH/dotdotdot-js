@@ -370,7 +370,7 @@
 					else
 					{
 						$elem.append( $e );
-						if ( after )
+						if ( after && !$e.is( o.after ) && !$e.find( o.after ).length  )
 						{
 							$elem[ $elem.is( notx ) ? 'after' : 'append' ]( after );
 						}
