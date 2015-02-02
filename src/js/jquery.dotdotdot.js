@@ -1,5 +1,5 @@
 /*
- *	jQuery dotdotdot 1.7.1
+ *	jQuery dotdotdot 1.7.2
  *
  *	Copyright (c) Fred Heusschen
  *	www.frebsite.nl
@@ -340,7 +340,7 @@
 		var isTruncated	= false;
 
 		//	Don't put the ellipsis directly inside these elements
-		var notx = 'table, thead, tbody, tfoot, tr, col, colgroup, object, embed, param, ol, ul, dl, blockquote, select, optgroup, option, textarea, script, style';
+		var notx = 'a table, thead, tbody, tfoot, tr, col, colgroup, object, embed, param, ol, ul, dl, blockquote, select, optgroup, option, textarea, script, style';
 
 		//	Don't remove these elements even if they are after the ellipsis
 		var noty = 'script, .dotdotdot-keep';
