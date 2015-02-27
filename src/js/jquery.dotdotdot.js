@@ -67,7 +67,7 @@
 
 					if ( typeof c != 'undefined' )
 					{
-						if ( typeof c == 'string' || c instanceof HTMLElement )
+						if ( typeof c == 'string' || ('nodeType' in c && c.nodeType === 1) )
 						{
 					 		c = $('<div />').append( c ).contents();
 						}
