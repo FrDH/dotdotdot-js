@@ -38,16 +38,16 @@
 
 		var $dot = this;
 
-		if ( $dot.data( 'dotdotdot' ) )
-		{
-			$dot.trigger( 'destroy.dot' );
-		}
-
 		$dot.data( 'dotdotdot-style', $dot.attr( 'style' ) || '' );
 		$dot.css( 'word-wrap', 'break-word' );
 		if ($dot.css( 'white-space' ) === 'nowrap')
 		{
 			$dot.css( 'white-space', 'normal' );
+		}
+		
+		if ( $dot.data( 'dotdotdot' ) )
+		{
+			$dot.trigger( 'destroy.dot' );
 		}
 
 		$dot.bind_events = function()
