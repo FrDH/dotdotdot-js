@@ -56,6 +56,7 @@
 				'update.dot',
 				function( e, c )
 				{
+					$dot.removeClass("is-truncated");
 					e.preventDefault();
 					e.stopPropagation();
 
@@ -402,7 +403,7 @@
 					}
 				}
 			);
-
+		$d.addClass("is-truncated");
 		return isTruncated;
 	}
 	function ellipsisElement( $e, $d, $i, o, after )
