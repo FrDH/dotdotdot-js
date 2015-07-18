@@ -1,5 +1,5 @@
 /*
- *	jQuery dotdotdot 1.7.3
+ *	jQuery dotdotdot 1.7.4
  *
  *	Copyright (c) Fred Heusschen
  *	www.frebsite.nl
@@ -60,9 +60,20 @@
 					e.preventDefault();
 					e.stopPropagation();
 
-					opts.maxHeight = ( typeof opts.height == 'number' )
-						? opts.height
-						: getTrueInnerHeight( $dot );
+					switch( typeof opts.height )
+					{
+						case 'number':
+							opts.maxHeight = opts.height;
+							break;
+
+						case 'function':
+							opts.maxHeight = opts.height.call( $dot[ 0 ] );
+							break;
+
+						default:
+							opts.maxHeight = getTrueInnerHeight( $dot );
+							break;
+					}
 
 					opts.maxHeight += opts.tolerance;
 
@@ -443,6 +454,13 @@
 			midPos = m;
 
 			setTextContent( e, textArr.slice( 0, midPos + 1 ).join( separator ) + o.ellipsis );
+			$i.children()
+				.each(
+					function()
+					{
+						$(this).toggle().toggle();
+					}
+				);
 
 			if ( !test( $i, o ) )
 			{

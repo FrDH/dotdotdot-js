@@ -22,10 +22,10 @@
 					watch: 'window'
 				});
 
-
 				var $dot5 = $('#dot5');
 				$dot5.append( ' <a class="toggle" href="#"><span class="open">[ + ]</span><span class="close">[ - ]</span></a>' );
-				
+
+
 				function createDots()
 				{
 					$dot5.dotdotdot({
@@ -52,7 +52,6 @@
 					}
 				);
 
-
 				$('#dot6 .pathname').each(function() {
 					var path = $(this).html().split( '/' );
 					if ( path.length > 1 ) {
@@ -64,6 +63,7 @@
 						});						
 					}
 				});
+
 			});
 		</script>
 		<style type="text/css" media="all">
