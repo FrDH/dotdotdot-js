@@ -7,7 +7,7 @@ Demo's and documentation: http://dotdotdot.frebsite.nl
 <img src="http://dotdotdot.frebsite.nl/img/preview.png" width="100%" border="0" />
 
 ### How to use the plugin
-Include all nessesary .js-files inside the head-tag of the page.
+Include all necessary .js-files inside the head-tag of the page.
 
 ```html
 <head>
