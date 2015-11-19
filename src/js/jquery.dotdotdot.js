@@ -396,12 +396,6 @@
 							{
 								isTruncated = ellipsis( $e, $d, $i, o, after );
 							}
-
-							if ( !isTruncated )
-							{
-								$e.detach();
-								isTruncated = true;
-							}
 						}
 
 						if ( !isTruncated )
