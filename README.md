@@ -42,7 +42,7 @@ Adding jQuery.dotdotdot to element:
 
 ```html
 <div class="dot-ellipsis">
-<p>Lorem Ipsum is simply dummy text.</p>
+	<p>Lorem Ipsum is simply dummy text.</p>
 </div>
 ```
 	
@@ -50,7 +50,7 @@ Adding jQuery.dotdotdot to element with update on window resize:
     
 ```html
 <div class="dot-ellipsis dot-resize-update">
-<p>Lorem Ipsum is simply dummy text.</p>
+	<p>Lorem Ipsum is simply dummy text.</p>
 </div>
 ```
 	
@@ -58,7 +58,7 @@ Adding jQuery.dotdotdot to element with predefined height of 50px:
     
 ```html
 <div class="dot-ellipsis dot-height-50">
-<p>Lorem Ipsum is simply dummy text.</p>
+	<p>Lorem Ipsum is simply dummy text.</p>
 </div>
 ```
 
