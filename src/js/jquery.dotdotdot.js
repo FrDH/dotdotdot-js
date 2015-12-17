@@ -37,6 +37,7 @@
 
 
 		var $dot = this;
+		var orgContent	= $dot.contents();
 
 		if ( $dot.data( 'dotdotdot' ) )
 		{
@@ -255,8 +256,7 @@
 			return $dot;
 		};
 
-		var	orgContent	= $dot.contents(),
-			opts 		= $.extend( true, {}, $.fn.dotdotdot.defaults, o ),
+		var	opts 		= $.extend( true, {}, $.fn.dotdotdot.defaults, o ),
 			conf		= {},
 			watchOrg	= {},
 			watchInt	= null,
