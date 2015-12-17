@@ -4,6 +4,11 @@ jQuery.dotdotdot
 A jQuery plugin for advanced cross-browser ellipsis on multiple line content.<br />
 Demo's and documentation: http://dotdotdot.frebsite.nl
 
+*Note:*<br />
+Because its performance can not be improved, this plugin is no longer actively maintained.<br />
+Feel free to use it and submit pull requests though.
+
+
 <img src="http://dotdotdot.frebsite.nl/img/preview.png" width="100%" border="0" />
 
 ### How to use the plugin
