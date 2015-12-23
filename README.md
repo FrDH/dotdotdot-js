@@ -14,7 +14,7 @@ Feel free to use it and submit pull requests though.
 
 ## How to use the plugin
 ### Integration to your page
->>>>>>> [add] added CSS approach to use the plugin
+
 Include all necessary .js-files inside the head-tag of the page.
 
 ```html
