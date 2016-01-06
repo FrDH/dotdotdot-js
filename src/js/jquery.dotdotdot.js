@@ -353,7 +353,9 @@
 
 		//	Don't put the ellipsis directly inside these elements
 		var notx = 'a, table, thead, tbody, tfoot, tr, col, colgroup, object, embed, param, ol, ul, dl, blockquote, select, optgroup, option, textarea, script, style';
-
+		if (o.notx) {
+			notx += ', ' + o.notx;
+		}
 		//	Don't remove these elements even if they are after the ellipsis
 		var noty = 'script, .dotdotdot-keep';
 
