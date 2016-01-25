@@ -10,7 +10,7 @@
  *	Licensed under the MIT license.
  *	http://en.wikipedia.org/wiki/MIT_License
  */
-var jQuery = require('jquery');
+var jQuery = jQuery || require && require('jquery');
 
 (function( $, undef )
 {
