@@ -1,12 +1,12 @@
 {
   "name": "jQuery.dotdotdot",
   "main": "src/js/jquery.dotdotdot.js",
-  "version": "1.7.4",
+  "version": "1.7.5",
   "homepage": "http://dotdotdot.frebsite.nl/",
   "repository": {
-+    "type": "git",
-+    "url": "https://github.com/BeSite/jQuery.dotdotdot.git"
-+  },
+    "type": "git",
+    "url": "https://github.com/BeSite/jQuery.dotdotdot.git"
+  },
   "author": "Fred Heusschen <info@frebsite.nl>",
   "description": "A jQuery plugin for advanced cross-browser ellipsis on multiple line content.",
   "keywords": [

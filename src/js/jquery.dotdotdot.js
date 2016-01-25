@@ -10,6 +10,7 @@
  *	Licensed under the MIT license.
  *	http://en.wikipedia.org/wiki/MIT_License
  */
+var jQuery = require('jquery');
 
 (function( $, undef )
 {
