@@ -554,7 +554,7 @@
   //  override jQuery.html
   var _orgHtml = $.fn.html;
   $.fn.html = function(str) {
-    if (str != undef && !$.isFunction(str) && this.data('dotdotdot')) {
+    if (typeof str != 'undefined' && !$.isFunction(str) && this.data('dotdotdot')) {
       return this.trigger('update', [str]);
     }
     return _orgHtml.apply(this, arguments);
@@ -564,7 +564,7 @@
   //  override jQuery.text
   var _orgText = $.fn.text;
   $.fn.text = function(str) {
-    if (str != undef && !$.isFunction(str) && this.data('dotdotdot')) {
+    if (typeof str != 'undefined' && !$.isFunction(str) && this.data('dotdotdot')) {
       str = $('<div />').text(str).html();
       return this.trigger('update', [str]);
     }
