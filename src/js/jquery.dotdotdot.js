@@ -1,22 +1,30 @@
 /*
- *	jQuery dotdotdot 1.7.4
+ *  jQuery dotdotdot 1.7.4
  *
- *	Copyright (c) Fred Heusschen
- *	www.frebsite.nl
+ *  Copyright (c) Fred Heusschen
+ *  www.frebsite.nl
  *
- *	Plugin website:
- *	dotdotdot.frebsite.nl
+ *  Plugin website:
+ *  dotdotdot.frebsite.nl
  *
- *	Licensed under the MIT license.
- *	http://en.wikipedia.org/wiki/MIT_License
+ *  Licensed under the MIT license.
+ *  http://en.wikipedia.org/wiki/MIT_License
  */
 
-(function( $, undef )
-{
-	if ( $.fn.dotdotdot )
-	{
-		return;
+;(function(factory) {
+	'use strict';
+	if (typeof define === 'function' && define.amd) {
+		// AMD
+		define(['jquery'], factory);
+	} else if (typeof module !== 'undefined' && module.exports) {
+		// CommonJS
+		module.exports = factory(require('jquery'));
+	} else {
+		// Global
+		factory(jQuery);
 	}
+})(function($) {
+	'use strict';
 
 	$.fn.dotdotdot = function( o )
 	{
@@ -37,7 +45,7 @@
 
 
 		var $dot = this;
-		var orgContent	= $dot.contents();
+		var orgContent  = $dot.contents();
 
 		if ( $dot.data( 'dotdotdot' ) )
 		{
@@ -82,7 +90,7 @@
 					{
 						if ( typeof c == 'string' || ('nodeType' in c && c.nodeType === 1) )
 						{
-					 		c = $('<div />').append( c ).contents();
+							c = $('<div />').append( c ).contents();
 						}
 						if ( c instanceof $ )
 						{
@@ -99,11 +107,11 @@
 						.replaceWith( '  <br />  ' )
 						.end()
 						.css({
-							'height'	: 'auto',
-							'width'		: 'auto',
-							'border'	: 'none',
-							'padding'	: 0,
-							'margin'	: 0
+							'height'  : 'auto',
+							'width'   : 'auto',
+							'border'  : 'none',
+							'padding' : 0,
+							'margin'  : 0
 						});
 
 					var after = false,
@@ -112,7 +120,7 @@
 					if ( conf.afterElement )
 					{
 						after = conf.afterElement.clone( true );
-					    after.show();
+							after.show();
 						conf.afterElement.detach();
 					}
 
@@ -181,17 +189,18 @@
 						.end()
 						.append( orgContent )
 						.attr( 'style', $dot.data( 'dotdotdot-style' ) || '' )
+						.removeClass('is-truncated')
 						.data( 'dotdotdot', false );
 				}
 			);
 			return $dot;
-		};	//	/bind_events
+		};  //  /bind_events
 
 		$dot.unbind_events = function()
 		{
 			$dot.unbind('.dot');
 			return $dot;
-		};	//	/unbind_events
+		};  //  /unbind_events
 
 		$dot.watch = function()
 		{
@@ -256,11 +265,11 @@
 			return $dot;
 		};
 
-		var	opts 		= $.extend( true, {}, $.fn.dotdotdot.defaults, o ),
-			conf		= {},
-			watchOrg	= {},
-			watchInt	= null,
-			$inr		= null;
+		var opts    = $.extend( true, {}, $.fn.dotdotdot.defaults, o ),
+			conf    = {},
+			watchOrg  = {},
+			watchInt  = null,
+			$inr    = null;
 
 
 		if ( !( opts.lastCharacter.remove instanceof Array ) )
@@ -273,9 +282,9 @@
 		}
 
 
-		conf.afterElement	= getElement( opts.after, $dot );
-		conf.isTruncated	= false;
-		conf.dotId			= dotId++;
+		conf.afterElement = getElement( opts.after, $dot );
+		conf.isTruncated  = false;
+		conf.dotId      = dotId++;
 
 
 		$dot.data( 'dotdotdot', true )
@@ -291,35 +300,35 @@
 	};
 
 
-	//	public
+	//  public
 	$.fn.dotdotdot.defaults = {
-		'ellipsis'			: '... ',
-		'wrap'				: 'word',
-		'fallbackToLetter'	: true,
-		'lastCharacter'		: {},
-		'tolerance'			: 0,
-		'callback'			: null,
-		'after'				: null,
-		'height'			: null,
-		'watch'				: false,
-		'windowResizeFix'	: true
+		'ellipsis'      : '... ',
+		'wrap'        : 'word',
+		'fallbackToLetter'  : true,
+		'lastCharacter'   : {},
+		'tolerance'     : 0,
+		'callback'      : null,
+		'after'       : null,
+		'height'      : null,
+		'watch'       : false,
+		'windowResizeFix' : true
 	};
 	$.fn.dotdotdot.defaultArrays = {
-		'lastCharacter'		: {
-			'remove'			: [ ' ', '\u3000', ',', ';', '.', '!', '?' ],
-			'noEllipsis'		: []
+		'lastCharacter'   : {
+			'remove'      : [ ' ', '\u3000', ',', ';', '.', '!', '?' ],
+			'noEllipsis'    : []
 		}
 	};
 	$.fn.dotdotdot.debug = function( msg ) {};
 
 
-	//	private
+	//  private
 	var dotId = 1;
 
 	function children( $elem, o, after )
 	{
-		var $elements 	= $elem.children(),
-			isTruncated	= false;
+		var $elements   = $elem.children(),
+			isTruncated = false;
 
 		$elem.empty();
 
@@ -349,12 +358,12 @@
 	}
 	function ellipsis( $elem, $d, $i, o, after )
 	{
-		var isTruncated	= false;
+		var isTruncated = false;
 
-		//	Don't put the ellipsis directly inside these elements
+		//  Don't put the ellipsis directly inside these elements
 		var notx = 'a, table, thead, tbody, tfoot, tr, col, colgroup, object, embed, param, ol, ul, dl, blockquote, select, optgroup, option, textarea, script, style';
 
-		//	Don't remove these elements even if they are after the ellipsis
+		//  Don't remove these elements even if they are after the ellipsis
 		var noty = 'script, .dotdotdot-keep';
 
 		$elem
@@ -364,8 +373,8 @@
 				function()
 				{
 
-					var e	= this,
-						$e	= $(e);
+					var e = this,
+						$e  = $(e);
 
 					if ( typeof e == 'undefined' )
 					{
@@ -420,22 +429,22 @@
 			return false;
 		}
 
-		var txt			= getTextContent( e ),
-			space		= ( txt.indexOf(' ') !== -1 ) ? ' ' : '\u3000',
-			separator	= ( o.wrap == 'letter' ) ? '' : space,
-			textArr		= txt.split( separator ),
-			position 	= -1,
-			midPos		= -1,
-			startPos	= 0,
-			endPos		= textArr.length - 1;
+		var txt     = getTextContent( e ),
+			space   = ( txt.indexOf(' ') !== -1 ) ? ' ' : '\u3000',
+			separator = ( o.wrap == 'letter' ) ? '' : space,
+			textArr   = txt.split( separator ),
+			position  = -1,
+			midPos    = -1,
+			startPos  = 0,
+			endPos    = textArr.length - 1;
 
 
-		//	Only one word
+		//  Only one word
 		if ( o.fallbackToLetter && startPos == 0 && endPos == 0 )
 		{
-			separator	= '';
-			textArr		= txt.split( separator );
-			endPos		= textArr.length - 1;
+			separator = '';
+			textArr   = txt.split( separator );
+			endPos    = textArr.length - 1;
 		}
 
 		while ( startPos <= endPos && !( startPos == 0 && endPos == 0 ) )
@@ -465,15 +474,15 @@
 			{
 				endPos = midPos;
 
-				//	Fallback to letter
+				//  Fallback to letter
 				if (o.fallbackToLetter && startPos == 0 && endPos == 0 )
 				{
-					separator	= '';
-					textArr		= textArr[ 0 ].split( separator );
-					position	= -1;
-					midPos		= -1;
-					startPos	= 0;
-					endPos		= textArr.length - 1;
+					separator = '';
+					textArr   = textArr[ 0 ].split( separator );
+					position  = -1;
+					midPos    = -1;
+					startPos  = 0;
+					endPos    = textArr.length - 1;
 				}
 			}
 		}
@@ -534,7 +543,7 @@
 	function getSizes( $d )
 	{
 		return {
-			'width'	: $d.innerWidth(),
+			'width' : $d.innerWidth(),
 			'height': $d.innerHeight()
 		};
 	}
@@ -651,11 +660,11 @@
 	}
 
 
-	//	override jQuery.html
+	//  override jQuery.html
 	var _orgHtml = $.fn.html;
 	$.fn.html = function( str )
 	{
-		if ( str != undef && !$.isFunction( str ) && this.data( 'dotdotdot' ) )
+		if ( typeof str != 'undefined' && !$.isFunction( str ) && this.data( 'dotdotdot' ) )
 		{
 			return this.trigger( 'update', [ str ] );
 		}
@@ -663,11 +672,11 @@
 	};
 
 
-	//	override jQuery.text
+	//  override jQuery.text
 	var _orgText = $.fn.text;
 	$.fn.text = function( str )
 	{
-		if ( str != undef && !$.isFunction( str ) && this.data( 'dotdotdot' ) )
+		if ( typeof str != 'undefined' && !$.isFunction( str ) && this.data( 'dotdotdot' ) )
 		{
 			str = $( '<div />' ).text( str ).html();
 			return this.trigger( 'update', [ str ] );
@@ -676,4 +685,4 @@
 	};
 
 
-})( jQuery );
+});
