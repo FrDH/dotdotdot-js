@@ -11,8 +11,21 @@
  *	http://en.wikipedia.org/wiki/MIT_License
  */
 
-(function( $, undef )
-{
+;(function( factory ) {
+	'use strict';
+	if ( typeof define === 'function' && define.amd ) {
+		// AMD
+		define( ['jquery'], factory );
+	} else if ( typeof module !== 'undefined' && module.exports ) {
+		// CommonJS
+		module.exports = factory( require( 'jquery' ) );
+	} else {
+		// Global
+		factory( jQuery );
+	}
+})(function($) {
+	'use strict';
+
 	if ( $.fn.dotdotdot )
 	{
 		return;
@@ -655,7 +668,7 @@
 	var _orgHtml = $.fn.html;
 	$.fn.html = function( str )
 	{
-		if ( str != undef && !$.isFunction( str ) && this.data( 'dotdotdot' ) )
+		if ( typeof str != 'undefined' && !$.isFunction( str ) && this.data( 'dotdotdot' ) )
 		{
 			return this.trigger( 'update', [ str ] );
 		}
@@ -667,7 +680,7 @@
 	var _orgText = $.fn.text;
 	$.fn.text = function( str )
 	{
-		if ( str != undef && !$.isFunction( str ) && this.data( 'dotdotdot' ) )
+		if ( typeof str != 'undefined' && !$.isFunction( str ) && this.data( 'dotdotdot' ) )
 		{
 			str = $( '<div />' ).text( str ).html();
 			return this.trigger( 'update', [ str ] );
@@ -676,4 +689,4 @@
 	};
 
 
-})( jQuery );
+});
