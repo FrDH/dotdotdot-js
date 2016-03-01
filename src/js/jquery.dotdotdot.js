@@ -181,6 +181,7 @@
 						.end()
 						.append( orgContent )
 						.attr( 'style', $dot.data( 'dotdotdot-style' ) || '' )
+						.removeClass('is-truncated')
 						.data( 'dotdotdot', false );
 				}
 			);
