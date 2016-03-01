@@ -11,8 +11,21 @@
  *	http://en.wikipedia.org/wiki/MIT_License
  */
 
-(function( $, undef )
-{
+;(function( factory ) {
+	'use strict';
+	if ( typeof define === 'function' && define.amd ) {
+		// AMD
+		define( ['jquery'], factory );
+	} else if ( typeof module !== 'undefined' && module.exports ) {
+		// CommonJS
+		module.exports = factory( require( 'jquery' ) );
+	} else {
+		// Global
+		factory( jQuery );
+	}
+})(function($) {
+	'use strict';
+
 	if ( $.fn.dotdotdot )
 	{
 		return;
@@ -676,4 +689,4 @@
 	};
 
 
-})( jQuery );
+});
