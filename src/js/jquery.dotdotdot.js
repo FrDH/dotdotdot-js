@@ -423,7 +423,7 @@ var jQuery = jQuery || require && require('jquery');
 		}
 
 		var txt			= getTextContent( e ),
-			space		= ( txt.indexOf(' ') !== -1 ) ? ' ' : '\u3000',
+			space		= ( txt.indexOf(' ') !== -1 || txt.indexOf('\u3000') !== -1 ) ? '&nbsp;' : '\u3000',
 			separator	= ( o.wrap == 'letter' ) ? '' : space,
 			textArr		= txt.split( separator ),
 			position 	= -1,
