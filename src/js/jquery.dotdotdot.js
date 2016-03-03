@@ -1,5 +1,5 @@
 /*
- *	jQuery dotdotdot 1.7.4
+ *	jQuery dotdotdot 1.7.5
  *
  *	Copyright (c) Fred Heusschen
  *	www.frebsite.nl
@@ -677,3 +677,75 @@
 
 
 })( jQuery );
+
+/*
+
+## Automatic parsing for CSS classes
+Contributed by [Ramil Valitov](https://github.com/rvalitov)
+
+### The idea
+You can add one or several CSS classes to HTML elements to automatically invoke "jQuery.dotdotdot functionality" and some extra features. It allows to use jQuery.dotdotdot only by adding appropriate CSS classes without JS programming.
+
+### Available classes and their description
+* dot-ellipsis - automatically invoke jQuery.dotdotdot to this element. This class must be included if you plan to use other classes below.
+* dot-resize-update - automatically update if window resize event occurs. It's equivalent to option `watch:'window'`.
+* dot-timer-update - automatically update if window resize event occurs. It's equivalent to option `watch:true`.
+* dot-load-update - automatically update after the window has beem completely rendered. Can be useful if your content is generated dynamically using using JS and, hence, jQuery.dotdotdot can't correctly detect the height of the element before it's rendered completely.
+* dot-height-XXX - available height of content area in pixels, where XXX is a number, e.g. can be `dot-height-35` if you want to set maximum height for 35 pixels. It's equivalent to option `height:'XXX'`.
+
+### Usage examples
+*Adding jQuery.dotdotdot to element*
+    
+	<div class="dot-ellipsis">
+	<p>Lorem Ipsum is simply dummy text.</p>
+	</div>
+	
+*Adding jQuery.dotdotdot to element with update on window resize*
+    
+	<div class="dot-ellipsis dot-resize-update">
+	<p>Lorem Ipsum is simply dummy text.</p>
+	</div>
+	
+*Adding jQuery.dotdotdot to element with predefined height of 50px*
+    
+	<div class="dot-ellipsis dot-height-50">
+	<p>Lorem Ipsum is simply dummy text.</p>
+	</div>
+	
+*/
+
+jQuery(document).ready(function($) {
+	//We only invoke jQuery.dotdotdot on elements that have dot-ellipsis class
+	$(".dot-ellipsis").each(function(){
+		//Checking if update on window resize required
+		var watch_window=$(this).hasClass("dot-resize-update");
+		
+		//Checking if update on timer required
+		var watch_timer=$(this).hasClass("dot-timer-update");
+		
+		//Checking if height set
+		var height=0;		
+		var classList = $(this).attr('class').split(/\s+/);
+		$.each(classList, function(index, item) {
+			if (!item.match('/^dot\-height\-\d+$/')) {
+				height=Number(item.substr(item.indexOf('-',-1)+1));
+			}
+		});
+		
+		//Invoking jQuery.dotdotdot
+		var x = new Object();
+		if (watch_timer)
+			x.watch=true;
+		if (watch_window)
+			x.watch='window';
+		if (height>0)
+			x.height=height;
+		$(this).dotdotdot(x);
+	});
+		
+});
+
+//Updating elements (if any) on window.load event
+jQuery(window).load(function(){
+	jQuery(".dot-ellipsis.dot-load-update").trigger("update.dot");
+});

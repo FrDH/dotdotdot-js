@@ -1,7 +1,7 @@
 {
   "name": "jQuery.dotdotdot",
   "main": "src/js/jquery.dotdotdot.js",
-  "version": "1.7.4",
+  "version": "1.7.5",
   "homepage": "http://dotdotdot.frebsite.nl/",
   "repository": {
 +    "type": "git",
