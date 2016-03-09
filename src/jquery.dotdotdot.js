@@ -1,5 +1,5 @@
 /*
- *	jQuery dotdotdot 1.7.5
+ *	jQuery dotdotdot 1.8.0
  *
  *	Copyright (c) Fred Heusschen
  *	www.frebsite.nl
@@ -10,7 +10,6 @@
  *	Licensed under the MIT license.
  *	http://en.wikipedia.org/wiki/MIT_License
  */
-var jQuery = jQuery || require && require('jquery');
 
 (function( $, undef )
 {
@@ -182,7 +181,7 @@ var jQuery = jQuery || require && require('jquery');
 						.end()
 						.append( orgContent )
 						.attr( 'style', $dot.data( 'dotdotdot-style' ) || '' )
-						.removeClass('is-truncated')
+						.removeClass( 'is-truncated' )
 						.data( 'dotdotdot', false );
 				}
 			);
