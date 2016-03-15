@@ -11,7 +11,19 @@
  *	http://en.wikipedia.org/wiki/MIT_License
  */
 
-(function( $, undef )
+(function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define([
+			"jquery"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+} (function( $, undef )
 {
 	if ( $.fn.dotdotdot )
 	{
@@ -675,9 +687,7 @@
 		}
 		return _orgText.apply( this, arguments );
 	};
-
-
-})( jQuery );
+}));
 
 /*
 
@@ -713,26 +723,24 @@ You can add one or several CSS classes to HTML elements to automatically invoke 
 	<p>Lorem Ipsum is simply dummy text.</p>
 	</div>
 	
-*/
-
 jQuery(document).ready(function($) {
 	//We only invoke jQuery.dotdotdot on elements that have dot-ellipsis class
 	$(".dot-ellipsis").each(function(){
 		//Checking if update on window resize required
 		var watch_window=$(this).hasClass("dot-resize-update");
-		
+
 		//Checking if update on timer required
 		var watch_timer=$(this).hasClass("dot-timer-update");
-		
+
 		//Checking if height set
-		var height=0;		
+		var height=0;
 		var classList = $(this).attr('class').split(/\s+/);
 		$.each(classList, function(index, item) {
 			if (!item.match('/^dot\-height\-\d+$/')) {
 				height=Number(item.substr(item.indexOf('-',-1)+1));
 			}
 		});
-		
+
 		//Invoking jQuery.dotdotdot
 		var x = new Object();
 		if (watch_timer)
@@ -743,10 +751,11 @@ jQuery(document).ready(function($) {
 			x.height=height;
 		$(this).dotdotdot(x);
 	});
-		
+
 });
 
 //Updating elements (if any) on window.load event
 jQuery(window).load(function(){
 	jQuery(".dot-ellipsis.dot-load-update").trigger("update.dot");
 });
+*/
