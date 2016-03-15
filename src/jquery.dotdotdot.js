@@ -82,7 +82,7 @@
 					{
 						if ( typeof c == 'string' || ('nodeType' in c && c.nodeType === 1) )
 						{
-					 		c = $('<div />').append( c ).contents();
+							c = $('<div />').append( c ).contents();
 						}
 						if ( c instanceof $ )
 						{
@@ -112,7 +112,7 @@
 					if ( conf.afterElement )
 					{
 						after = conf.afterElement.clone( true );
-					    after.show();
+						after.show();
 						conf.afterElement.detach();
 					}
 
@@ -236,7 +236,7 @@
 						{
 							var watchNew = getSizes( $dot );
 							if ( watchOrg.width  != watchNew.width ||
-								 watchOrg.height != watchNew.height )
+								watchOrg.height != watchNew.height )
 							{
 								$dot.trigger( 'update.dot' );
 								watchOrg = watchNew;
@@ -362,53 +362,53 @@
 			.contents()
 			.detach()
 			.each(
-				function()
+			function()
+			{
+
+				var e	= this,
+					$e	= $(e);
+
+				if ( typeof e == 'undefined' )
 				{
-
-					var e	= this,
-						$e	= $(e);
-
-					if ( typeof e == 'undefined' )
+					return true;
+				}
+				else if ( $e.is( noty ) )
+				{
+					$elem.append( $e );
+				}
+				else if ( isTruncated )
+				{
+					return true;
+				}
+				else
+				{
+					$elem.append( $e );
+					if ( after && !$e.is( o.after ) && !$e.find( o.after ).length  )
 					{
-						return true;
+						$elem[ $elem.is( notx ) ? 'after' : 'append' ]( after );
 					}
-					else if ( $e.is( noty ) )
+					if ( test( $i, o ) )
 					{
-						$elem.append( $e );
-					}
-					else if ( isTruncated )
-					{
-						return true;
-					}
-					else
-					{
-						$elem.append( $e );
-						if ( after && !$e.is( o.after ) && !$e.find( o.after ).length  )
+						if ( e.nodeType == 3 ) // node is TEXT
 						{
-							$elem[ $elem.is( notx ) ? 'after' : 'append' ]( after );
+							isTruncated = ellipsisElement( $e, $d, $i, o, after );
 						}
-						if ( test( $i, o ) )
+						else
 						{
-							if ( e.nodeType == 3 ) // node is TEXT
-							{
-								isTruncated = ellipsisElement( $e, $d, $i, o, after );
-							}
-							else
-							{
-								isTruncated = ellipsis( $e, $d, $i, o, after );
-							}
+							isTruncated = ellipsis( $e, $d, $i, o, after );
 						}
+					}
 
-						if ( !isTruncated )
+					if ( !isTruncated )
+					{
+						if ( after )
 						{
-							if ( after )
-							{
-								after.detach();
-							}
+							after.detach();
 						}
 					}
 				}
-			);
+			}
+		);
 		$d.addClass("is-truncated");
 		return isTruncated;
 	}
@@ -451,11 +451,11 @@
 			setTextContent( e, textArr.slice( 0, midPos + 1 ).join( separator ) + o.ellipsis );
 			$i.children()
 				.each(
-					function()
-					{
-						$(this).toggle().toggle();
-					}
-				);
+				function()
+				{
+					$(this).toggle().toggle();
+				}
+			);
 
 			if ( !test( $i, o ) )
 			{
@@ -681,58 +681,56 @@
 
 /*
 
-## Automatic parsing for CSS classes
-Contributed by [Ramil Valitov](https://github.com/rvalitov)
+ ## Automatic parsing for CSS classes
+ Contributed by [Ramil Valitov](https://github.com/rvalitov)
 
-### The idea
-You can add one or several CSS classes to HTML elements to automatically invoke "jQuery.dotdotdot functionality" and some extra features. It allows to use jQuery.dotdotdot only by adding appropriate CSS classes without JS programming.
+ ### The idea
+ You can add one or several CSS classes to HTML elements to automatically invoke "jQuery.dotdotdot functionality" and some extra features. It allows to use jQuery.dotdotdot only by adding appropriate CSS classes without JS programming.
 
-### Available classes and their description
-* dot-ellipsis - automatically invoke jQuery.dotdotdot to this element. This class must be included if you plan to use other classes below.
-* dot-resize-update - automatically update if window resize event occurs. It's equivalent to option `watch:'window'`.
-* dot-timer-update - automatically update if window resize event occurs. It's equivalent to option `watch:true`.
-* dot-load-update - automatically update after the window has beem completely rendered. Can be useful if your content is generated dynamically using using JS and, hence, jQuery.dotdotdot can't correctly detect the height of the element before it's rendered completely.
-* dot-height-XXX - available height of content area in pixels, where XXX is a number, e.g. can be `dot-height-35` if you want to set maximum height for 35 pixels. It's equivalent to option `height:'XXX'`.
+ ### Available classes and their description
+ * dot-ellipsis - automatically invoke jQuery.dotdotdot to this element. This class must be included if you plan to use other classes below.
+ * dot-resize-update - automatically update if window resize event occurs. It's equivalent to option `watch:'window'`.
+ * dot-timer-update - automatically update if window resize event occurs. It's equivalent to option `watch:true`.
+ * dot-load-update - automatically update after the window has beem completely rendered. Can be useful if your content is generated dynamically using using JS and, hence, jQuery.dotdotdot can't correctly detect the height of the element before it's rendered completely.
+ * dot-height-XXX - available height of content area in pixels, where XXX is a number, e.g. can be `dot-height-35` if you want to set maximum height for 35 pixels. It's equivalent to option `height:'XXX'`.
 
-### Usage examples
-*Adding jQuery.dotdotdot to element*
-    
-	<div class="dot-ellipsis">
-	<p>Lorem Ipsum is simply dummy text.</p>
-	</div>
-	
-*Adding jQuery.dotdotdot to element with update on window resize*
-    
-	<div class="dot-ellipsis dot-resize-update">
-	<p>Lorem Ipsum is simply dummy text.</p>
-	</div>
-	
-*Adding jQuery.dotdotdot to element with predefined height of 50px*
-    
-	<div class="dot-ellipsis dot-height-50">
-	<p>Lorem Ipsum is simply dummy text.</p>
-	</div>
-	
-*/
+ ### Usage examples
+ *Adding jQuery.dotdotdot to element*
+
+ <div class="dot-ellipsis">
+ <p>Lorem Ipsum is simply dummy text.</p>
+ </div>
+
+ *Adding jQuery.dotdotdot to element with update on window resize*
+
+ <div class="dot-ellipsis dot-resize-update">
+ <p>Lorem Ipsum is simply dummy text.</p>
+ </div>
+
+ *Adding jQuery.dotdotdot to element with predefined height of 50px*
+
+ <div class="dot-ellipsis dot-height-50">
+ <p>Lorem Ipsum is simply dummy text.</p>
+ </div>
 
 jQuery(document).ready(function($) {
 	//We only invoke jQuery.dotdotdot on elements that have dot-ellipsis class
 	$(".dot-ellipsis").each(function(){
 		//Checking if update on window resize required
 		var watch_window=$(this).hasClass("dot-resize-update");
-		
+
 		//Checking if update on timer required
 		var watch_timer=$(this).hasClass("dot-timer-update");
-		
+
 		//Checking if height set
-		var height=0;		
+		var height=0;
 		var classList = $(this).attr('class').split(/\s+/);
 		$.each(classList, function(index, item) {
 			if (!item.match('/^dot\-height\-\d+$/')) {
 				height=Number(item.substr(item.indexOf('-',-1)+1));
 			}
 		});
-		
+
 		//Invoking jQuery.dotdotdot
 		var x = new Object();
 		if (watch_timer)
@@ -743,10 +741,11 @@ jQuery(document).ready(function($) {
 			x.height=height;
 		$(this).dotdotdot(x);
 	});
-		
+
 });
 
 //Updating elements (if any) on window.load event
 jQuery(window).load(function(){
 	jQuery(".dot-ellipsis.dot-load-update").trigger("update.dot");
 });
+*/
