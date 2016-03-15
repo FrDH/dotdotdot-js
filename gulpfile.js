@@ -30,7 +30,7 @@ gulp.task( 'js', function() {
 		.pipe( rename({ suffix: '.min' }) )
 		.pipe( gulp.dest( 'src' ) )
 		.pipe( umd({
-			dependencies: function() { return [ 'jQuery' ]; },
+			dependencies: function() { return [ 'jquery' ]; },
 			exports: function() { return true; },
 			namespace: sanitizeNamespaceForUmd
 		}))

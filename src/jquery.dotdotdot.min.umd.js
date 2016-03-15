@@ -1,12 +1,12 @@
 ;(function(root, factory) {
   if (typeof define === 'function' && define.amd) {
-    define(['jQuery'], factory);
+    define(['jquery'], factory);
   } else if (typeof exports === 'object') {
-    module.exports = factory(require('jQuery'));
+    module.exports = factory(require('jquery'));
   } else {
-    root.jquery_dotdotdot_min_js = factory(root.jQuery);
+    root.jquery_dotdotdot_min_js = factory(root.jquery);
   }
-}(this, function(jQuery) {
+}(this, function(jquery) {
 /*
  *	jQuery dotdotdot 1.8.0
  *
