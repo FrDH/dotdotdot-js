@@ -728,9 +728,9 @@ jQuery(document).ready(function($) {
 		var height=0;		
 		var classList = $(this).attr('class').split(/\s+/);
 		$.each(classList, function(index, item) {
-			if (!item.match('/^dot\-height\-\d+$/')) {
-				height=Number(item.substr(item.indexOf('-',-1)+1));
-			}
+			var matchResult = item.match(/^dot-height-(\d+)$/);
+			if(matchResult !== null)
+				height = Number(matchResult[1]);
 		});
 		
 		//Invoking jQuery.dotdotdot
