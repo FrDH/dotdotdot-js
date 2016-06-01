@@ -33,7 +33,7 @@ Available classes and their description:
 * dot-ellipsis - automatically invoke jQuery.dotdotdot to this element. This class must be included if you plan to use other classes below.
 * dot-resize-update - automatically update if window resize event occurs. It's equivalent to option `watch:'window'`.
 * dot-timer-update - automatically update if window resize event occurs. It's equivalent to option `watch:true`.
-* dot-load-update - automatically update after the window has beem completely rendered. Can be useful if your content is generated dynamically using using JS and, hence, jQuery.dotdotdot can't correctly detect the height of the element before it's rendered completely.
+* dot-load-update - automatically update after the window has beem completely rendered. Can be useful if your content is generated dynamically using JS and, hence, jQuery.dotdotdot can't correctly detect the height of the element before it's rendered completely.
 * dot-height-XXX - available height of content area in pixels, where XXX is a number, e.g. can be `dot-height-35` if you want to set maximum height for 35 pixels. It's equivalent to option `height:'XXX'`.
 
 *Examples*
