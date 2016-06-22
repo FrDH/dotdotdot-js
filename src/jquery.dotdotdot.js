@@ -747,6 +747,6 @@ jQuery(document).ready(function($) {
 });
 
 //Updating elements (if any) on window.load event
-jQuery(window).load(function(){
+jQuery(window).on('load', function(){
 	jQuery(".dot-ellipsis.dot-load-update").trigger("update.dot");
 });
