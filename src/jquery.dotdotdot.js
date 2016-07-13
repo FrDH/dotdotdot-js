@@ -509,7 +509,14 @@
 				setTextContent( e, txt );
 				if ( afterLength && after )
 				{
+					var $parent = after.parent();
+
 					$(e).parent().append( after );
+
+					if ( !$.trim( $parent.html() ) )
+					{
+						$parent.remove();
+					}
 				}
 			}
 		}
