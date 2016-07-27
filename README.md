@@ -24,7 +24,35 @@ Include all necessary .js-files inside the head-tag of the page.
 </head>
 ```
 
-Then you can use either CSS or JS approach or use them both.
+### How it finds and activates
+
+By default the script run on the page is:
+
+```javascript
+$.fn.dotdotdot.maker();
+```
+
+On creating new elements on the page such as Modals, Panels etc you can actually call a dot-ellipsis search on a jQuery object directly
+
+```javascript
+$Modal.dotdotdot.maker();
+//or
+$('#navBar').dotdotdot.maker();
+```
+
+Important, only for the data attribute option.  You can also globally override any data attributes within a jQuery object for extra control with:
+
+```javascript
+$('.element').dotdotdot.maker({
+    watch: false,
+    ellipsis: "<<< "
+    // and any other params
+});
+```
+
+
+
+Then you can use either CSS, Data Attribute or JS approach or use them both.
 
 ### CSS approach
 You can add one or several CSS classes to HTML elements to automatically invoke "jQuery.dotdotdot functionality" and some extra features. It allows to use jQuery.dotdotdot only by adding appropriate CSS classes without JS programming.

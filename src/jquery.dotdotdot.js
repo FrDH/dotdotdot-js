@@ -311,6 +311,48 @@
 			'noEllipsis'		: []
 		}
 	};
+	$.fn.dotdotdot.maker = function(data) {
+
+		// CSS Version
+		// Invoke jQuery.dotdotdot on elements that have dot-ellipsis class
+		// or within the scope of a jquery object 'this' or passed string/jQuery object 'element'
+		$(this || 'body').find('.dot-ellipsis').each(function(){
+			// Checking if update on window resize required
+			var watch_window = $(this).hasClass("dot-resize-update");
+
+			// Checking if update on timer required
+			var watch_timer = $(this).hasClass("dot-timer-update");
+
+			// Checking if height set
+			var height = 0;
+			var classList = $(this).attr('class').split(/\s+/);
+			$.each(classList, function(index, item) {
+				var matchResult = item.match(/^dot-height-(\d+)$/);
+				if(matchResult !== null)
+					height = Number(matchResult[1]);
+			});
+
+			// Invoking jQuery.dotdotdot
+			var x = new Object();
+			if (watch_timer)
+				x.watch=true;
+			if (watch_window)
+				x.watch='window';
+			if (height>0)
+				x.height=height;
+			$(this).dotdotdot(x);
+		});
+
+		// DATA Attribute Version
+		// Invoke jQuery.dotdotdot on elements that have data-dot-ellipsis attribute
+		// or within the scope of a jquery object 'this' or passed string/jQuery object 'element'
+		$(this || 'body').find('[data-dot-ellipsis]').each(function(){
+			$(this).dotdotdot($.extend({},
+				$(this).data('dot-ellipsis'),
+				data
+			));
+		});
+	};
 	$.fn.dotdotdot.debug = function( msg ) {};
 
 
@@ -719,41 +761,27 @@ You can add one or several CSS classes to HTML elements to automatically invoke 
 	<div class="dot-ellipsis dot-height-50">
 	<p>Lorem Ipsum is simply dummy text.</p>
 	</div>
-	
+
+
+## Automatic parsing for Data Attributes
+Contributed by [eyeamaman](https://github.com/eyeamaman)
+
+### Usage examples
+	*Adding jQuery.dotdotdot to element data attribute*
+
+	<div data-dot-ellipsis>
+		<p>Lorem Ipsum is simply dummy text.</p>
+	</div>
+
+	*Adding jQuery.dotdotdot to element data attribute*
+
+	<div data-dot-ellipsis='{"watch": false, "ellipsis": "<<< "}'>
+		<p>Lorem Ipsum is simply dummy text.</p>
+	</div>
 */
 
 jQuery(document).ready(function($) {
-	//We only invoke jQuery.dotdotdot on elements that have dot-ellipsis class
-	$(".dot-ellipsis").each(function(){
-		//Checking if update on window resize required
-		var watch_window=$(this).hasClass("dot-resize-update");
-		
-		//Checking if update on timer required
-		var watch_timer=$(this).hasClass("dot-timer-update");
-		
-		//Checking if height set
-		var height=0;		
-		var classList = $(this).attr('class').split(/\s+/);
-		$.each(classList, function(index, item) {
-			var matchResult = item.match(/^dot-height-(\d+)$/);
-			if(matchResult !== null)
-				height = Number(matchResult[1]);
-		});
-		
-		//Invoking jQuery.dotdotdot
-		var x = new Object();
-		if (watch_timer)
-			x.watch=true;
-		if (watch_window)
-			x.watch='window';
-		if (height>0)
-			x.height=height;
-		$(this).dotdotdot(x);
-	});
-
-	$('[data-dot-ellipsis]').each(function(){
-		$(this).dotdotdot($.extend({}, $(this).data('dot-ellipsis')));
-	});
+	$.fn.dotdotdot.maker();
 });
 
 //Updating elements (if any) on window.load event
