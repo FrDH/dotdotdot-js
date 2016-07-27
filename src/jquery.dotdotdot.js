@@ -750,7 +750,10 @@ jQuery(document).ready(function($) {
 			x.height=height;
 		$(this).dotdotdot(x);
 	});
-		
+
+	$('[data-dot-ellipsis]').each(function(){
+		$(this).dotdotdot($.extend({}, $(this).data('dot-ellipsis')));
+	});
 });
 
 //Updating elements (if any) on window.load event

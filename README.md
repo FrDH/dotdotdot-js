@@ -45,7 +45,7 @@ Adding jQuery.dotdotdot to element:
 	<p>Lorem Ipsum is simply dummy text.</p>
 </div>
 ```
-	
+
 Adding jQuery.dotdotdot to element with update on window resize:
     
 ```html
@@ -61,6 +61,26 @@ Adding jQuery.dotdotdot to element with predefined height of 50px:
 	<p>Lorem Ipsum is simply dummy text.</p>
 </div>
 ```
+
+## Element attribute approach
+For if you prefer to apply control on the dom element whilst keeping your styling classes separate.
+
+Adding jQuery.dotdotdot default to element:
+
+```html
+<div data-dot-ellipsis>
+	<p>Lorem Ipsum is simply dummy text.</p>
+</div>
+```
+
+Adding jQuery.dotdotdot to element as data attribute with example parameters:
+
+```html
+<div data-dot-ellipsis='{"watch": false, "ellipsis": "<<< "}'>
+	<p>Lorem Ipsum is simply dummy text.</p>
+</div>
+```
+
 
 ## Javascript approach
 Create a DOM element and put some text and other HTML markup in this "wrapper".
