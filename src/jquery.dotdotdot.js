@@ -34,6 +34,14 @@
 				}
 			);
 		}
+		// this should always be a jQuery object at this point.
+		// Somehow the #document is sent through as well which makes no sense.
+		// This gets around it by not running the script.
+		if ( !(this instanceof $) )
+		{
+			//console.log('Not a jQuery instance');
+			return this;
+		}
 
 
 		var $dot = this;
