@@ -301,6 +301,8 @@
 
 
 	//	public
+	$.fn.dotdotdot.cssActive = true;
+	$.fn.dotdotdot.dataAttributeActive = true;
 	$.fn.dotdotdot.defaults = {
 		'ellipsis'			: '... ',
 		'wrap'				: 'word',
@@ -324,42 +326,48 @@
 		// CSS Version
 		// Invoke jQuery.dotdotdot on elements that have dot-ellipsis class
 		// or within the scope of a jquery object 'this' or passed string/jQuery object 'element'
-		$(this || 'body').find('.dot-ellipsis').each(function(){
-			// Checking if update on window resize required
-			var watch_window = $(this).hasClass("dot-resize-update");
+		if($.fn.dotdotdot.cssActive)
+		{
+			$(this || 'body').find('.dot-ellipsis').each(function(){
+				// Checking if update on window resize required
+				var watch_window = $(this).hasClass("dot-resize-update");
 
-			// Checking if update on timer required
-			var watch_timer = $(this).hasClass("dot-timer-update");
+				// Checking if update on timer required
+				var watch_timer = $(this).hasClass("dot-timer-update");
 
-			// Checking if height set
-			var height = 0;
-			var classList = $(this).attr('class').split(/\s+/);
-			$.each(classList, function(index, item) {
-				var matchResult = item.match(/^dot-height-(\d+)$/);
-				if(matchResult !== null)
-					height = Number(matchResult[1]);
+				// Checking if height set
+				var height = 0;
+				var classList = $(this).attr('class').split(/\s+/);
+				$.each(classList, function(index, item) {
+					var matchResult = item.match(/^dot-height-(\d+)$/);
+					if(matchResult !== null)
+						height = Number(matchResult[1]);
+				});
+
+				// Invoking jQuery.dotdotdot
+				var x = new Object();
+				if (watch_timer)
+					x.watch=true;
+				if (watch_window)
+					x.watch='window';
+				if (height>0)
+					x.height=height;
+				$(this).dotdotdot(x);
 			});
-
-			// Invoking jQuery.dotdotdot
-			var x = new Object();
-			if (watch_timer)
-				x.watch=true;
-			if (watch_window)
-				x.watch='window';
-			if (height>0)
-				x.height=height;
-			$(this).dotdotdot(x);
-		});
+		}
 
 		// DATA Attribute Version
 		// Invoke jQuery.dotdotdot on elements that have data-dot-ellipsis attribute
 		// or within the scope of a jquery object 'this' or passed string/jQuery object 'element'
-		$(this || 'body').find('[data-dot-ellipsis]').each(function(){
-			$(this).dotdotdot($.extend({},
-				$(this).data('dot-ellipsis'),
-				data
-			));
-		});
+		if($.fn.dotdotdot.dataAttributeActive)
+		{
+			$(this || 'body').find('[data-dot-ellipsis]').each(function(){
+				$(this).dotdotdot($.extend({},
+					$(this).data('dot-ellipsis'),
+					data
+				));
+			});
+		}
 	};
 	$.fn.dotdotdot.debug = function( msg ) {};
 
