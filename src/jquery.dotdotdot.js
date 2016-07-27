@@ -18,32 +18,7 @@
 		return;
 	}
 
-	$.fn.dotdotdot = function( o )
-	{
-		if ( this.length == 0 )
-		{
-			$.fn.dotdotdot.debug( 'No element found for "' + this.selector + '".' );
-			return this;
-		}
-		if ( this.length > 1 )
-		{
-			return this.each(
-				function()
-				{
-					$(this).dotdotdot( o );
-				}
-			);
-		}
-		// this should always be a jQuery object at this point.
-		// Somehow the #document is sent through as well which makes no sense.
-		// This gets around it by not running the script.
-		if ( !(this instanceof $) )
-		{
-			//console.log('Not a jQuery instance');
-			return this;
-		}
-
-
+	var Dotdotdot = function( o ) {
 		var $dot = this;
 		var orgContent	= $dot.contents();
 
@@ -90,7 +65,7 @@
 					{
 						if ( typeof c == 'string' || ('nodeType' in c && c.nodeType === 1) )
 						{
-					 		c = $('<div />').append( c ).contents();
+							c = $('<div />').append( c ).contents();
 						}
 						if ( c instanceof $ )
 						{
@@ -120,7 +95,7 @@
 					if ( conf.afterElement )
 					{
 						after = conf.afterElement.clone( true );
-					    after.show();
+						after.show();
 						conf.afterElement.detach();
 					}
 
@@ -244,7 +219,7 @@
 						{
 							var watchNew = getSizes( $dot );
 							if ( watchOrg.width  != watchNew.width ||
-								 watchOrg.height != watchNew.height )
+								watchOrg.height != watchNew.height )
 							{
 								$dot.trigger( 'update.dot' );
 								watchOrg = watchNew;
@@ -300,7 +275,39 @@
 	};
 
 
+
 	//	public
+	$.fn.dotdotdot = function( o ) {
+		if ( this.length == 0 )
+		{
+			$.fn.dotdotdot.debug( 'No element found for "' + this.selector + '".' );
+			return this;
+		}
+		if ( this.length > 1 )
+		{
+			return this.each(
+				function()
+				{
+					Dotdotdot.call(this, o);
+				}
+			);
+		}
+		// this should always be a jQuery object at this point.
+		// Somehow the #document is sent through as well which makes no sense.
+		// This gets around it by not running the script.
+		if ( !(this instanceof $) )
+		{
+			//console.log('Not a jQuery instance');
+			return this;
+		}
+
+		// If this was called directly on an element with a data attribute
+		// and no object was passed through then grab the data
+		if(!o && $(this).data('dot-ellipsis')) {
+			o = $(this).data('dot-ellipsis');
+		}
+		Dotdotdot.call(this, o);
+	};
 	$.fn.dotdotdot.activateOnInit = true;
 	$.fn.dotdotdot.cssActive = true;
 	$.fn.dotdotdot.dataAttributeActive = true;
@@ -363,10 +370,16 @@
 		if($.fn.dotdotdot.dataAttributeActive)
 		{
 			$(this || 'body').find('[data-dot-ellipsis]').each(function(){
-				$(this).dotdotdot($.extend({},
+				var dotData = $.extend({},
 					$(this).data('dot-ellipsis'),
 					data
-				));
+				);
+
+				if(dotData.loadUpdate !== undefined && dotData.loadUpdate) {
+					$(this).addClass('dot-ellipsis-load-update');
+				}
+
+				$(this).dotdotdot(dotData);
 			});
 		}
 	};
@@ -806,5 +819,5 @@ jQuery(document).ready(function($) {
 
 //Updating elements (if any) on window.load event
 jQuery(window).on('load', function(){
-	jQuery(".dot-ellipsis.dot-load-update").trigger("update.dot");
+	jQuery(".dot-ellipsis.dot-load-update, .dot-ellipsis-load-update").trigger("update.dot");
 });
