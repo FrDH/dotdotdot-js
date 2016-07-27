@@ -301,6 +301,7 @@
 
 
 	//	public
+	$.fn.dotdotdot.activateOnInit = true;
 	$.fn.dotdotdot.cssActive = true;
 	$.fn.dotdotdot.dataAttributeActive = true;
 	$.fn.dotdotdot.defaults = {
@@ -797,7 +798,10 @@ Contributed by [eyeamaman](https://github.com/eyeamaman)
 */
 
 jQuery(document).ready(function($) {
-	$.fn.dotdotdot.maker();
+	if($.fn.dotdotdot.activateOnInit)
+	{
+		$.fn.dotdotdot.maker();
+	}
 });
 
 //Updating elements (if any) on window.load event
