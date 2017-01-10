@@ -185,7 +185,7 @@
                             if (watchInt) {
                                 clearInterval(watchInt);
                             }
-                        watchInt = setTimeout(
+                            watchInt = setTimeout(
                                 function() {
                                     $dot.trigger('update.dot');
                                 }, 100
