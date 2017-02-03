@@ -18,24 +18,7 @@
 		return;
 	}
 
-	$.fn.dotdotdot = function( o )
-	{
-		if ( this.length == 0 )
-		{
-			$.fn.dotdotdot.debug( 'No element found for "' + this.selector + '".' );
-			return this;
-		}
-		if ( this.length > 1 )
-		{
-			return this.each(
-				function()
-				{
-					$(this).dotdotdot( o );
-				}
-			);
-		}
-
-
+	var Dotdotdot = function( o ) {
 		var $dot = this;
 		var orgContent	= $dot.contents();
 
@@ -82,7 +65,7 @@
 					{
 						if ( typeof c == 'string' || ('nodeType' in c && c.nodeType === 1) )
 						{
-					 		c = $('<div />').append( c ).contents();
+							c = $('<div />').append( c ).contents();
 						}
 						if ( c instanceof $ )
 						{
@@ -112,7 +95,7 @@
 					if ( conf.afterElement )
 					{
 						after = conf.afterElement.clone( true );
-					    after.show();
+						after.show();
 						conf.afterElement.detach();
 					}
 
@@ -236,7 +219,7 @@
 						{
 							var watchNew = getSizes( $dot );
 							if ( watchOrg.width  != watchNew.width ||
-								 watchOrg.height != watchNew.height )
+								watchOrg.height != watchNew.height )
 							{
 								$dot.trigger( 'update.dot' );
 								watchOrg = watchNew;
@@ -292,7 +275,42 @@
 	};
 
 
+
 	//	public
+	$.fn.dotdotdot = function( o ) {
+		if ( this.length == 0 )
+		{
+			$.fn.dotdotdot.debug( 'No element found for "' + this.selector + '".' );
+			return this;
+		}
+		if ( this.length > 1 )
+		{
+			return this.each(
+				function()
+				{
+					Dotdotdot.call(this, o);
+				}
+			);
+		}
+		// this should always be a jQuery object at this point.
+		// Somehow the #document is sent through as well which makes no sense.
+		// This gets around it by not running the script.
+		if ( !(this instanceof $) )
+		{
+			//console.log('Not a jQuery instance');
+			return this;
+		}
+
+		// If this was called directly on an element with a data attribute
+		// and no object was passed through then grab the data
+		if(!o && $(this).data('dot-ellipsis')) {
+			o = $(this).data('dot-ellipsis');
+		}
+		Dotdotdot.call(this, o);
+	};
+	$.fn.dotdotdot.activateOnInit = true;
+	$.fn.dotdotdot.cssActive = true;
+	$.fn.dotdotdot.dataAttributeActive = true;
 	$.fn.dotdotdot.defaults = {
 		'ellipsis'			: '... ',
 		'wrap'				: 'word',
@@ -309,6 +327,60 @@
 		'lastCharacter'		: {
 			'remove'			: [ ' ', '\u3000', ',', ';', '.', '!', '?' ],
 			'noEllipsis'		: []
+		}
+	};
+	$.fn.dotdotdot.maker = function(data) {
+
+		// CSS Version
+		// Invoke jQuery.dotdotdot on elements that have dot-ellipsis class
+		// or within the scope of a jquery object 'this' or passed string/jQuery object 'element'
+		if($.fn.dotdotdot.cssActive)
+		{
+			$(this || 'body').find('.dot-ellipsis').each(function(){
+				// Checking if update on window resize required
+				var watch_window = $(this).hasClass("dot-resize-update");
+
+				// Checking if update on timer required
+				var watch_timer = $(this).hasClass("dot-timer-update");
+
+				// Checking if height set
+				var height = 0;
+				var classList = $(this).attr('class').split(/\s+/);
+				$.each(classList, function(index, item) {
+					var matchResult = item.match(/^dot-height-(\d+)$/);
+					if(matchResult !== null)
+						height = Number(matchResult[1]);
+				});
+
+				// Invoking jQuery.dotdotdot
+				var x = new Object();
+				if (watch_timer)
+					x.watch=true;
+				if (watch_window)
+					x.watch='window';
+				if (height>0)
+					x.height=height;
+				$(this).dotdotdot(x);
+			});
+		}
+
+		// DATA Attribute Version
+		// Invoke jQuery.dotdotdot on elements that have data-dot-ellipsis attribute
+		// or within the scope of a jquery object 'this' or passed string/jQuery object 'element'
+		if($.fn.dotdotdot.dataAttributeActive)
+		{
+			$(this || 'body').find('[data-dot-ellipsis]').each(function(){
+				var dotData = $.extend({},
+					$(this).data('dot-ellipsis'),
+					data
+				);
+
+				if(dotData.loadUpdate !== undefined && dotData.loadUpdate) {
+					$(this).addClass('dot-ellipsis-load-update');
+				}
+
+				$(this).dotdotdot(dotData);
+			});
 		}
 	};
 	$.fn.dotdotdot.debug = function( msg ) {};
@@ -719,41 +791,33 @@ You can add one or several CSS classes to HTML elements to automatically invoke 
 	<div class="dot-ellipsis dot-height-50">
 	<p>Lorem Ipsum is simply dummy text.</p>
 	</div>
-	
+
+
+## Automatic parsing for Data Attributes
+Contributed by [eyeamaman](https://github.com/eyeamaman)
+
+### Usage examples
+	*Adding jQuery.dotdotdot to element data attribute*
+
+	<div data-dot-ellipsis>
+		<p>Lorem Ipsum is simply dummy text.</p>
+	</div>
+
+	*Adding jQuery.dotdotdot to element data attribute*
+
+	<div data-dot-ellipsis='{"watch": false, "ellipsis": "<<< "}'>
+		<p>Lorem Ipsum is simply dummy text.</p>
+	</div>
 */
 
 jQuery(document).ready(function($) {
-	//We only invoke jQuery.dotdotdot on elements that have dot-ellipsis class
-	$(".dot-ellipsis").each(function(){
-		//Checking if update on window resize required
-		var watch_window=$(this).hasClass("dot-resize-update");
-		
-		//Checking if update on timer required
-		var watch_timer=$(this).hasClass("dot-timer-update");
-		
-		//Checking if height set
-		var height=0;		
-		var classList = $(this).attr('class').split(/\s+/);
-		$.each(classList, function(index, item) {
-			var matchResult = item.match(/^dot-height-(\d+)$/);
-			if(matchResult !== null)
-				height = Number(matchResult[1]);
-		});
-		
-		//Invoking jQuery.dotdotdot
-		var x = new Object();
-		if (watch_timer)
-			x.watch=true;
-		if (watch_window)
-			x.watch='window';
-		if (height>0)
-			x.height=height;
-		$(this).dotdotdot(x);
-	});
-		
+	if($.fn.dotdotdot.activateOnInit)
+	{
+		$.fn.dotdotdot.maker();
+	}
 });
 
 //Updating elements (if any) on window.load event
 jQuery(window).on('load', function(){
-	jQuery(".dot-ellipsis.dot-load-update").trigger("update.dot");
+	jQuery(".dot-ellipsis.dot-load-update, .dot-ellipsis-load-update").trigger("update.dot");
 });
