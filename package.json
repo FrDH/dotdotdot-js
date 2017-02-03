@@ -1,6 +1,6 @@
 {
-  "name": "jquery.dotdotdot",
-  "main": "src/jquery.dotdotdot.min.umd.js",
+  "name": "dotdotdot",
+  "main": "src/jquery.dotdotdot.js",
   "version": "1.8.3",
   "homepage": "http://dotdotdot.frebsite.nl/",
   "repository": {
@@ -17,5 +17,18 @@
     "text-overflow",
     "overflow",
     "dots"
-  ]
+  ],
+  "ignore": [
+    ".jshintrc",
+    "Guardfile",
+    "index.html",
+    "*.json",
+    "README.md"
+  ],
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.0.0",
+    "gulp-umd": "^0.2.0"
+  }
 }
