@@ -529,6 +529,10 @@
 	}
 	function addEllipsis( txt, o )
 	{
+		var lastIndex = txt.lastIndexOf(" ");
+		if($.inArray(txt.substring(lastIndex, txt.length), o.lastCharacter.remove)> -1 ){
+			txt = txt.substring(0, lastIndex);
+		}
 		while( $.inArray( txt.slice( -1 ), o.lastCharacter.remove ) > -1 )
 		{
 			txt = txt.slice( 0, -1 );
