@@ -616,37 +616,72 @@ You can add one or several CSS classes to HTML elements to automatically invoke 
 
 */
 
-jQuery(document).ready(function($) {
+(function($) {
+  var helpers = (function() {
+    function getWatchOption($el) {
+      var option;
+
+      //Checking if update on timer required
+      var state = $el.hasClass("dot-timer-update");
+      if (state) option = true;
+
+      //Checking if update on window resize required
+      var state = $el.hasClass("dot-resize-update");
+      if (state) option = 'window';
+
+      return option;
+    }
+
+    function getHeightOption($el) {
+      //Checking if height set
+      var height = 0;
+      var classList = $el.attr('class').split(/\s+/);
+
+      $.each(classList, function(index, item) {
+        var matchResult = item.match(/^dot-height-(\d+)$/);
+
+        if (matchResult !== null) height = Number(matchResult[1]);
+      });
+
+      if (height > 0) return height;
+    }
+
+    function initByElementClasses(el) {
+      var $el = $(el);
+
+      var options = {
+        watch: getWatchOption($el),
+        height: getHeightOption($el)
+      };
+
+      $el.dotdotdot(options);
+    }
+
+    return {
+      initByElementClasses: initByElementClasses,
+      getWatchOptionFromEl: function(el) { getWatchOption( $(el) ); },
+      getHeightOptionFromEl: function(el) { getHeightOption( $(el) ); }
+    }
+  })();
+
+  function scanForBuilds() {
     //We only invoke jQuery.dotdotdot on elements that have dot-ellipsis class
-    $(".dot-ellipsis").each(function() {
-        //Checking if update on window resize required
-        var watch_window = $(this).hasClass("dot-resize-update");
+    $(".dot-ellipsis").each(function() { helpers.initByElementClasses(this); });
+  }
 
-        //Checking if update on timer required
-        var watch_timer = $(this).hasClass("dot-timer-update");
+  function scanForUpdates() {
+    //Updating elements (if any) on window.load event
+    $(".dot-ellipsis.dot-load-update").trigger("update.dot");
+  };
 
-        //Checking if height set
-        var height = 0;
-        var classList = $(this).attr('class').split(/\s+/);
-        $.each(classList, function(index, item) {
-            var matchResult = item.match(/^dot-height-(\d+)$/);
-            if (matchResult !== null)
-                height = Number(matchResult[1]);
-        });
+  $.dotdotdot = $.dotdotdot || {};
 
-        //Invoking jQuery.dotdotdot
-        var x = {};
-        if (watch_timer)
-            x.watch = true;
-        if (watch_window)
-            x.watch = 'window';
-        if (height > 0)
-            x.height = height;
-        $(this).dotdotdot(x);
-    });
-});
+  $.dotdotdot.setupHelpers = helpers;
 
-//Updating elements (if any) on window.load event
-jQuery(window).on('load', function() {
-    jQuery(".dot-ellipsis.dot-load-update").trigger("update.dot");
-});
+  $.dotdotdot.setup = function() {
+    scanForBuilds();
+    scanForUpdates();
+  }
+})(jQuery);
+
+jQuery(window).on('load', jQuery.dotdotdot.setup);
