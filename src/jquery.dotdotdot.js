@@ -616,7 +616,7 @@ You can add one or several CSS classes to HTML elements to automatically invoke 
 
 */
 
-jQuery(function() {
+jQuery(function($) {
     //We only invoke jQuery.dotdotdot on elements that have dot-ellipsis class
     $(".dot-ellipsis").each(function() {
         //Checking if update on window resize required
