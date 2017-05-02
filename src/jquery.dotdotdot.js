@@ -252,7 +252,7 @@
 
     //	public
     $.fn.dotdotdot.defaults = {
-        'ellipsis': '... ',
+        'ellipsis': '\u2026 ',
         'wrap': 'word',
         'fallbackToLetter': true,
         'lastCharacter': {},
