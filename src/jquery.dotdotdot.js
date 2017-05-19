@@ -347,6 +347,12 @@
                     }
                 }
             );
+
+        // Ensure contents does not create new line after ellipsis
+        if ( test($i, o) ) {
+          ellipsis($i, $d, $i, o, after);
+        }
+
         $d.addClass("is-truncated");
         return isTruncated;
     }
