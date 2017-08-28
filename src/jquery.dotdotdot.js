@@ -32,11 +32,12 @@
 
         var $window = $(window);
         var $dot = this;
-        var orgContent = $dot.contents();
 
         if ($dot.data('dotdotdot')) {
             $dot.trigger('destroy.dot');
         }
+        
+        var orgContent = $dot.contents();
 
         $dot.data('dotdotdot-style', $dot.attr('style') || '');
         $dot.css('word-wrap', 'break-word');

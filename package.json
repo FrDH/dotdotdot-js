@@ -25,6 +25,9 @@
     "*.json",
     "README.md"
   ],
+  "scripts": {
+    "build": "gulp default"
+},
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-rename": "^1.2.2",
