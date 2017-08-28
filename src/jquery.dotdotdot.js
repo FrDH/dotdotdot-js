@@ -30,6 +30,7 @@
             );
         }
 
+        var $window = $(window);
         var $dot = this;
         var orgContent = $dot.contents();
 
@@ -171,16 +172,17 @@
         $dot.watch = function() {
             $dot.unwatch();
             if (opts.watch == 'window') {
-                var $window = $(window),
-                    _wWidth = $window.width(),
+                var _wWidth = $window.width(),
                     _wHeight = $window.height();
 
                 $window.bind(
                     'resize.dot' + conf.dotId,
                     function() {
-                        if (_wWidth != $window.width() || _wHeight != $window.height() || !opts.windowResizeFix) {
-                            _wWidth = $window.width();
-                            _wHeight = $window.height();
+                        var currentWwidth = $window.width();
+                        var currentWheight = $window.height();
+                        if (_wWidth != currentWwidth || _wHeight != currentWheight || !opts.windowResizeFix) {
+                            _wWidth = currentWwidth;
+                            _wHeight = currentWheight;
 
                             if (watchInt) {
                                 clearInterval(watchInt);
@@ -211,7 +213,7 @@
             return $dot;
         };
         $dot.unwatch = function() {
-            $(window).unbind('resize.dot' + conf.dotId);
+            $window.unbind('resize.dot' + conf.dotId);
             if (watchInt) {
                 clearInterval(watchInt);
             }
@@ -619,15 +621,16 @@ You can add one or several CSS classes to HTML elements to automatically invoke 
 jQuery(document).ready(function($) {
     //We only invoke jQuery.dotdotdot on elements that have dot-ellipsis class
     $(".dot-ellipsis").each(function() {
+        var $this = $(this);
         //Checking if update on window resize required
-        var watch_window = $(this).hasClass("dot-resize-update");
+        var watch_window = $this.hasClass("dot-resize-update");
 
         //Checking if update on timer required
-        var watch_timer = $(this).hasClass("dot-timer-update");
+        var watch_timer = $this.hasClass("dot-timer-update");
 
         //Checking if height set
         var height = 0;
-        var classList = $(this).attr('class').split(/\s+/);
+        var classList = $this.attr('class').split(/\s+/);
         $.each(classList, function(index, item) {
             var matchResult = item.match(/^dot-height-(\d+)$/);
             if (matchResult !== null)
@@ -642,7 +645,7 @@ jQuery(document).ready(function($) {
             x.watch = 'window';
         if (height > 0)
             x.height = height;
-        $(this).dotdotdot(x);
+        $this.dotdotdot(x);
     });
 });
 
