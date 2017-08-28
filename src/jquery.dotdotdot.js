@@ -45,7 +45,7 @@
         }
 
         $dot.bind_events = function() {
-            $dot.bind(
+            $dot.on(
                 'update.dot',
                 function(e, c) {
                     $dot.removeClass("is-truncated");
@@ -120,7 +120,7 @@
                     return trunc;
                 }
 
-            ).bind(
+            ).on(
                 'isTruncated.dot',
                 function(e, fn) {
                     e.preventDefault();
@@ -132,7 +132,7 @@
                     return conf.isTruncated;
                 }
 
-            ).bind(
+            ).on(
                 'originalContent.dot',
                 function(e, fn) {
                     e.preventDefault();
@@ -144,7 +144,7 @@
                     return orgContent;
                 }
 
-            ).bind(
+            ).on(
                 'destroy.dot',
                 function(e) {
                     e.preventDefault();
@@ -165,7 +165,7 @@
         }; //	/bind_events
 
         $dot.unbind_events = function() {
-            $dot.unbind('.dot');
+            $dot.off('.dot');
             return $dot;
         }; //	/unbind_events
 
@@ -175,7 +175,7 @@
                 var _wWidth = $window.width(),
                     _wHeight = $window.height();
 
-                $window.bind(
+                $window.on(
                     'resize.dot' + conf.dotId,
                     function() {
                         var currentWwidth = $window.width();
@@ -213,7 +213,7 @@
             return $dot;
         };
         $dot.unwatch = function() {
-            $window.unbind('resize.dot' + conf.dotId);
+            $(window).off('resize.dot' + conf.dotId);
             if (watchInt) {
                 clearInterval(watchInt);
             }
@@ -600,25 +600,25 @@ You can add one or several CSS classes to HTML elements to automatically invoke 
 ### Usage examples
 *Adding jQuery.dotdotdot to element*
 
-	<div class="dot-ellipsis">
-	<p>Lorem Ipsum is simply dummy text.</p>
-	</div>
+    <div class="dot-ellipsis">
+    <p>Lorem Ipsum is simply dummy text.</p>
+    </div>
 
 *Adding jQuery.dotdotdot to element with update on window resize*
 
-	<div class="dot-ellipsis dot-resize-update">
-	<p>Lorem Ipsum is simply dummy text.</p>
-	</div>
+    <div class="dot-ellipsis dot-resize-update">
+    <p>Lorem Ipsum is simply dummy text.</p>
+    </div>
 
 *Adding jQuery.dotdotdot to element with predefined height of 50px*
 
-	<div class="dot-ellipsis dot-height-50">
-	<p>Lorem Ipsum is simply dummy text.</p>
-	</div>
+    <div class="dot-ellipsis dot-height-50">
+    <p>Lorem Ipsum is simply dummy text.</p>
+    </div>
 
 */
 
-jQuery(document).ready(function($) {
+jQuery(function($) {
     //We only invoke jQuery.dotdotdot on elements that have dot-ellipsis class
     $(".dot-ellipsis").each(function() {
         var $this = $(this);
