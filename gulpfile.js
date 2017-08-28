@@ -1,9 +1,8 @@
-// npm install gulp-uglify gulp-rename gulp-umd --save-dev
+// npm install
 
-var gulp 			= require( 'gulp' ),
-	uglify 			= require( 'gulp-uglify' ),
-	rename 			= require( 'gulp-rename' ),
-	umd				= require( 'gulp-umd' );
+var gulp 	= require( 'gulp' ),
+	uglify 	= require( 'gulp-uglify' ),
+	umd		= require( 'gulp-umd' );
 
 
 
@@ -24,18 +23,17 @@ gulp.task( 'watch', function() {
 //	JS task 'gulp js': Runs all JS tasks
 gulp.task( 'js', function() {
 	return gulp.src( 'src/jquery.dotdotdot.js' )
-//		.pipe( jshint('.jshintrc') )
-//		.pipe( jshint.reporter( 'default' ) )
 		.pipe( uglify({ preserveComments: 'license' }) )
-		.pipe( rename({ suffix: '.min' }) )
-		.pipe( gulp.dest( 'src' ) )
 		.pipe( umd({
-			dependencies: function() { return [ 'jquery' ]; },
+			dependencies: function() { return [ {
+				name 	: 'jquery',
+				global 	: 'jQuery',
+				param 	: 'jQuery'
+			} ]; },
 			exports: function() { return true; },
 			namespace: sanitizeNamespaceForUmd
 		}))
-		.pipe( rename({ suffix: '.umd' }) )
-		.pipe( gulp.dest( 'src' ) );
+		.pipe( gulp.dest( 'dist' ) );
 });
 
 function sanitizeNamespaceForUmd( file ) {
