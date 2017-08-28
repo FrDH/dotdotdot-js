@@ -87,6 +87,7 @@
                         .end()
                         .css({
                             'height': 'auto',
+			    'max-height': 'none',
                             'width': 'auto',
                             'border': 'none',
                             'padding': 0,
