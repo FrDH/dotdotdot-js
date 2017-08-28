@@ -38,7 +38,7 @@ $(document).ready(function() {
 ```
 
 ### Author
-* [Fred Heusschen](https://github.com/FrDH) is the author of the jQuery.dotdotdot
+* [Fred Heusschen](https://github.com/FrDH)
 
 ### More info
 Please visit http://dotdotdot.frebsite.nl
