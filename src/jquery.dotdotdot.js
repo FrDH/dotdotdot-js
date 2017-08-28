@@ -30,6 +30,7 @@
             );
         }
 
+        var $window = $(window);
         var $dot = this;
 
         if ($dot.data('dotdotdot')) {
@@ -45,7 +46,7 @@
         }
 
         $dot.bind_events = function() {
-            $dot.bind(
+            $dot.on(
                 'update.dot',
                 function(e, c) {
                     $dot.removeClass("is-truncated");
@@ -120,7 +121,7 @@
                     return trunc;
                 }
 
-            ).bind(
+            ).on(
                 'isTruncated.dot',
                 function(e, fn) {
                     e.preventDefault();
@@ -132,7 +133,7 @@
                     return conf.isTruncated;
                 }
 
-            ).bind(
+            ).on(
                 'originalContent.dot',
                 function(e, fn) {
                     e.preventDefault();
@@ -144,7 +145,7 @@
                     return orgContent;
                 }
 
-            ).bind(
+            ).on(
                 'destroy.dot',
                 function(e) {
                     e.preventDefault();
@@ -165,23 +166,24 @@
         }; //	/bind_events
 
         $dot.unbind_events = function() {
-            $dot.unbind('.dot');
+            $dot.off('.dot');
             return $dot;
         }; //	/unbind_events
 
         $dot.watch = function() {
             $dot.unwatch();
             if (opts.watch == 'window') {
-                var $window = $(window),
-                    _wWidth = $window.width(),
+                var _wWidth = $window.width(),
                     _wHeight = $window.height();
 
-                $window.bind(
+                $window.on(
                     'resize.dot' + conf.dotId,
                     function() {
-                        if (_wWidth != $window.width() || _wHeight != $window.height() || !opts.windowResizeFix) {
-                            _wWidth = $window.width();
-                            _wHeight = $window.height();
+                        var currentWwidth = $window.width();
+                        var currentWheight = $window.height();
+                        if (_wWidth != currentWwidth || _wHeight != currentWheight || !opts.windowResizeFix) {
+                            _wWidth = currentWwidth;
+                            _wHeight = currentWheight;
 
                             if (watchInt) {
                                 clearInterval(watchInt);
@@ -212,7 +214,7 @@
             return $dot;
         };
         $dot.unwatch = function() {
-            $(window).unbind('resize.dot' + conf.dotId);
+            $(window).off('resize.dot' + conf.dotId);
             if (watchInt) {
                 clearInterval(watchInt);
             }
@@ -253,7 +255,7 @@
 
     //	public
     $.fn.dotdotdot.defaults = {
-        'ellipsis': '... ',
+        'ellipsis': '\u2026 ',
         'wrap': 'word',
         'fallbackToLetter': true,
         'lastCharacter': {},
@@ -348,6 +350,12 @@
                     }
                 }
             );
+
+        // Ensure contents does not create new line after ellipsis
+        if ( test($i, o) ) {
+          ellipsis($i, $d, $i, o, after);
+        }
+
         $d.addClass("is-truncated");
         return isTruncated;
     }
@@ -599,36 +607,37 @@ You can add one or several CSS classes to HTML elements to automatically invoke 
 ### Usage examples
 *Adding jQuery.dotdotdot to element*
 
-	<div class="dot-ellipsis">
-	<p>Lorem Ipsum is simply dummy text.</p>
-	</div>
+    <div class="dot-ellipsis">
+    <p>Lorem Ipsum is simply dummy text.</p>
+    </div>
 
 *Adding jQuery.dotdotdot to element with update on window resize*
 
-	<div class="dot-ellipsis dot-resize-update">
-	<p>Lorem Ipsum is simply dummy text.</p>
-	</div>
+    <div class="dot-ellipsis dot-resize-update">
+    <p>Lorem Ipsum is simply dummy text.</p>
+    </div>
 
 *Adding jQuery.dotdotdot to element with predefined height of 50px*
 
-	<div class="dot-ellipsis dot-height-50">
-	<p>Lorem Ipsum is simply dummy text.</p>
-	</div>
+    <div class="dot-ellipsis dot-height-50">
+    <p>Lorem Ipsum is simply dummy text.</p>
+    </div>
 
 */
 
-jQuery(document).ready(function($) {
+jQuery(function($) {
     //We only invoke jQuery.dotdotdot on elements that have dot-ellipsis class
     $(".dot-ellipsis").each(function() {
+        var $this = $(this);
         //Checking if update on window resize required
-        var watch_window = $(this).hasClass("dot-resize-update");
+        var watch_window = $this.hasClass("dot-resize-update");
 
         //Checking if update on timer required
-        var watch_timer = $(this).hasClass("dot-timer-update");
+        var watch_timer = $this.hasClass("dot-timer-update");
 
         //Checking if height set
         var height = 0;
-        var classList = $(this).attr('class').split(/\s+/);
+        var classList = $this.attr('class').split(/\s+/);
         $.each(classList, function(index, item) {
             var matchResult = item.match(/^dot-height-(\d+)$/);
             if (matchResult !== null)
@@ -643,7 +652,7 @@ jQuery(document).ready(function($) {
             x.watch = 'window';
         if (height > 0)
             x.height = height;
-        $(this).dotdotdot(x);
+        $this.dotdotdot(x);
     });
 });
 
