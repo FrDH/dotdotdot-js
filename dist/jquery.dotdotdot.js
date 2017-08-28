@@ -8,7 +8,7 @@
   }
 }(this, function(jQuery) {
 /*
- *	jQuery dotdotdot 2.0.0
+ *	jQuery dotdotdot 2.0.1
  *
  *	Copyright (c) Fred Heusschen
  *	www.frebsite.nl
