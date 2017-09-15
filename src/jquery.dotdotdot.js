@@ -1,5 +1,5 @@
 /*
- *	jQuery dotdotdot 3.0.0
+ *	jQuery dotdotdot 3.0.1
  *	@requires jQuery 1.7.0 or later
  *
  *	dotdotdot.frebsite.nl
@@ -15,7 +15,7 @@
 	'use strict';
 	
 	var _PLUGIN_    = 'dotdotdot';
-	var _VERSION_   = '3.0.0';
+	var _VERSION_   = '3.0.1';
 
 	if ( $[ _PLUGIN_ ] && $[ _PLUGIN_ ].version > _VERSION_ )
 	{
