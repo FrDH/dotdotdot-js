@@ -1,6 +1,6 @@
 {
 	"name"			: "jquery.dotdotdot",
-	"version"		: "2.0.1",
+	"version"		: "3.0.0",
 	"main"			: "dist/jquery.dotdotdot.js",
 	"author"		: "Fred Heusschen <info@frebsite.nl>",
 	"license"		: "CC-BY-NC-4.0",
