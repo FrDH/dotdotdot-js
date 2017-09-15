@@ -2,69 +2,10 @@
 <html>
 
 <head>
-	<meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
+	<meta charset="utf-8" />
 	<meta name="author" content="www.frebsite.nl" />
 
-	<title>dotdotdot, advanced cross-browser ellipsis for multiple line content.</title>
-
-	<script type="text/javascript" src="http://code.jquery.com/jquery-3.2.1.js"></script>
-	<script type="text/javascript" language="javascript" src="src/jquery.dotdotdot.js"></script>
-	<script type="text/javascript" language="javascript">
-		$(function() {
-
-			$('#dot').dotdotdot({
-				after: 'a.read-more',
-				watch: 'window'
-			});
-
-
-
-			var $toggle = $('#toggle');
-
-			function createDots() {
-				$toggle.dotdotdot({
-					after: 'a.toggle',
-					watch: 'window'
-				});
-			}
-
-			function destroyDots() {
-				$toggle.trigger('destroy');
-			}
-			createDots();
-
-			$toggle.on(
-				'click',
-				'a.toggle',
-				function() {
-					$toggle.toggleClass('opened');
-
-					if ($toggle.hasClass('opened')) {
-						destroyDots();
-					} else {
-						createDots();
-					}
-					return false;
-				}
-			);
-
-			$('.pathname').each(function() {
-				var path = $(this).html().split('/');
-				if (path.length > 1) {
-					var name = path.pop();
-					$(this).html(path.join('/') + '<span class="filename">/' + name + '</span>');
-					$(this).dotdotdot({
-						watch: 'window',
-						after: '.filename',
-						wrap: 'letter'
-					});
-				}
-			});
-
-			$('#dot7').dotdotdot({maxLength:5});
-
-		});
-	</script>
+	<title>dotdotdot, jQuery plugin for multiple line content ellipsis.</title>
 	<style type="text/css" media="all">
 		html,
 		body {
@@ -77,50 +18,39 @@
 			font-family: Arial, Helvetica, Verdana;
 			line-height: 20px;
 			color: #333;
+			padding: 50px;
 		}
+
+		p {
+			margin: 10px 0;
+		}
+
 
 		a {
 			color: inherit;
 			text-decoration: underline;
 		}
 
-		#wrapper {
+		.wrapper {
+			box-sizing: border-box;
 			width: 80%;
 			max-width: 600px;
-			padding: 20px;
+			min-width: 220px;
 			margin: 0 auto;
 		}
 
 		div.example {
-			box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+			box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
 			background-color: #fff;
-			padding: 10px 25px;
-			/* 				overflow: hidden; */
+			font-size: 20px;
+			line-height: 30px;
+			padding: 25px 50px;
+			margin: 0 -50px;
+			overflow: hidden;
 		}
 		div.example > div
 		{
-			height: 200px;
-		}
-
-		div.example > div.opened {
-			height: auto;
-		}
-
-		div.example > div .toggle .close,
-		div.example > div.opened .toggle .open {
-			display: none;
-		}
-
-		div.example > div .toggle .opened,
-		div.example > div.opened .toggle .close {
-			display: inline;
-		}
-		
-		#pathname {
-			height: auto;
-		}
-		.pathname {
-			height: 25px;
+			max-height: 250px;
 		}
 	</style>
 </head>
@@ -128,8 +58,8 @@
 <body>
 	<br />
 	<br />
-	<div id="wrapper">
-		<div id="intro">
+	<div class="wrapper">
+		<div>
 			<h1>jQuery.dotdotdot</h1>
 			<p>Advanced cross-browser ellipsis for multiple line content.<br />
 				Resize your browser to see the examples below in action.</p>
@@ -140,39 +70,34 @@
 		<br />
 
 		<div class="example">
-			<div id="dot">
-				<p><em>Lorem Ipsum</em> is simply dummy text of the <strong>printing</strong> and <strong>typesetting industry</strong>.</p>
-				<p><em>Lorem Ipsum</em> has been the industry's standard dummy text ever since <strong>the 1500s</strong>, when an unknown printer took a <em>galley of type</em> and scrambled it to make a type specimen book.</p>
-				<p>It has survived not only <strong>five centuries</strong>, but also the leap into <strong>electronic typesetting</strong>.</p>
-				<a href="#/" class="read-more">Read more &raquo;</a>
-			</div>
-		</div>
-
-		<br />
-		<br />
-
-		<div class="example">
-			<div id="toggle">
-				<p><em>Lorem Ipsum</em> is simply dummy text of the <strong>printing</strong> and <strong>typesetting industry</strong>.</p>
-				<p><em>Lorem Ipsum</em> has been the industry's standard dummy text ever since <strong>the 1500s</strong>, when an unknown printer took a <em>galley of type</em> and scrambled it to make a type specimen book.</p>
-				<p>It has survived not only <strong>five centuries</strong>, but also the leap into <strong>electronic typesetting</strong>.</p>
-				<a class="toggle" href="#"><span class="open">[ + ]</span><span class="close">[ - ]</span></a>
-			</div>
-		</div>
-
-		<br />
-		<br />
-
-		<div class="example">
-			<div id="pathname">
-				<div class="pathname">www.website.com/file.html</div>
-				<div class="pathname">www.website.com/with/a/long/pathname/file.html</div>
+			<div class="dot">
+				<p><em>Lorem Ipsum</em> has been the industry's standard dummy text ever <strong>since the 1500s</strong>, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p> 		
+				<p><em>Lorem Ipsum</em> has survived not only <strong>five centuries</strong>, but also the leap into electronic typesetting, remaining essentially unchanged.
+					<a href="#/" class="read-more">Read more &raquo;</a></p>
 			</div>
 		</div>
 
 	</div>
-	<br />
-	<br />
+
+
+	<script type="text/javascript" src="http://code.jquery.com/jquery-3.2.1.js"></script>
+	<script type="text/javascript" src="dist/jquery.dotdotdot.js"></script>
+	<script type="text/javascript">
+		$(function() {
+
+			$('.dot').dotdotdot({
+				keep: 'a.read-more'
+			});
+
+
+			//	For the demo
+			$('a[href^="#/"]').click(function( e ) {
+				alert( 'Thank you for clicking, but that\'s a demo link.' );
+				return;
+			});
+
+		});
+	</script>
 </body>
 
 </html>

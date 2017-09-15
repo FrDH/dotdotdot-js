@@ -1,48 +1,25 @@
 jQuery.dotdotdot
 ================
 
-A jQuery plugin for advanced cross-browser ellipsis on multiple line content.<br />
-Demo's and documentation: http://dotdotdot.frebsite.nl
+Dotdotdot is a jQuery plugin for truncating multiple line content on a webpage. 
+It uses an ellipsis to indicate that there is more text than currently visible. 
+Optionally, the plugin can keep a "read more" anchor visible at the end of the content, after the ellipsis.
 
+When using the jQuery.dotdotdot plugin, you don't need to worry about your HTML markup, the plugin knows its way around most elements. 
+It's responsive, so when resizing the browser, the ellipsis will update on the fly.
 
-<img src="http://dotdotdot.frebsite.nl/img/preview.png" width="100%" border="0" />
+Need help? Have a look at [the documentation](http://dotdotdot.frebsite.nl).
 
-
-## How to use the plugin
-
-Include all necessary .js-files inside the head-tag of the page.
-
-```html
-<head>
-    <script src="jquery.js" type="text/javascript"></script>
-    <script src="jquery.dotdotdot.js" type="text/javascript"></script>
-</head>
-```
-
-Create a DOM element and put some text and other HTML markup in this "wrapper".
-
-```html
-<div id="wrapper">
-    <p>Lorem Ipsum is simply dummy text.</p>
-</div>
-```
-
-Fire the plugin onDocumentReady using the wrapper-selector.
-
-```javascript
-$(document).ready(function() {
-    $("#wrapper").dotdotdot({
-        // configuration goes here
-    });
-});
-```
-
-### Author
-* [Fred Heusschen](https://github.com/FrDH)
-
-### More info
-Please visit http://dotdotdot.frebsite.nl
+<img src="http://dotdotdot.frebsite.nl/preview.png" width="100%" border="0" />
 
 ### Licence
-The jQuery.dotdotdot plugin is licensed under the MIT license:
-http://en.wikipedia.org/wiki/MIT_License
+The jQuery.dotdotdot plugin is licensed under the [CC-BY-NC-4.0 license](http://creativecommons.org/licenses/by-nc/4.0/).<br />
+You can [purchase a license](http://dotdotdot.frebsite.nl#download) if you want to use it in a commercial project.
+
+### Dependencies
++ jQuery 1.7 or higher
+
+### Development
+This project uses [Gulp](http://gulpjs.com/) to minify the JS file.
+If you are unfamiliar with Gulp, check [this tutorial](https://travismaynard.com/writing/getting-started-with-gulp) on how to get started.<br />
+Run `gulp watch` in the command-line to put a watch on the files and run all scripts immediately after saving your changes.

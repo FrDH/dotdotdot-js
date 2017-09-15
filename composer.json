@@ -1,7 +1,6 @@
 {
 	"name"			: "jQuery.dotdotdot",
 	"version"		: "3.0.0",
-	"main"			: "dist/jquery.dotdotdot.js",
 	"authors"		: "Fred Heusschen <info@frebsite.nl>",
 	"license"		: "CC-BY-NC-4.0",
 	"description"	: "Dotdotdot is an advanced jQuery plugin for truncating multiple line content with an ellipsis.",
@@ -15,8 +14,5 @@
 		"text-overflow",
 		"overflow",
 		"dots"
-	],
-	"dependencies"	: {
-		"jquery": ">= 1.7.0"
-	}
+	]
 }
