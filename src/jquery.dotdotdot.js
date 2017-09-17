@@ -1,5 +1,5 @@
 /*
- *	jQuery dotdotdot 3.0.1
+ *	jQuery dotdotdot 3.0.2
  *	@requires jQuery 1.7.0 or later
  *
  *	dotdotdot.frebsite.nl
@@ -15,7 +15,7 @@
 	'use strict';
 	
 	var _PLUGIN_    = 'dotdotdot';
-	var _VERSION_   = '3.0.1';
+	var _VERSION_   = '3.0.2';
 
 	if ( $[ _PLUGIN_ ] && $[ _PLUGIN_ ].version > _VERSION_ )
 	{
@@ -366,16 +366,18 @@
 
 								if ( that._fits() )
 								{
-									if ( that.opts.truncate != 'node' )
+									if ( that.opts.truncate == 'node' )
 									{
-										$x.replaceWith( $e );
-										isTruncated = that._truncateWord( $e );
+										return true;
+									}
 
-										if ( !isTruncated )
-										{
-											forceEllipsis = true;
-											$e.detach();
-										}
+									$x.replaceWith( $e );
+									isTruncated = that._truncateWord( $e );
+
+									if ( !isTruncated )
+									{
+										forceEllipsis = true;
+										$e.detach();
 									}
 								}
 								else
