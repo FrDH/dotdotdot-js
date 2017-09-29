@@ -248,7 +248,7 @@
 
 						if ( that.watchInterval )
 						{
-							clearInterval( that.watchInterval );
+							clearTimeout( that.watchInterval );
 						}
 						that.watchInterval = setTimeout(
 							function() {
