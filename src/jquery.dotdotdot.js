@@ -1,5 +1,5 @@
 /*
- *	jQuery dotdotdot 3.0.2
+ *	jQuery dotdotdot 3.0.3
  *	@requires jQuery 1.7.0 or later
  *
  *	dotdotdot.frebsite.nl
@@ -11,11 +11,11 @@
  *	http://creativecommons.org/licenses/by-nc/4.0/
  */
 
-(function($, undef) {
+(function( $ ) {
 	'use strict';
 	
 	var _PLUGIN_    = 'dotdotdot';
-	var _VERSION_   = '3.0.2';
+	var _VERSION_   = '3.0.3';
 
 	if ( $[ _PLUGIN_ ] && $[ _PLUGIN_ ].version > _VERSION_ )
 	{
@@ -66,6 +66,7 @@
 
 		init: function()
 		{
+			this.watchTimeout		= null;
 			this.watchInterval		= null;
 			this.uniqueId 			= $[ _PLUGIN_ ].uniqueId++;
 			this.originalContent 	= this.$dot.contents();
@@ -235,34 +236,22 @@
 
 			this.unwatch();
 
+			var oldSizes = {};
+
 			if ( this.opts.watch == 'window' )
 			{
-			   
-				var oldWidth, oldHeight,
-					newWidth, newHeight;
-
 				$wndw.on(
 					_e.resize + that.uniqueId,
 					function( e )
 					{
-
-						if ( that.watchInterval )
+						if ( that.watchTimeout )
 						{
-							clearTimeout( that.watchInterval );
+							clearTimeout( that.watchTimeout );
 						}
-						that.watchInterval = setTimeout(
+						that.watchTimeout = setTimeout(
 							function() {
 
-								newWidth    = $wndw.width();
-								newHeight   = $wndw.height();
-
-								if ( oldWidth != newWidth || oldHeight != newHeight )
-								{
-									that.truncate();
-								}
-
-								oldWidth    = newWidth;
-								oldHeight   = newHeight;     
+								oldSizes = that._watchSizes( oldSizes, $wndw, 'width', 'height' );
 
 							}, 100
 						);
@@ -272,26 +261,11 @@
 			}
 			else
 			{
-				var oldSizes = {},
-					newSizes;
-
 				this.watchInterval = setInterval(
 					function()
 					{
-						if ( that.$dot.is( ':visible' ) )
-						{
-							newSizes = {
-								'width'		: that.$dot.innerWidth(),
-								'height'	: that.$dot.innerHeight()
-							};
+						oldSizes = that._watchSizes( oldSizes, that.$dot, 'innerWidth', 'innerHeight' );
 
-							if ( oldSizes.width != newSizes.width || oldSizes.height != newSizes.height )
-							{
-								that.truncate();
-							}
-
-							oldSizes = newSizes;
-						}
 					}, 500
 				);
 			}
@@ -299,10 +273,16 @@
 
 		unwatch: function()
 		{
-			$wndw.off( _e.resize + this.uniqueId )
+			$wndw.off( _e.resize + this.uniqueId );
+
 			if ( this.watchInterval )
 			{
 				clearInterval( this.watchInterval );
+			}
+
+			if ( this.watchTimeout )
+			{
+				clearTimeout( this.watchTimeout );
 			}
 		},
 
@@ -533,6 +513,24 @@
 			return Math.max( hgh, 0 );
 		},
 
+		_watchSizes: function( oldSizes, $elem, width, height )
+		{
+			if ( this.$dot.is( ':visible' ) )
+			{
+				var newSizes = {
+					'width'		: $elem[ width  ](),
+					'height'	: $elem[ height ]()
+				};
+
+				if ( oldSizes.width != newSizes.width || oldSizes.height != newSizes.height )
+				{
+					this.truncate();
+				}
+
+				return newSizes;
+			}
+		},
+
 		__getTextContent: function( elem )
 		{
 			var arr = [ 'nodeValue', 'textContent', 'innerText' ];
@@ -623,4 +621,4 @@
 	}
 
 
-})(jQuery);
+})( jQuery );
