@@ -248,7 +248,7 @@
 
 						if ( that.watchInterval )
 						{
-							clearInterval( that.watchInterval );
+							clearTimeout( that.watchInterval );
 						}
 						that.watchInterval = setTimeout(
 							function() {
@@ -272,7 +272,7 @@
 			}
 			else
 			{
-				var oldSizes,
+				var oldSizes = {},
 					newSizes;
 
 				this.watchInterval = setInterval(
@@ -285,7 +285,7 @@
 								'height'	: that.$dot.innerHeight()
 							};
 
-							if ( oldSizes.width != newSizes.width || oldSizes.height != oldSizes.height )
+							if ( oldSizes.width != newSizes.width || oldSizes.height != newSizes.height )
 							{
 								that.truncate();
 							}
