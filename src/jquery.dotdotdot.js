@@ -1,5 +1,5 @@
 /*
- *	jQuery dotdotdot 3.0.3
+ *	jQuery dotdotdot 3.0.4
  *	@requires jQuery 1.7.0 or later
  *
  *	dotdotdot.frebsite.nl
@@ -15,7 +15,7 @@
 	'use strict';
 	
 	var _PLUGIN_    = 'dotdotdot';
-	var _VERSION_   = '3.0.3';
+	var _VERSION_   = '3.0.4';
 
 	if ( $[ _PLUGIN_ ] && $[ _PLUGIN_ ].version > _VERSION_ )
 	{
@@ -131,12 +131,13 @@
 			//	Filter contents
 			this.$inner
 				.find( '*' )
-				.add( this.$inner )
 				.not( '.' + _c.keep )
+				.add( this.$inner )
 				.contents()
 				.each(
 					function()
 					{
+
 						var e = this,
 							$e = $(this);
 
@@ -178,15 +179,13 @@
 
 
 			//	Truncate the text
-			var isTruncated = this._truncateNode( this.$inner );
+			var isTruncated = this._truncateNode( this.$dot );
 			this.$dot[ isTruncated ? 'addClass' : 'removeClass' ]( _c.truncated );
 
 	
 			//	Unwrap text from the temporarely node
 			this.$inner
-				.find( '*' )
-				.add( this.$inner )
-				.filter( '.' + _c.text )
+				.find( '.' + _c.text )
 				.each(
 					function()
 					{
@@ -197,9 +196,7 @@
 
 			//	Remove "keep" class
 			this.$inner
-				.find( '*' )
-				.add( this.$inner )
-				.filter( '.' + _c.keep )
+				.find( '.' + _c.keep )
 				.removeClass( _c.keep );
 
 
