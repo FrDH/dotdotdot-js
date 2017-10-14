@@ -30,7 +30,7 @@
 	$[ _PLUGIN_ ] = function( $container, opts )
 	{
 		this.$dot 	= $container;
-		this.api	= [ 'getInstance', 'truncate', 'restore', 'destroy', 'watch', 'unwatch' ];
+		this.api	= [ 'getInstance', 'truncate', 'restore', 'destroy', 'watch', 'watchNow', 'unwatch' ];
 		this.opts	= opts;
 
 		var oldAPI = this.$dot.data( _PLUGIN_ );
@@ -72,6 +72,7 @@
 			this.originalContent 	= this.$dot.contents();
 			this.originalStyle		= this.$dot.attr( 'style' ) || '';
 			this.maxHeight 			= this._getMaxHeight() + this.opts.tolerance;
+			this.oldSizes			= {};
 
 			if ( this.$dot.css( 'word-wrap' ) !== 'break-word' )
 			{
@@ -233,8 +234,6 @@
 
 			this.unwatch();
 
-			var oldSizes = {};
-
 			if ( this.opts.watch == 'window' )
 			{
 				$wndw.on(
@@ -248,7 +247,7 @@
 						that.watchTimeout = setTimeout(
 							function() {
 
-								oldSizes = that._watchSizes( oldSizes, $wndw, 'width', 'height' );
+								that.oldSizes = that._watchSizes( that.oldSizes, $wndw, 'width', 'height' );
 
 							}, 100
 						);
@@ -261,10 +260,22 @@
 				this.watchInterval = setInterval(
 					function()
 					{
-						oldSizes = that._watchSizes( oldSizes, that.$dot, 'innerWidth', 'innerHeight' );
+						that.oldSizes = that._watchSizes( that.oldSizes, that.$dot, 'innerWidth', 'innerHeight' );
 
 					}, 500
 				);
+			}
+		},
+
+		watchNow: function ()
+		{
+			if ( this.opts.watch == 'window' )
+			{
+				this.oldSizes = this._watchSizes( this.oldSizes, $wndw, 'width', 'height' );
+			}
+			else
+			{
+				this.oldSizes = this._watchSizes( this.oldSizes, this.$dot, 'innerWidth', 'innerHeight' );
 			}
 		},
 
