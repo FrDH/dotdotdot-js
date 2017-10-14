@@ -248,7 +248,12 @@
 						that.watchTimeout = setTimeout(
 							function() {
 
-								oldSizes = that._watchSizes( oldSizes, $wndw, 'width', 'height' );
+								var newSizes = that._watchSizes( oldSizes, $wndw, 'width', 'height' );
+
+								if (newSizes)
+								{
+									oldSizes = newSizes;
+								}
 
 							}, 100
 						);
@@ -261,7 +266,12 @@
 				this.watchInterval = setInterval(
 					function()
 					{
-						oldSizes = that._watchSizes( oldSizes, that.$dot, 'innerWidth', 'innerHeight' );
+						var newSizes = that._watchSizes( oldSizes, that.$dot, 'innerWidth', 'innerHeight' );
+
+						if (newSizes)
+						{
+							oldSizes = newSizes;
+						}
 
 					}, 500
 				);
