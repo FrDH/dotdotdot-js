@@ -1,5 +1,5 @@
 /*
- *	jQuery dotdotdot 3.0.4
+ *	jQuery dotdotdot 3.0.5
  *	@requires jQuery 1.7.0 or later
  *
  *	dotdotdot.frebsite.nl
@@ -15,7 +15,7 @@
 	'use strict';
 	
 	var _PLUGIN_    = 'dotdotdot';
-	var _VERSION_   = '3.0.4';
+	var _VERSION_   = '3.0.5';
 
 	if ( $[ _PLUGIN_ ] && $[ _PLUGIN_ ].version > _VERSION_ )
 	{
@@ -526,6 +526,7 @@
 
 				return newSizes;
 			}
+			return oldSizes;
 		},
 
 		__getTextContent: function( elem )
