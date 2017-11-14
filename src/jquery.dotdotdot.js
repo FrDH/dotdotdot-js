@@ -298,7 +298,7 @@
 			var that = this,
 				api = {};
 
-			$.each( this.api, 
+			$.each( this.api,
 				function( i )
 				{
 					var fn = this;
