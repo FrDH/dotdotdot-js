@@ -1,5 +1,5 @@
 /*
- *	jQuery dotdotdot 3.0.5
+ *	jQuery dotdotdot 3.1.0
  *	@requires jQuery 1.7.0 or later
  *
  *	dotdotdot.frebsite.nl
@@ -15,7 +15,7 @@
 	'use strict';
 	
 	var _PLUGIN_    = 'dotdotdot';
-	var _VERSION_   = '3.0.5';
+	var _VERSION_   = '3.1.0';
 
 	if ( $[ _PLUGIN_ ] && $[ _PLUGIN_ ].version > _VERSION_ )
 	{
@@ -55,10 +55,12 @@
 
 	$[ _PLUGIN_ ].defaults  = {
 		ellipsis		: '\u2026 ',
+		callback		: function( isTruncated ) {},
 		truncate 		: 'word',
 		tolerance		: 0,
 		keep			: null,
-		watch			: 'window'
+		watch			: 'window',
+		height 			: null
 	};
 
 
@@ -81,6 +83,11 @@
 			if ( this.$dot.css( 'white-space' ) === 'nowrap' )
 			{
 				this.$dot.css( 'white-space', 'normal' );
+			}
+
+			if ( this.opts.height === null )
+			{
+				this.opts.height = this._getMaxHeight();
 			}
 		},
 
@@ -142,11 +149,12 @@
 						var e = this,
 							$e = $(this);
 
+						//	Text nodes
 						if ( e.nodeType == 3 )
 						{
 
 							//	Remove whitespace where it does not take up space in the DOM
-							if ( $e.prev().is( 'table, thead, tfoot, tr, th, td, dl, dt, dd, ul, ol, li, video' ) )
+							if ( $e.parent().is( 'table, thead, tfoot, tr, dl, ul, ol, video' ) )
 							{
 								$e.remove();
 								return;
@@ -169,7 +177,7 @@
 							}
 						}
 
-						//	Remove comments
+						//	Comment nodes
 						else if ( e.nodeType == 8 )
 						{
 							$e.remove();
@@ -177,6 +185,9 @@
 
 					}
 				);
+
+
+			this.maxHeight = this._getMaxHeight();
 
 
 			//	Truncate the text
@@ -205,7 +216,7 @@
 			this.$inner.replaceWith( this.$inner.contents() );
 			this.$inner = null;
 
-
+			this.opts.callback.call( this.$dot[ 0 ], isTruncated );
 			return isTruncated;
 		},
 
@@ -299,7 +310,7 @@
 			var that = this,
 				api = {};
 
-			$.each( this.api, 
+			$.each( this.api,
 				function( i )
 				{
 					var fn = this;
@@ -467,7 +478,7 @@
 
 		_fits: function()
 		{
-			return ( this.$inner.innerHeight() <= this.maxHeight );
+			return ( this.$inner.innerHeight() <= this.maxHeight + this.opts.tolerance );
 		},
 
 		_addEllipsis: function( txt )
@@ -485,36 +496,46 @@
 
 		_getMaxHeight: function()
 		{
+			if ( typeof this.opts.height == 'number' )
+			{
+				return this.opts.height;
+			}
+
 			//	Find smallest CSS height
-			var arr = [ 'height', 'maxHeight' ],
+			var arr = [ 'maxHeight', 'height' ],
 				hgh = 0;
  
 			for ( var a = 0; a < arr.length; a++ )
 			{
-				var h = window.getComputedStyle( this.$dot[ 0 ] )[ arr[ a ] ];
-				if ( h.slice( -2 ) == 'px' )
+				hgh = window.getComputedStyle( this.$dot[ 0 ] )[ arr[ a ] ];
+				if ( hgh.slice( -2 ) == 'px' )
 				{
-					h = parseInt( h, 10 );
-					hgh = hgh ? Math.min( hgh, h ) : h;
+					hgh = parseFloat( hgh );
+					break;
 				}
 			}
 
 			//	Remove padding-top/bottom when needed.
+			var arr = [];
 			switch ( this.$dot.css( 'boxSizing' ) )
 			{
-				case 'padding-box':
 				case 'border-box':
-					var arr = [ 'paddingTop', 'paddingBottom' ];
+					arr.push( 'borderTopWidth' );
+					arr.push( 'borderBottomWidth' );
+					//	no break -> padding needs to be added too
 
-					for ( var a = 0; a < arr.length; a++ )
-					{
-						var p = window.getComputedStyle( this.$dot[ 0 ] )[ arr[ a ] ];
-						if ( p.slice( -2 ) == 'px' )
-						{
-							hgh -= parseInt( p, 10 );
-						}
-					}
+				case 'padding-box':
+					arr.push( 'paddingTop' );
+					arr.push( 'paddingBottom' );
 					break;
+			}
+			for ( var a = 0; a < arr.length; a++ )
+			{
+				var p = window.getComputedStyle( this.$dot[ 0 ] )[ arr[ a ] ];
+				if ( p.slice( -2 ) == 'px' )
+				{
+					hgh -= parseFloat( p );
+				}
 			}
 
 			//	Sanitize
@@ -612,7 +633,7 @@
 		);
 
 		//	Classnames
-		_c.ddd = function( c ) { return 'ddd-' + c; };
+		_c.ddd = functifon( c ) { return 'ddd-' + c; };
 		_c.add( 'truncated keep text' );
 
 		//	Datanames
