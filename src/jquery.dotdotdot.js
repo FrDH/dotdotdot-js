@@ -1,5 +1,5 @@
 /*
- *	jQuery dotdotdot 3.2.0
+ *	jQuery dotdotdot 3.2.1
  *	@requires jQuery 1.7.0 or later
  *
  *	dotdotdot.frebsite.nl
@@ -15,7 +15,7 @@
 	'use strict';
 	
 	var _PLUGIN_    = 'dotdotdot';
-	var _VERSION_   = '3.2.0';
+	var _VERSION_   = '3.2.1';
 
 	if ( $[ _PLUGIN_ ] && $[ _PLUGIN_ ].version > _VERSION_ )
 	{
@@ -71,8 +71,8 @@
 			this.watchTimeout		= null;
 			this.watchInterval		= null;
 			this.uniqueId 			= $[ _PLUGIN_ ].uniqueId++;
-			this.originalContent 	= this.$dot.contents();
 			this.originalStyle		= this.$dot.attr( 'style' ) || '';
+			this.originalContent 	= this._getOriginalContent();
 			
 			if ( this.$dot.css( 'word-wrap' ) !== 'break-word' )
 			{
@@ -92,7 +92,6 @@
 			{
 				this.opts.ellipsis = document.createTextNode( this.opts.ellipsis );
 			}
-
 		},
 
 		getInstance: function()
@@ -125,99 +124,25 @@
 				.append( this.originalContent.clone( true ) );
 
 
-			//	Add "keep" class to nodes to keep
-			this.$inner
-				.find( 'script, style' )
-				.addClass( _c.keep );
-
-			if ( this.opts.keep )
-			{
-				this.$inner
-					.find( this.opts.keep )
-					.addClass( _c.keep );
-			}
-
-
-			//	Filter contents
-			this.$inner
-				.find( '*' )
-				.not( '.' + _c.keep )
-				.add( this.$inner )
-				.contents()
-				.each(
-					function()
-					{
-
-						var e = this,
-							$e = $(this);
-
-						//	Text nodes
-						if ( e.nodeType == 3 )
-						{
-
-							//	Remove whitespace where it does not take up space in the DOM
-							if ( $.trim( that.__getTextContent( e ) ) == '' )
-							{
-								if ( $e.parent().is( 'table, thead, tbody, tfoot, tr, dl, ul, ol, video' ) )
-								{
-									$e.remove();
-									return;
-								}
-								if ( $e.prev().is( 'div, p, table, td, td, dt, dd, li' ) )
-								{
-									$e.remove();
-									return;
-								}
-								if ( $e.next().is( 'div, p, table, td, td, dt, dd, li' ) )
-								{
-									$e.remove();
-									return;
-								}
-								if ( !$e.prev().length )
-								{
-									$e.remove();
-									return;
-								}
-								if ( !$e.next().length )
-								{
-									$e.remove();
-									return;
-								}
-							}
-						}
-
-						//	Comment nodes
-						else if ( e.nodeType == 8 )
-						{
-							$e.remove();
-						}
-
-					}
-				);
-
-
+			//	Get max height
 			this.maxHeight = this._getMaxHeight();
 
 
 			//	Truncate the text
-			var isTruncated = this._fits()
-				? false
-				: this._truncateNode( this.$dot[ 0 ] );
-
+			var isTruncated = !this._fits();
+			this._truncateToNode( this.$inner[ 0 ] );
 
 			this.$dot[ isTruncated ? 'addClass' : 'removeClass' ]( _c.truncated );
 
-
-			//	Remove "keep" class
-			this.$inner
-				.find( '.' + _c.keep )
-				.removeClass( _c.keep );
 
 			//	Remove inner node
 			this.$inner.replaceWith( this.$inner.contents() );
 			this.$inner = null;
 
+
+			//	 Callback
 			this.opts.callback.call( this.$dot[ 0 ], isTruncated );
+
 			return isTruncated;
 		},
 
@@ -313,7 +238,7 @@
 			return api;
 		},
 
-		_truncateNode: function( _elem )
+		_truncateToNode: function( _elem )
 		{
 
 			var that = this;
@@ -340,10 +265,16 @@
 					}
 				);
 
+			if ( !_elms.length )
+			{
+				return;
+			}
+
 			//	Re-fill the node 
 			//		-> replace comments with contents until it doesn't fit anymore
 			for ( var e = 0; e < _elms.length; e++ )
 			{
+
 				$(_coms[ e ]).replaceWith( _elms[ e ] );
 
 				$(_elms[ e ]).append( this.opts.ellipsis );
@@ -352,6 +283,11 @@
 
 				if ( !fits )
 				{
+					if ( this.opts.truncate == 'node' && e > 1 )
+					{
+						$(_elms[ e - 2 ]).remove();
+						return;
+					}
 					break;
 				}
 			}
@@ -364,12 +300,14 @@
 
 			//	Get last node 
 			//		-> the node that overflows
-			var _last = _elms[ Math.min( e, _elms.length - 1 ) ];
+
+			var _last = _elms[ Math.max( 0, Math.min( e, _elms.length - 1 ) ) ];
 
 			//	Border case
 			//		-> the last node with only an ellipsis in it...
 			if ( _last.nodeType == 1 )
 			{
+
 				var $e = $('<' + _last.nodeName + ' />');
 				$e.append( this.opts.ellipsis );
 
@@ -387,22 +325,22 @@
 				else
 				{
 					$e.remove();
-					_last = _elms[ e - 1 ];
+					_last = _elms[ Math.max( 0, e - 1 ) ];
 				}
 			}
 
-	
+			//	Proceed inside last node
 			if ( _last.nodeType == 1 )
 			{
-				return this._truncateNode( _last );
+				this._truncateToNode( _last );
 			}
 			else
 			{
-				return this._truncateWord( _last );
+				this._truncateToWord( _last );
 			}
 		},
 
-		_truncateWord: function( _elem )
+		_truncateToWord: function( _elem )
 		{
 
 			var e = _elem;
@@ -425,16 +363,14 @@
 					if ( that.opts.truncate == 'letter' )
 					{
 						that.__setTextContent( e, arr.slice( 0, a + 1 ).join( sep ) );
-						return that._truncateLetter( e );
+						that._truncateToLetter( e );
 					}
-					return true;
+					break;
 				}
 			}
-
-			return false;
 		},
 
-		_truncateLetter: function( e )
+		_truncateToLetter: function( e )
 		{
 			var that = this;
 
@@ -455,10 +391,9 @@
 
 				if ( that._fits() )
 				{
-					return true;
+					break;
 				}
 			}
-			return false;
 		},
 
 		_fits: function()
@@ -477,6 +412,82 @@
 			txt += this.__getTextContent( this.opts.ellipsis );
 
 			return txt;
+		},
+
+		_getOriginalContent: function()
+		{
+			var that = this;
+
+			//	Add "keep" class to nodes to keep
+			this.$dot
+				.find( 'script, style' )
+				.addClass( _c.keep );
+
+			if ( this.opts.keep )
+			{
+				this.$dot
+					.find( this.opts.keep )
+					.addClass( _c.keep );
+			}
+
+			//	Filter out unneeded whitespace
+			this.$dot
+				.find( '*' )
+				.not( '.' + _c.keep )
+				.add( this.$dot )
+				.contents()
+				.each(
+					function()
+					{
+
+						var e = this,
+							$e = $(this);
+
+						//	Text nodes
+						if ( e.nodeType == 3 )
+						{
+
+							//	Remove whitespace where it does not take up space in the DOM
+							if ( $.trim( that.__getTextContent( e ) ) == '' )
+							{
+								if ( $e.parent().is( 'table, thead, tbody, tfoot, tr, dl, ul, ol, video' ) )
+								{
+									$e.remove();
+									return;
+								}
+								if ( $e.prev().is( 'div, p, table, td, td, dt, dd, li' ) )
+								{
+									$e.remove();
+									return;
+								}
+								if ( $e.next().is( 'div, p, table, td, td, dt, dd, li' ) )
+								{
+									$e.remove();
+									return;
+								}
+								if ( !$e.prev().length )
+								{
+									$e.remove();
+									return;
+								}
+								if ( !$e.next().length )
+								{
+									$e.remove();
+									return;
+								}
+							}
+						}
+
+						//	Comment nodes
+						else if ( e.nodeType == 8 )
+						{
+							$e.remove();
+						}
+
+					}
+				);
+
+			return this.$dot.contents();
 		},
 
 		_getMaxHeight: function()

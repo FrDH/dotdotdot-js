@@ -143,12 +143,14 @@
 	</div>
 
 
-	<script type="text/javascript" src="http://code.jquery.com/jquery-3.2.1.js"></script>
-	<script type="text/javascript" src="dist/jquery.dotdotdot.js"></script>
-	<script type="text/javascript">
+	<script src="http://code.jquery.com/jquery-3.2.1.js"></script>
+	<script src="dist/jquery.dotdotdot.js"></script>
+	<script>
 		$(function() {
 
-			//	Basic example
+			/*
+				Basic example
+			*/
 			$('#xmpl-1').dotdotdot({
 
 				// Prevents the <a class="read-more" /> from being removed
@@ -156,7 +158,10 @@
 			});
 
 
-			//	Truncate to readable pathnames example
+
+			/*
+				Truncate to readable pathnames example
+			*/
 			$('#xmpl-2')
 				.find( 'li' )
 				.each(
@@ -164,13 +169,13 @@
 					{
 						var $t = $(this);
 
-						//	Wrap each folde in a <span />
+						//	Wrap each folder in a <span />
 						$t.html( '<span>' + $t.html().split( '/' ).join( '</span><span>/' ) + '</span>' );
 						
-						//	Add the class "file" to the last
+						//	Add the class "file" to the last <span />
 						$t.children().last().addClass( 'file' );
 
-						$(this).dotdotdot({
+						$t.dotdotdot({
 
 							//	Add a slash before the ellipsis
 							ellipsis: '/\u2026',
@@ -182,7 +187,10 @@
 				);
 
 
-			//	Toggle full story example
+
+			/*
+				Toggle full story example
+			*/
 			var $xmpl = $('#xmpl-3');
 			$xmpl.dotdotdot({
 
@@ -220,8 +228,9 @@
 
 
 
-
-			//	For the demos
+			/*
+				For the demos
+			*/
 			$('body').on(
 				'click',
 				'a[href^="#/"]',
@@ -231,6 +240,7 @@
 					return;
 				}
 			);
+
 
 		});
 	</script>
