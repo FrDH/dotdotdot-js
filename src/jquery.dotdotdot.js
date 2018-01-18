@@ -1,5 +1,5 @@
 /*
- *	jQuery dotdotdot 3.1.0
+ *	jQuery dotdotdot 3.2.0
  *	@requires jQuery 1.7.0 or later
  *
  *	dotdotdot.frebsite.nl
@@ -15,7 +15,7 @@
 	'use strict';
 	
 	var _PLUGIN_    = 'dotdotdot';
-	var _VERSION_   = '3.1.0';
+	var _VERSION_   = '3.2.0';
 
 	if ( $[ _PLUGIN_ ] && $[ _PLUGIN_ ].version > _VERSION_ )
 	{
@@ -87,6 +87,12 @@
 			{
 				this.opts.height = this._getMaxHeight();
 			}
+
+			if ( typeof this.opts.ellipsis == 'string' )
+			{
+				this.opts.ellipsis = document.createTextNode( this.opts.ellipsis );
+			}
+
 		},
 
 		getInstance: function()
@@ -115,9 +121,7 @@
 
 			//	Set original content
 			this.$inner
-				.contents()
-				.detach()
-				.end()
+				.empty()
 				.append( this.originalContent.clone( true ) );
 
 
@@ -152,26 +156,33 @@
 						{
 
 							//	Remove whitespace where it does not take up space in the DOM
-							if ( $e.parent().is( 'table, thead, tfoot, tr, dl, ul, ol, video' ) )
+							if ( $.trim( that.__getTextContent( e ) ) == '' )
 							{
-								$e.remove();
-								return;
-							}
-
-							//	Wrap text in a node (during truncation)
-							if ( $e.parent().contents().length > 1 )
-							{
-								var $d = $( '<span class="' + _c.text + '">' + that.__getTextContent( e ) + '</span>' )
-									.css({
-										'display'	: 'inline',
-										'height'	: 'auto',
-										'width'		: 'auto',
-										'border'	: 'none',
-										'padding'	: 0,
-										'margin'	: 0
-									});
-
-								$e.replaceWith( $d );
+								if ( $e.parent().is( 'table, thead, tbody, tfoot, tr, dl, ul, ol, video' ) )
+								{
+									$e.remove();
+									return;
+								}
+								if ( $e.prev().is( 'div, p, table, td, td, dt, dd, li' ) )
+								{
+									$e.remove();
+									return;
+								}
+								if ( $e.next().is( 'div, p, table, td, td, dt, dd, li' ) )
+								{
+									$e.remove();
+									return;
+								}
+								if ( !$e.prev().length )
+								{
+									$e.remove();
+									return;
+								}
+								if ( !$e.next().length )
+								{
+									$e.remove();
+									return;
+								}
 							}
 						}
 
@@ -189,26 +200,18 @@
 
 
 			//	Truncate the text
-			var isTruncated = this._truncateNode( this.$dot );
-			this.$dot[ isTruncated ? 'addClass' : 'removeClass' ]( _c.truncated );
+			var isTruncated = this._fits()
+				? false
+				: this._truncateNode( this.$dot[ 0 ] );
 
-	
-			//	Unwrap text from the temporarely node
-			this.$inner
-				.find( '.' + _c.text )
-				.each(
-					function()
-					{
-						$(this).replaceWith( $(this).contents() );
-					}
-				);
+
+			this.$dot[ isTruncated ? 'addClass' : 'removeClass' ]( _c.truncated );
 
 
 			//	Remove "keep" class
 			this.$inner
 				.find( '.' + _c.keep )
 				.removeClass( _c.keep );
-
 
 			//	Remove inner node
 			this.$inner.replaceWith( this.$inner.contents() );
@@ -223,9 +226,7 @@
 			this.unwatch();
 
 			this.$dot
-				.contents()
-				.detach()
-				.end()
+				.empty()
 				.append( this.originalContent )
 				.attr( 'style', this.originalStyle )
 				.removeClass( _c.truncated );
@@ -312,87 +313,99 @@
 			return api;
 		},
 
-		_truncateNode: function( $elem )
+		_truncateNode: function( _elem )
 		{
-			var that = this;
-			var isTruncated = false;
-			var forceEllipsis = false;
 
-			$($elem
-				.children()
-				.get()
-				.reverse()
-			)
-				.not( '.' + _c.keep )
+			var that = this;
+
+			var _coms = [],
+				_elms = [];
+
+			//	Empty the node 
+			//		-> replace all contents with comments
+			$(_elem)
+				.contents()
 				.each(
 					function()
 					{
-						var e = $(this).contents()[ 0 ],
-							$e = $(this);
-
-						if ( isTruncated )
+						var $e = $(this);
+						if ( !$e.hasClass( _c.keep ) )
 						{
-							return;
-						}
-						if ( $e.hasClass( _c.keep) )
-						{
-							return;
-						}
+							var c = document.createComment( '' );
+							$e.replaceWith( c );
 
-						if ( $e.children().length )
-						{
-							isTruncated = that._truncateNode( $e );
-						}
-						else
-						{
-							if ( !that._fits() || forceEllipsis )
-							{
-								var $x = $('<span>').css( 'display', 'none' );
-								$e.replaceWith( $x );
-								$e.detach();
-
-								if ( that._fits() )
-								{
-									if ( that.opts.truncate == 'node' )
-									{
-										return true;
-									}
-
-									$x.replaceWith( $e );
-									isTruncated = that._truncateWord( $e );
-
-									if ( !isTruncated )
-									{
-										forceEllipsis = true;
-										$e.detach();
-									}
-								}
-								else
-								{
-									$x.remove();
-								}
-							}
-						}
-
-						//	Remove empty nodes
-						if ( !$e.contents().length )
-						{
-							$e.remove();
+							_elms.push( this );
+							_coms.push( c );
 						}
 					}
 				);
 
-			return isTruncated;
+			//	Re-fill the node 
+			//		-> replace comments with contents until it doesn't fit anymore
+			for ( var e = 0; e < _elms.length; e++ )
+			{
+				$(_coms[ e ]).replaceWith( _elms[ e ] );
+
+				$(_elms[ e ]).append( this.opts.ellipsis );
+				var fits = this._fits();
+				$(this.opts.ellipsis, _elms[ e ]).remove();
+
+				if ( !fits )
+				{
+					break;
+				}
+			}
+
+			//	Remove left over comments
+			for ( var c = e; c < _coms.length; c++ )
+			{
+				$(_coms[ c ]).remove();
+			}
+
+			//	Get last node 
+			//		-> the node that overflows
+			var _last = _elms[ Math.min( e, _elms.length - 1 ) ];
+
+			//	Border case
+			//		-> the last node with only an ellipsis in it...
+			if ( _last.nodeType == 1 )
+			{
+				var $e = $('<' + _last.nodeName + ' />');
+				$e.append( this.opts.ellipsis );
+
+				$(_last).replaceWith( $e );
+
+				//	... fits
+				//		-> Restore the full last node
+				if ( this._fits() )
+				{
+					$e.replaceWith( _last );
+				}
+
+				//	... doesn't fit
+				//		-> remove it and go back one node
+				else
+				{
+					$e.remove();
+					_last = _elms[ e - 1 ];
+				}
+			}
+
+	
+			if ( _last.nodeType == 1 )
+			{
+				return this._truncateNode( _last );
+			}
+			else
+			{
+				return this._truncateWord( _last );
+			}
 		},
 
-		_truncateWord: function( $e )
+		_truncateWord: function( _elem )
 		{
-			var e = $e.contents()[ 0 ];
 
-			if ( !e )
-			{
-				return false;
-			}
+			var e = _elem;
 
 			var that = this;
 
@@ -404,22 +417,6 @@
 			for ( var a = arr.length; a >= 0; a-- )
 			{
 				str = arr.slice( 0, a ).join( sep );
-
-				//	If even the first child didn't make it
-				if ( a == 0 )
-				{
-					if ( that.opts.truncate == 'letter' )
-					{
-						that.__setTextContent( e, arr.slice( 0, a + 1 ).join( sep ) );
-						return that._truncateLetter( e );
-					}
-					return false;
-				}
-
-				if ( !str.length )
-				{
-					continue;
-				}
 
 				that.__setTextContent( e, that._addEllipsis( str ) );
 
@@ -477,7 +474,7 @@
 			{
 				txt = txt.slice( 0, -1 );
 			}
-			txt += this.opts.ellipsis;
+			txt += this.__getTextContent( this.opts.ellipsis );
 
 			return txt;
 		},
@@ -622,11 +619,10 @@
 
 		//	Classnames
 		_c.ddd = function( c ) { return 'ddd-' + c; };
-		_c.add( 'truncated keep text' );
+		_c.add( 'truncated keep' );
 
 		//	Datanames
 		_d.ddd = function( d ) { return 'ddd-' + d; };
-		_d.add( 'text' );
 
 		//	Eventnames
 		_e.ddd = function( e ) { return e + '.ddd'; };
