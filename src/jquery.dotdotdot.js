@@ -1,5 +1,5 @@
 /*
- *	jQuery dotdotdot 3.2.1
+ *	jQuery dotdotdot 3.2.2
  *	@requires jQuery 1.7.0 or later
  *
  *	dotdotdot.frebsite.nl
@@ -15,7 +15,7 @@
 	'use strict';
 	
 	var _PLUGIN_    = 'dotdotdot';
-	var _VERSION_   = '3.2.1';
+	var _VERSION_   = '3.2.2';
 
 	if ( $[ _PLUGIN_ ] && $[ _PLUGIN_ ].version > _VERSION_ )
 	{
@@ -129,8 +129,12 @@
 
 
 			//	Truncate the text
-			var isTruncated = !this._fits();
-			this._truncateToNode( this.$inner[ 0 ] );
+			var isTruncated = false;
+			if ( !this._fits() )
+			{
+				isTruncated = true;
+				this._truncateToNode( this.$inner[ 0 ] );
+			}
 
 			this.$dot[ isTruncated ? 'addClass' : 'removeClass' ]( _c.truncated );
 
