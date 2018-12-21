@@ -7,8 +7,8 @@ var gulp 	= require( 'gulp' ),
 
 
 //	Default task 'gulp': Runs JS tasks
-gulp.task( 'default', function() {
-    gulp.start( 'js' );
+gulp.task( 'default', function(){
+    return runJSTasks();
 });
 
 
@@ -22,19 +22,26 @@ gulp.task( 'watch', function() {
 
 //	JS task 'gulp js': Runs all JS tasks
 gulp.task( 'js', function() {
-	return gulp.src( 'src/jquery.dotdotdot.js' )
-		.pipe( uglify({ preserveComments: 'license' }) )
-		.pipe( umd({
-			dependencies: function() { return [ {
-				name 	: 'jquery',
-				global 	: 'jQuery',
-				param 	: 'jQuery'
-			} ]; },
-			exports: function() { return true; },
-			namespace: sanitizeNamespaceForUmd
-		}))
-		.pipe( gulp.dest( 'dist' ) );
+	return runJSTasks();
 });
+
+function runJSTasks(){
+    return gulp.src( 'src/jquery.dotdotdot.js' )
+        .pipe( uglify({ output : {
+        	comments: '/License/'
+            }
+        }) )
+        .pipe( umd({
+            dependencies: function() { return [ {
+                name 	: 'jquery',
+                global 	: 'jQuery',
+                param 	: 'jQuery'
+            } ]; },
+            exports: function() { return true; },
+            namespace: sanitizeNamespaceForUmd
+        }))
+        .pipe( gulp.dest( 'dist' ) );
+}
 
 function sanitizeNamespaceForUmd( file ) {
 	path = file.path.split( '\\' ).join( '/' ).split( '/' );
