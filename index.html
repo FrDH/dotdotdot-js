@@ -144,19 +144,18 @@
 
 
 	<script src="http://code.jquery.com/jquery-3.2.1.js"></script>
-	<script src="dist/jquery.dotdotdot.js"></script>
+	<script src="dist/dotdotdot.js"></script>
 	<script>
 		$(function() {
 
 			/*
 				Basic example
 			*/
-			$('#xmpl-1').dotdotdot({
+			// new Dotdotdot( document.querySelector( '#xmpl-1' ), {
 
-				// Prevents the <a class="read-more" /> from being removed
-				keep: '.read-more'
-			});
-
+			// 	// Prevents the <a class="read-more" /> from being removed
+			// 	keep: '.read-more'
+			// });
 
 
 			/*
@@ -164,6 +163,7 @@
 			*/
 			$('#xmpl-2')
 				.find( 'li' )
+				.first()
 				.each(
 					function()
 					{
@@ -175,7 +175,7 @@
 						//	Add the class "file" to the last <span />
 						$t.children().last().addClass( 'file' );
 
-						$t.dotdotdot({
+						new Dotdotdot( $t[ 0 ], {
 
 							//	Add a slash before the ellipsis
 							ellipsis: '/\u2026',
@@ -185,14 +185,13 @@
 						});
 					}
 				);
-
+return;
 
 
 			/*
 				Toggle full story example
 			*/
-			var $xmpl = $('#xmpl-3');
-			$xmpl.dotdotdot({
+			var xmpl = new Dotdotdot( document.querySelector( '#xmpl-3' ), {
 
 				// Prevents the <a class="toggle" /> from being removed
 				keep: '.toggle'
@@ -200,7 +199,8 @@
 			})
 
 			// Get the dotdotdot API
-			var api = $xmpl.data( 'dotdotdot' );
+			var api = xmpl.API;
+			var $xmpl = $('#xmpl-3');
 
 			$xmpl.on(
 				'click',
