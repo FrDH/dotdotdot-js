@@ -18,6 +18,10 @@ Need help? Have a look at [the documentation](http://dotdotdot.frebsite.nl).
 The dotdotdot javascript plugin is licensed under the [CC-BY-NC-4.0 license](http://creativecommons.org/licenses/by-nc/4.0/).<br />
 You can [purchase a license](http://dotdotdot.frebsite.nl#download) if you want to use it in a commercial project.
 
+### Browser support
+The dotdotdot javascript plugin uses ES6, meaning IE11 and earlier are not supported. 
+If you need support for IE11, use the legacy (jQuery) version: version 3.2.3.
+
 ### Development
 This project uses [Gulp](http://gulpjs.com/) to minify the JS file.
 If you are unfamiliar with Gulp, check [this tutorial](https://travismaynard.com/writing/getting-started-with-gulp) on how to get started.<br />
