@@ -42,7 +42,6 @@ interface dddOptions {
 	height		?: number
 }
 
-//	TODO: andere aanpak??? alle content naar een hidden node verplaatsen en van daaruit de container weer vullen??
 
 /**
  * Class for a multiline ellipsis.

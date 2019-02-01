@@ -1,12 +1,12 @@
 ;(function(root, factory) {
   if (typeof define === 'function' && define.amd) {
-    define(['jquery'], factory);
+    define([], factory);
   } else if (typeof exports === 'object') {
-    module.exports = factory(require('jquery'));
+    module.exports = factory();
   } else {
-    root.Dotdotdot = factory(root.jQuery);
+    root.Dotdotdot = factory();
   }
-}(this, function(jQuery) {
+}(this, function() {
 /*
  *	jQuery dotdotdot 4.0.0
  *	@requires jQuery 1.7.0 or later
@@ -19,7 +19,6 @@
  *	License: CC-BY-NC-4.0
  *	http://creativecommons.org/licenses/by-nc/4.0/
  */
-//	TODO: andere aanpak??? alle content naar een hidden node verplaatsen en van daaruit de container weer vullen??
 /**
  * Class for a multiline ellipsis.
  */

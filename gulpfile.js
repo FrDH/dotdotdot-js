@@ -32,21 +32,6 @@ gulp.task( 'js', function() {
         //         comments: "/^!/"
         //     }
         // }) )
-        .pipe( umd({
-            dependencies: function() { return [ {
-                name    : 'jquery',
-                global  : 'jQuery',
-                param   : 'jQuery'
-            } ]; },
-            // exports: function() { return 'Dotdotdot'; },
-            // namespace: 'Dotdotdot'
-        }))
+        .pipe( umd() )
         .pipe( gulp.dest( 'dist' ) );
 });
-
-function sanitizeNamespaceForUmd( file ) {
-	path = file.path.split( '\\' ).join( '/' ).split( '/' );
-	path = path[ path.length - 1 ];
-	return path.split( '.' ).join( '_' );
-}
-
