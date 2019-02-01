@@ -1,8 +1,9 @@
 // npm install
 
-var gulp 	= require( 'gulp' ),
-	uglify 	= require( 'gulp-uglify' ),
-	umd		= require( 'gulp-umd' );
+var gulp 	    = require( 'gulp' ),
+	uglify 	    = require( 'gulp-uglify' ),
+    typescript  = require( 'gulp-typescript' ),
+	umd		    = require( 'gulp-umd' );
 
 
 
@@ -15,37 +16,22 @@ gulp.task( 'default', function(){
 
 //	Watch task 'gulp watch': Starts a watch on JS tasks
 gulp.task( 'watch', function() {
-  gulp.watch( 'src/*.js', [ 'js' ] );
+  gulp.watch( 'src/*.ts', [ 'js' ] );
 });
 
 
 
 //	JS task 'gulp js': Runs all JS tasks
 gulp.task( 'js', function() {
-	return runJSTasks();
-});
-
-function runJSTasks(){
-    return gulp.src( 'src/jquery.dotdotdot.js' )
-        .pipe( uglify({ output : {
-        	comments: '/License/'
-            }
+	return gulp.src( 'src/dotdotdot.ts' )
+        .pipe( typescript({
+            "target": "es6"
         }) )
-        .pipe( umd({
-            dependencies: function() { return [ {
-                name 	: 'jquery',
-                global 	: 'jQuery',
-                param 	: 'jQuery'
-            } ]; },
-            exports: function() { return true; },
-            namespace: sanitizeNamespaceForUmd
-        }))
+        // .pipe( uglify({ 
+        //     output: {
+        //         comments: "/^!/"
+        //     }
+        // }) )
+        .pipe( umd() )
         .pipe( gulp.dest( 'dist' ) );
-}
-
-function sanitizeNamespaceForUmd( file ) {
-	path = file.path.split( '\\' ).join( '/' ).split( '/' );
-	path = path[ path.length - 1 ];
-	return path.split( '.' ).join( '_' );
-}
-
+});

@@ -1,11 +1,13 @@
-jQuery.dotdotdot
+dotdotdot
 ================
 
-Dotdotdot is a jQuery plugin for truncating multiple line content on a webpage. 
+Dotdotdot is a javascript plugin for truncating multiple line content on a webpage. 
 It uses an ellipsis to indicate that there is more text than currently visible. 
 Optionally, the plugin can keep a "read more" anchor visible at the end of the content, after the ellipsis.
 
-When using the jQuery.dotdotdot plugin, you don't need to worry about your HTML markup, the plugin knows its way around most elements. 
+[Demo](http://dotdotdot.frebsite.nl)
+
+When using dotdotdot to truncate HTML, you don't need to worry about your HTML markup, the plugin knows its way around most elements. 
 It's responsive, so when resizing the browser, the ellipsis will update on the fly.
 
 Need help? Have a look at [the documentation](http://dotdotdot.frebsite.nl).
@@ -13,11 +15,12 @@ Need help? Have a look at [the documentation](http://dotdotdot.frebsite.nl).
 <img src="http://dotdotdot.frebsite.nl/preview.png" width="100%" border="0" />
 
 ### Licence
-The jQuery.dotdotdot plugin is licensed under the [CC-BY-NC-4.0 license](http://creativecommons.org/licenses/by-nc/4.0/).<br />
+The dotdotdot javascript plugin is licensed under the [CC-BY-NC-4.0 license](http://creativecommons.org/licenses/by-nc/4.0/).<br />
 You can [purchase a license](http://dotdotdot.frebsite.nl#download) if you want to use it in a commercial project.
 
-### Dependencies
-+ jQuery 1.7 or higher
+### Browser support
+The dotdotdot javascript plugin uses ES6, meaning IE11 and earlier are not supported. 
+If you need support for IE11, use the legacy (jQuery) version: [version 3.2.3](https://github.com/FrDH/dotdotdot-JS/releases/tag/v3.2.3).
 
 ### Development
 This project uses [Gulp](http://gulpjs.com/) to minify the JS file.
