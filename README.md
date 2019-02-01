@@ -5,6 +5,8 @@ Dotdotdot is a javascript plugin for truncating multiple line content on a webpa
 It uses an ellipsis to indicate that there is more text than currently visible. 
 Optionally, the plugin can keep a "read more" anchor visible at the end of the content, after the ellipsis.
 
+[Demo](http://dotdotdot.frebsite.nl)
+
 When using dotdotdot to truncate HTML, you don't need to worry about your HTML markup, the plugin knows its way around most elements. 
 It's responsive, so when resizing the browser, the ellipsis will update on the fly.
 
