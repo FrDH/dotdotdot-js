@@ -1,6 +1,5 @@
-/*
- *	jQuery dotdotdot 4.0.0
- *	@requires jQuery 1.7.0 or later
+/*!
+ *	dotdotdot JS 4.0.1
  *
  *	dotdotdot.frebsite.nl
  *
@@ -507,7 +506,7 @@ class Dotdotdot {
 	{
 		var remove = [' ', '\u3000', ',', ';', '.', '!', '?'];
 
-		while ( $.inArray( text.slice( -1 ), remove ) > -1 )
+		while ( remove.indexOf( text.slice( -1 ) ) > -1 )
 		{
 			text = text.slice( 0, -1 );
 		}
@@ -677,4 +676,19 @@ class Dotdotdot {
 		}
 	}
 }
+
+declare var Zepto : any
+declare var jQuery : any
+
+(function( $ ) {
+	if ( typeof $ != 'undefined' )
+	{
+		$.fn.dotdotdot = function( options 	) {
+			return this.each(( e, element ) => {
+				let dot = new Dotdotdot( element, options );
+				element[ 'dotdotdot' ] = dot.API;
+			});
+		}
+	}
+})( Zepto || jQuery );
 
