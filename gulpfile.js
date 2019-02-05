@@ -6,9 +6,9 @@ const gulp 	    = require( 'gulp' ),
 
 //	Default task 'gulp': Runs JS tasks
 const js = ( cb ) => {
-    return gulp.src( 'src/dotdotdot.ts' )
+    return gulp.src( 'src/*.ts' )
         .pipe( typescript({
-            "target": "es6"
+            "target": "es5"
         }) )
         .pipe( terser({ 
             output: {
@@ -25,9 +25,7 @@ exports.default = js;
 
 //	Watch task 'gulp watch': Starts a watch on JS tasks
 const watch = ( cb ) => {
-    gulp.watch( 'src/*.ts', function( cb ) {
-        js();
-        cb();
-    });
+    gulp.watch( 'src/*.ts', js );
+    cb();
 };
 exports.watch = watch;

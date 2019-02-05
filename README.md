@@ -19,8 +19,8 @@ The dotdotdot javascript plugin is licensed under the [CC-BY-NC-4.0 license](htt
 You can [purchase a license](http://dotdotdot.frebsite.nl#download) if you want to use it in a commercial project.
 
 ### Browser support
-The dotdotdot javascript plugin uses ES6, meaning IE11 and earlier are not supported. 
-If you need support for IE11, use the legacy (jQuery) version: [version 3.2.3](https://github.com/FrDH/dotdotdot-JS/releases/tag/v3.2.3).
+The dotdotdot javascript plugin uses ES5, meaning IE10 and earlier are not supported. 
+If you need support for IE10, use the legacy (jQuery) version: [version 3.2.3](https://github.com/FrDH/dotdotdot-JS/releases/tag/v3.2.3).
 
 ### Development
 This project uses [Gulp](http://gulpjs.com/) to minify the JS file.

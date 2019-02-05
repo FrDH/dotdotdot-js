@@ -163,7 +163,6 @@
 			*/
 			$('#xmpl-2')
 				.find( 'li' )
-				.first()
 				.each(
 					function()
 					{
@@ -179,6 +178,9 @@
 
 							//	Add a slash before the ellipsis
 							ellipsis: '/\u2026',
+
+							//	Adjustment for the top- and bottom padding.
+							tolerance: 20,
 
 							// Prevents the <span class="file" /> from being removed
 							keep: '.file'

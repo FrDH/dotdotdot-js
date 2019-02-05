@@ -1,5 +1,5 @@
 /*!
- *	dotdotdot JS 4.0.1
+ *	dotdotdot JS 4.0.2
  *
  *	dotdotdot.frebsite.nl
  *
@@ -10,37 +10,6 @@
  *	http://creativecommons.org/licenses/by-nc/4.0/
  */
 
- 
- /** An object with any value. */
-interface dddLooseObject {
-	[key: string] 	: any
-}
-
-/** Default options for the class. */
-interface dddOptions {
-	
-	/** The ellipsis to place after the truncated text. */
-	ellipsis 	?: string,
-	
-	/** Function to invoke after the truncate process. */
-	callback	?: Function,
-
-	/** How to truncate: 'node', 'word' (default) or 'letter'. */
-	truncate	?: string,
-
-	/** Optional tolerance for the container height. */
-	tolerance	?: number,
-
-	/** Selector for elements not to remove from the DOM. */
-	keep 		?: string,
-
-	/** Whether and when to update the ellipsis: null, 'window' (default) or 'resize' */
-	watch 		?: string,
-
-	/** The height for the container. If null, the max-height will be read from the CSS properties. */
-	height		?: number
-}
-
 
 /**
  * Class for a multiline ellipsis.
@@ -48,7 +17,7 @@ interface dddOptions {
 class Dotdotdot {
 
  	/**	Plugin version. */
-	static version : string = '4.0.0'
+	static version : string = '4.0.2'
 
 
 	/**	Default options. */
@@ -79,7 +48,7 @@ class Dotdotdot {
 	ellipsis : Text
 
 	/** The API */
-	API : dddLooseObject
+	API : dddFunctionObject
 
 	/** Storage for the watch timeout, oddly it has a number type. */
 	watchTimeout : number
@@ -162,7 +131,15 @@ class Dotdotdot {
 		this.ellipsis = document.createTextNode( this.options.ellipsis );
 
 		//	Set CSS properties for the container.
-		this._setStyles();
+		var computedStyle = window.getComputedStyle( this.container );
+		if ( computedStyle[ 'word-wrap' ] !== 'break-word' )
+		{
+			this.container.style[ 'word-wrap' ] = 'break-word';
+		}
+		if ( computedStyle[ 'white-space' ] === 'nowrap' )
+		{
+			this.container.style[ 'white-space' ] = 'normal';
+		}
 
 		//	Set the max-height for the container.
 		if ( this.options.height === null )
@@ -305,10 +282,12 @@ class Dotdotdot {
  	}
 
 	/**
-	 * Truncate the container.
+	 * Start the truncate process.
 	 */
 	truncate()
 	{
+		var isTruncated = false;
+
 		//	Fill the container with all the original content.
 		this.container.innerHTML = '';
 		this.originalContent.forEach(( element ) => {
@@ -319,7 +298,6 @@ class Dotdotdot {
 		this.maxHeight = this._getMaxHeight();
 
 		//	Truncate the text.
-		var isTruncated = false;
 		if ( !this._fits() )
 		{
 			isTruncated = true;
@@ -335,13 +313,19 @@ class Dotdotdot {
 		return isTruncated;
 	}
 
-	_truncateToNode( element )
-	{
+	/**
+	 * Truncate an element by removing elements from the end.
+	 *
+	 * @param {HTMLElement} element The element to truncate.
+	 */
+	_truncateToNode( 
+		element : HTMLElement
+	) {
 
 		var _coms = [],
 			_elms = [];
 
-		//	Empty the node 
+		//	Empty the element 
 		//		-> replace all contents with comments
 		Dotdotdot.$.contents( element )
 			.forEach(( element ) => {
@@ -361,8 +345,8 @@ class Dotdotdot {
 			return;
 		}
 
-		//	Re-fill the node 
-		//		-> replace comments with contents until it doesn't fit anymore
+		//	Re-fill the element 
+		//		-> replace comments with contents until it doesn't fit anymore.
 		for ( var e = 0; e < _elms.length; e++ )
 		{
 
@@ -379,13 +363,10 @@ class Dotdotdot {
 				case 3:
 					_elms[ e ].after( ellipsis );
 					break;
-
-				default:
-					console.log( _elms[e], _elms[e].nodeType)
 			}
 
 			let fits = this._fits();
-			ellipsis.parentElement.removeChild(ellipsis);
+			ellipsis.parentElement.removeChild( ellipsis );
 
 			if ( !fits )
 			{
@@ -398,14 +379,14 @@ class Dotdotdot {
 			}
 		}
 
-		//	Remove left over comments
+		//	Remove left over comments.
 		for ( var c = e; c < _coms.length; c++ )
 		{
 			_coms[ c ].remove();
 		}
 
-		//	Get last node 
-		//		-> the node that overflows
+		//	Get last element 
+		//		-> the element that overflows.
 
 		var _last = _elms[ Math.max( 0, Math.min( e, _elms.length - 1 ) ) ];
 
@@ -414,20 +395,20 @@ class Dotdotdot {
 		if ( _last.nodeType == 1 )
 		{
 
-			var element = document.createElement( _last.nodeName );
+			let element = document.createElement( _last.nodeName );
 			element.append( this.ellipsis );
 
 			_last.replaceWith( element );
 
 			//	... fits
-			//		-> Restore the full last node
+			//		-> Restore the full last element.
 			if ( this._fits() )
 			{
 				element.replaceWith( _last );
 			}
 
 			//	... doesn't fit
-			//		-> remove it and go back one node
+			//		-> remove it and go back one element.
 			else
 			{
 				element.remove();
@@ -435,7 +416,7 @@ class Dotdotdot {
 			}
 		}
 
-		//	Proceed inside last node
+		//	Proceed inside last element.
 		if ( _last.nodeType == 1 )
 		{
 			this._truncateToNode( _last );
@@ -446,24 +427,27 @@ class Dotdotdot {
 		}
 	}
 
-	_truncateToWord( element )
-	{
+	/**
+	 * Truncate a sentence by removing words from the end.
+	 *
+	 * @param {HTMLElement} element The element to truncate.
+	 */
+	_truncateToWord( 
+		element : HTMLElement
+	) {
 		var text 		= element.textContent,
 			seporator 	= ( text.indexOf( ' ' ) !== -1 ) ? ' ' : '\u3000',
-			parts 		= text.split( seporator ),
-			content		= '';
+			words 		= text.split( seporator );
 
-		for ( var a = parts.length; a >= 0; a-- )
+		for ( var a = words.length; a >= 0; a-- )
 		{
-			content = parts.slice( 0, a ).join( seporator );
-
-			element.textContent = this._addEllipsis( content );
+			element.textContent = this._addEllipsis( words.slice( 0, a ).join( seporator ) );
 
 			if ( this._fits() )
 			{
 				if ( this.options.truncate == 'letter' )
 				{
-					element.textContent = parts.slice( 0, a + 1 ).join( seporator );
+					element.textContent = words.slice( 0, a + 1 ).join( seporator );
 					this._truncateToLetter( element );
 				}
 				break;
@@ -471,23 +455,28 @@ class Dotdotdot {
 		}
 	}
 
-	_truncateToLetter( element )
-	{
+	/**
+	 * Truncate a word by removing letters from the end.
+	 *
+	 * @param 	{HTMLElement} element The element to truncate.
+	 */
+	_truncateToLetter( 
+		element : HTMLElement
+	) {
 
-		var txt = element.textContent,
-			arr = txt.split( '' ),
-			str = '';
+		var letters = element.textContent.split( '' ),
+			text 	= '';
 
-		for ( var a = arr.length; a >= 0; a-- )
+		for ( var a = letters.length; a >= 0; a-- )
 		{
-			str = arr.slice( 0, a ).join( '' );
+			text = letters.slice( 0, a ).join( '' );
 
-			if ( !str.length )
+			if ( !text.length )
 			{
 				continue;
 			}
 
-			element.textContent = this._addEllipsis( str );
+			element.textContent = this._addEllipsis( text );
 
 			if ( this._fits() )
 			{
@@ -496,14 +485,25 @@ class Dotdotdot {
 		}
 	}
 
-	_fits()
+	/**
+	 * Test if the content fits in the container.
+	 *
+	 * @return {boolean} Whether or not the content fits in the container.
+	 */
+	_fits() : boolean
 	{
-		console.log( this.container.scrollHeight )
 		return ( this.container.scrollHeight <= this.maxHeight + this.options.tolerance );
 	}
 
-	_addEllipsis( text )
-	{
+	/**
+	 * Add the ellipsis to a text.
+	 *
+	 * @param 	{string} text 	The text to add the ellipsis to.
+	 * @return	{string}		The text with the added ellipsis.
+	 */
+	_addEllipsis( 
+		text : string
+	) : string {
 		var remove = [' ', '\u3000', ',', ';', '.', '!', '?'];
 
 		while ( remove.indexOf( text.slice( -1 ) ) > -1 )
@@ -516,25 +516,11 @@ class Dotdotdot {
 	}
 
  	/**
- 	 *	Set CSS properties for the container.
- 	 */
- 	_setStyles() {
-
-		var computedStyle = window.getComputedStyle( this.container );
-		if ( computedStyle[ 'word-wrap' ] !== 'break-word' )
-		{
-			this.container.style[ 'word-wrap' ] = 'break-word';
-		}
-		if ( computedStyle[ 'white-space' ] === 'nowrap' )
-		{
-			this.container.style[ 'white-space' ] = 'normal';
-		}
- 	}
-
- 	/**
  	 * Sanitize and collect the original contents.
+ 	 *
+	 * @return {array} The sanitizes HTML elements.
  	 */
- 	_getOriginalContent() {
+ 	_getOriginalContent() : HTMLElement[] {
 
 		let keep = 'script, style';
 		if ( this.options.keep )
@@ -609,7 +595,12 @@ class Dotdotdot {
 		return content;
 	}
 
-	_getMaxHeight()
+ 	/**
+ 	 * Find the max-height for the container.
+ 	 *
+	 * @return {number} The max-height for the container.
+ 	 */
+	_getMaxHeight() : number
 	{
 		if ( typeof this.options.height == 'number' )
 		{
@@ -659,7 +650,16 @@ class Dotdotdot {
 		return Math.max( height, 0 );
 	}
 
+	/** DOM traversing functions to uniform datatypes. */
 	static $ = {
+
+	 	/**
+	 	 * Find elements by a query selector in an element.
+	 	 *
+	 	 * @param {string}		selector 			The selector to search for.
+	 	 * @param {HTMLElement}	[element=document]	The element to search in.
+		 * @return {array} 							The found elements.
+	 	 */
 		find: ( 
 			selector  : string,
 			element	 ?: HTMLElement | Document
@@ -668,6 +668,12 @@ class Dotdotdot {
 			return Array.prototype.slice.call( element.querySelectorAll( selector ) );
 		},
 
+	 	/**
+	 	 * Collect child nodes (HTML elements and TextNodes) in an element.
+	 	 *
+	 	 * @param {HTMLElement}	[element=document]	The element to search in.
+		 * @return {array} 							The found nodes.
+	 	 */
 		contents: (
 			element ?: HTMLElement | Document
 		) : Node[] => {
@@ -677,6 +683,7 @@ class Dotdotdot {
 	}
 }
 
+//	The jQuery plugin.
 declare var Zepto : any
 declare var jQuery : any
 
@@ -690,5 +697,5 @@ declare var jQuery : any
 			});
 		}
 	}
-})( Zepto || jQuery );
+})( document[ 'Zepto' ] || document[ 'jQuery' ] );
 
