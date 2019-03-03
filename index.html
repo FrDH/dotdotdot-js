@@ -94,7 +94,22 @@
 		.example > .full-story .toggle:before {
 			content: 'Show less';
 		}
-	}
+
+		.oldbrowser {
+			display: none;
+		}
+		@media screen and (min-width:0\0) {
+			.oldbrowser {
+				background: red;
+				color: white;
+				font-weight: bold;
+				font-size: 20px;
+				line-height: 1.5;
+				display: block;
+				padding: 50px;
+				margin: 50px -50px;
+			}
+		}
 	</style>
 </head>
 
@@ -102,6 +117,14 @@
 	<br />
 	<br />
 	<div class="wrapper">
+
+		<div class="oldbrowser">
+			<big>Oh no!</big><br />
+			You're using an old browser. 
+			Although the Dotdotdot plugin will work in older browsers (although you might need some polyfills), 
+			these examples use modern JS your browser probably doesn't understand.
+		</div>
+
 		<div>
 			<h1>dotdotdot</h1>
 			<p>Javascript plugin for truncating multiple line content on a webpage.<br />
@@ -142,107 +165,95 @@
 
 	</div>
 
-
 	<script src="http://code.jquery.com/jquery-3.2.1.js"></script>
 	<script src="dist/dotdotdot.js"></script>
-	<script>
-		$(function() {
+	<script type="module">
 
-			/*
-				Basic example
-			*/
-			new Dotdotdot( document.querySelector( '#xmpl-1' ), {
 
-				// Prevents the <a class="read-more" /> from being removed
-				keep: '.read-more'
+		/*
+			Basic example
+		*/
+		new Dotdotdot( document.querySelector( '#xmpl-1' ), {
+
+			// Prevents the <a class="read-more" /> from being removed
+			keep: '.read-more'
+		});
+
+
+
+		/*
+			Truncate to readable pathnames example
+		*/
+		document.querySelector( '#xmpl-2' )
+			.querySelectorAll( 'li' )
+			.forEach(( listitem ) => {
+
+				listitem.innerHTML = '<span>' + listitem.innerHTML.split( '/' ).join( '</span><span>/' ) + '</span>';
+				listitem.children.item( listitem.children.length - 1 ).classList.add( 'file' );
+
+				new Dotdotdot( listitem, {
+
+					//	Add a slash before the ellipsis
+					ellipsis: '/\u2026',
+
+					//	Adjustment for the top- and bottom padding.
+					tolerance: 20,
+
+					// Prevents the <span class="file" /> from being removed
+					keep: '.file'
+				});
 			});
 
 
-			/*
-				Truncate to readable pathnames example
-			*/
-			$('#xmpl-2')
-				.find( 'li' )
-				.first()
-				.each(
-					function()
-					{
-						var $t = $(this);
 
-						//	Wrap each folder in a <span />
-						$t.html( '<span>' + $t.html().split( '/' ).join( '</span><span>/' ) + '</span>' );
-						
-						//	Add the class "file" to the last <span />
-						$t.children().last().addClass( 'file' );
+		/*
+			Toggle full story example
+		*/
+		var xmpl = document.querySelector( '#xmpl-3' );
+		var dot = new Dotdotdot( xmpl, {
 
-						new Dotdotdot( $t[ 0 ], {
+			// Prevents the <a class="toggle" /> from being removed
+			keep: '.toggle'
 
-							//	Add a slash before the ellipsis
-							ellipsis: '/\u2026',
+		})
 
-							// Prevents the <span class="file" /> from being removed
-							keep: '.file'
-						});
-					}
-				);
+		// Get the dotdotdot API
+		var api = dot.API;
+		
+		xmpl.addEventListener( 'click', ( evnt ) => {
+			if ( evnt.target.closest( '.toggle' ) ) {
+				evnt.preventDefault();
 
-
-
-			/*
-				Toggle full story example
-			*/
-			var xmpl = new Dotdotdot( document.querySelector( '#xmpl-3' ), {
-
-				// Prevents the <a class="toggle" /> from being removed
-				keep: '.toggle'
-
-			})
-
-			// Get the dotdotdot API
-			var api = xmpl.API;
-			var $xmpl = $('#xmpl-3');
-
-			$xmpl.on(
-				'click',
-				'.toggle',
-				function( e )
+				//	When truncated, restore
+				if ( xmpl.matches( '.ddd-truncated' ) )
 				{
-					e.preventDefault();
-
-					//	When truncated, restore
-					if ( $xmpl.hasClass( 'ddd-truncated' ) )
-					{
-						api.restore();
-						$xmpl.addClass( 'full-story' );
-					}
-
-					//	Not truncated, truncate
-					else
-					{
-						$xmpl.removeClass( 'full-story' );
-						api.truncate();
-						api.watch();
-					}
+					api.restore();
+					xmpl.classList.add( 'full-story' );
 				}
-			);
 
-
-
-			/*
-				For the demos
-			*/
-			$('body').on(
-				'click',
-				'a[href^="#/"]',
-				function( e )
+				//	Not truncated, truncate
+				else
 				{
-					alert( 'Thank you for clicking, but that\'s a demo link.' );
-					return;
+					xmpl.classList.remove( 'full-story' );
+					api.truncate();
+					api.watch();
 				}
-			);
-
-
+			}
 		});
+
+
+
+
+		/*
+			For the demos
+		*/
+		document.body.addEventListener( 'click', ( evnt ) => {
+			if ( evnt.target.closest( 'a[href^="#/"]' ) ) {
+				evnt.preventDefault();
+				alert( 'Thank you for clicking, but that\'s a demo link.' );
+			}
+		});
+
 	</script>
 </body>
 
