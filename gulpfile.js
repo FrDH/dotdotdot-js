@@ -37,6 +37,7 @@ const jsES6 = ( cb ) => {
 		.pipe( gulp.dest( 'dist' ) );
 };
 
+/** Save plugin to be used with UMD pattern. */
 const jsUMD = ( cb ) => {
 	return transpile( 'es5', 'umd' )
 		.pipe( rename( 'dotdotdot.umd.js' ) )

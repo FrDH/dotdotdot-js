@@ -1,5 +1,5 @@
 /*!
- *	dotdotdot JS 4.0.3
+ *	dotdotdot JS 4.0.4
  *
  *	dotdotdot.frebsite.nl
  *
@@ -17,7 +17,7 @@
 export default class Dotdotdot {
 
  	/**	Plugin version. */
-	static version : string = '4.0.3'
+	static version : string = '4.0.4'
 
 
 	/**	Default options. */
@@ -637,5 +637,5 @@ export default class Dotdotdot {
 			});
 		}
 	}
-})( (window as any).Zepto || (window as any).jQuery );
+})( window['Zepto'] || window['jQuery'] );
 
