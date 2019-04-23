@@ -37,6 +37,13 @@ const jsES6 = ( cb ) => {
 		.pipe( gulp.dest( 'dist' ) );
 };
 
+/** Save plugin to be used with bundlers that support the pkg.module definition. */
+const jsESM = ( cb ) => {
+	return transpile( 'es5', 'es6' )
+		.pipe( rename( 'dotdotdot.esm.js' ) )
+		.pipe( gulp.dest( 'dist' ) );
+};
+
 /** Save plugin to be used with UMD pattern. */
 const jsUMD = ( cb ) => {
 	return transpile( 'es5', 'umd' )
@@ -44,7 +51,7 @@ const jsUMD = ( cb ) => {
 		.pipe( gulp.dest( 'dist' ) );
 };
 
-exports.default = gulp.parallel( js, jsES6, jsUMD );
+exports.default = gulp.parallel( js, jsES6, jsESM, jsUMD );
 
 // Watch task 'gulp watch': Starts a watch on JS tasks
 const watch = ( cb ) => {
