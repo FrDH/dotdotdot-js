@@ -1,5 +1,5 @@
 /*!
- *	dotdotdot JS 4.0.6
+ *	dotdotdot JS 4.0.7
  *
  *	dotdotdot.frebsite.nl
  *
@@ -15,7 +15,7 @@
  */
 export default class Dotdotdot {
     /**	Plugin version. */
-    static version: string = '4.0.5';
+    static version: string = '4.0.7';
 
     /**	Default options. */
     static options: dddOptions = {
