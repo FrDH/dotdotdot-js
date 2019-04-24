@@ -1,6 +1,6 @@
 {
 	"name": "dotdotdot-js",
-	"version": "4.0.7",
+	"version": "4.0.8",
 	"main": "dist/dotdotdot.js",
 	"module": "dist/dotdotdot.esm.js",
 	"author": "Fred Heusschen <info@frebsite.nl>",

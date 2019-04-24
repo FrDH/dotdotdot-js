@@ -12,8 +12,8 @@ const transpile = (target, module) => {
             // First, we transpile back to JS.
             .pipe(
                 typescript({
-                    target: target,
-                    module: module
+                    target,
+                    module
                 })
             )
 
@@ -28,11 +28,10 @@ const transpile = (target, module) => {
     );
 };
 
-/** Save plugin to be used without UMD pattern or ES6 module. */
-const js = cb => {
-    return transpile('es5', 'es6')
-        .pipe(rename('dotdotdot.js'))
-        .pipe(replace('export default Dotdotdot;', ''))
+/** Save plugin to be used with UMD pattern. */
+const jsUMD = cb => {
+    return transpile('es5', 'umd')
+        .pipe(rename('dotdotdot.umd.js'))
         .pipe(gulp.dest('dist'));
 };
 
@@ -50,18 +49,20 @@ const jsESM = cb => {
         .pipe(gulp.dest('dist'));
 };
 
-/** Save plugin to be used with UMD pattern. */
-const jsUMD = cb => {
-    return transpile('es5', 'umd')
-        .pipe(rename('dotdotdot.umd.js'))
+/** Save plugin to be used without UMD pattern or ES6 module. */
+const js = cb => {
+    return gulp
+        .src('dist/dotdotdot.esm.js')
+        .pipe(rename('dotdotdot.js'))
+        .pipe(replace('export default Dotdotdot;', ''))
         .pipe(gulp.dest('dist'));
 };
 
-exports.default = gulp.parallel(js, jsES6, jsESM, jsUMD);
+exports.default = gulp.parallel(jsUMD, gulp.series(jsESM, js), jsES6);
 
 // Watch task 'gulp watch': Starts a watch on JS tasks
 const watch = cb => {
-    gulp.watch('src/*.ts', gulp.parallel(js, jsES6, jsUMD));
+    gulp.watch('src/*.ts', gulp.parallel(jsUMD, gulp.series(jsESM, js), jsES6));
     cb();
 };
 exports.watch = watch;
