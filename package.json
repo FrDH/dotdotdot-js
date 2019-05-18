@@ -1,7 +1,8 @@
 {
 	"name": "dotdotdot-js",
-	"version": "4.0.5",
+	"version": "4.0.9",
 	"main": "dist/dotdotdot.js",
+	"module": "dist/dotdotdot.esm.js",
 	"author": "Fred Heusschen <info@frebsite.nl>",
 	"license": "CC-BY-NC-4.0",
 	"repository": {
