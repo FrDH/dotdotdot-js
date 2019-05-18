@@ -1,5 +1,5 @@
 /*!
- *	dotdotdot JS 4.0.8
+ *	dotdotdot JS 4.0.9
  *
  *	dotdotdot.frebsite.nl
  *
@@ -15,7 +15,7 @@
  */
 export default class Dotdotdot {
     /**	Plugin version. */
-    static version: string = '4.0.8';
+    static version: string = '4.0.9';
 
     /**	Default options. */
     static options: dddOptions = {
@@ -124,7 +124,9 @@ export default class Dotdotdot {
         if (computedStyle['word-wrap'] !== 'break-word') {
             this.container.style['word-wrap'] = 'break-word';
         }
-        if (computedStyle['white-space'] === 'nowrap') {
+        if (computedStyle['white-space'] === 'pre') {
+            this.container.style['white-space'] = 'pre-wrap';
+        } else if (computedStyle['white-space'] === 'nowrap') {
             this.container.style['white-space'] = 'normal';
         }
 
