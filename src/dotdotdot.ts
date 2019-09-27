@@ -15,7 +15,7 @@
  */
 export default class Dotdotdot {
     /**	Plugin version. */
-    static version: string = '4.0.9';
+    static version: string = '4.0.10';
 
     /**	Default options. */
     static options: dddOptions = {
@@ -486,15 +486,28 @@ export default class Dotdotdot {
             elem.classList.add('ddd-keep');
         });
 
+        /** Block level HTML tags. */
+        let _block_tags_ =
+            'div, section, article, header, footer, p, h1, h2, h3, h4, h5, h6, table, td, td, dt, dd, li';
+
+        /** HTML tags that only have block level children. */
+        let _block_parents_ =
+            'table, thead, tbody, tfoot, tr, dl, ul, ol, video';
+
         [this.container, ...Dotdotdot.$.find('*', this.container)].forEach(
             element => {
                 //	Removes empty Text nodes and joins adjacent Text nodes.
                 element.normalize();
 
+                //  Remove comments first
+                Dotdotdot.$.contents(element).forEach(text => {
+                    if (text.nodeType == 8) {
+                        element.removeChild(text);
+                    }
+                });
+
                 //	Loop over all contents and remove nodes that can be removed.
                 Dotdotdot.$.contents(element).forEach(text => {
-                    let remove = false;
-
                     //	Remove Text nodes that do not take up space in the DOM.
                     //	This kinda asumes a default display property for the elements in the container.
                     if (text.nodeType == 3) {
@@ -503,29 +516,17 @@ export default class Dotdotdot {
                                 next = text.nextSibling as HTMLElement;
 
                             if (
-                                text.parentElement.matches(
-                                    'table, thead, tbody, tfoot, tr, dl, ul, ol, video'
-                                ) ||
+                                text.parentElement.matches(_block_parents_) ||
                                 !prev ||
-                                prev.matches(
-                                    'div, p, table, td, td, dt, dd, li'
-                                ) ||
+                                (prev.nodeType == 1 &&
+                                    prev.matches(_block_tags_)) ||
                                 !next ||
-                                next.matches(
-                                    'div, p, table, td, td, dt, dd, li'
-                                )
+                                (next.nodeType == 1 &&
+                                    next.matches(_block_tags_))
                             ) {
-                                remove = true;
+                                element.removeChild(text);
                             }
                         }
-
-                        //	Remove Comment nodes.
-                    } else if (text.nodeType == 8) {
-                        remove = true;
-                    }
-
-                    if (remove) {
-                        element.removeChild(text);
                     }
                 });
             }
