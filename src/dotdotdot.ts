@@ -1,5 +1,5 @@
 /*!
- *	dotdotdot JS 4.0.9
+ *	dotdotdot JS 4.0.11
  *
  *	dotdotdot.frebsite.nl
  *
@@ -15,7 +15,7 @@
  */
 export default class Dotdotdot {
     /**	Plugin version. */
-    static version: string = '4.0.10';
+    static version: string = '4.0.11';
 
     /**	Default options. */
     static options: dddOptions = {
@@ -566,22 +566,19 @@ export default class Dotdotdot {
         }
 
         //	Remove padding-top/bottom when needed.
-        properties = [];
-        switch (style.boxSizing) {
-            case 'border-box':
-                properties.push('borderTopWidth');
-                properties.push('borderBottomWidth');
-            //	no break -> padding needs to be added too
+        if (style.boxSizing == 'border-box') {
+            properties = [
+                'borderTopWidth',
+                'borderBottomWidth',
+                'paddingTop',
+                'paddingBottom'
+            ];
 
-            case 'padding-box':
-                properties.push('paddingTop');
-                properties.push('paddingBottom');
-                break;
-        }
-        for (var a = 0; a < properties.length; a++) {
-            let property = style[properties[a]];
-            if (property.slice(-2) == 'px') {
-                height -= parseFloat(property);
+            for (var a = 0; a < properties.length; a++) {
+                let property = style[properties[a]];
+                if (property.slice(-2) == 'px') {
+                    height -= parseFloat(property);
+                }
             }
         }
 
