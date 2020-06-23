@@ -58,11 +58,19 @@ const js = cb => {
         .pipe(gulp.dest('dist'));
 };
 
-exports.default = gulp.parallel(jsUMD, gulp.series(jsESM, js), jsES6);
+const types = cb => {
+    return gulp
+        .src('src/*.ts')
+        .pipe(typescript({ declaration: true }))
+        .dts
+        .pipe(gulp.dest('dist'));
+};
+
+exports.default = gulp.parallel(jsUMD, gulp.series(jsESM, js), jsES6, types);
 
 // Watch task 'gulp watch': Starts a watch on JS tasks
 const watch = cb => {
-    gulp.watch('src/*.ts', gulp.parallel(jsUMD, gulp.series(jsESM, js), jsES6));
+    gulp.watch('src/*.ts', gulp.parallel(jsUMD, gulp.series(jsESM, js), jsES6, types));
     cb();
 };
 exports.watch = watch;
