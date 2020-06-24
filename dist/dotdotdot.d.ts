@@ -1,5 +1,5 @@
 /*!
- *	dotdotdot JS 4.0.11
+ *	dotdotdot JS 4.1.0
  *
  *	dotdotdot.frebsite.nl
  *

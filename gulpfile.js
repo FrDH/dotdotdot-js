@@ -13,7 +13,7 @@ const transpile = (target, module) => {
             .pipe(
                 typescript({
                     target,
-                    module
+                    module,
                 })
             )
 
@@ -21,36 +21,36 @@ const transpile = (target, module) => {
             .pipe(
                 terser({
                     output: {
-                        comments: '/^!/'
-                    }
+                        comments: '/^!/',
+                    },
                 })
             )
     );
 };
 
 /** Save plugin to be used with UMD pattern. */
-const jsUMD = cb => {
+const jsUMD = (cb) => {
     return transpile('es5', 'umd')
         .pipe(rename('dotdotdot.umd.js'))
         .pipe(gulp.dest('dist'));
 };
 
 /** Save plugin to be used as an ES6 module. */
-const jsES6 = cb => {
+const jsES6 = (cb) => {
     return transpile('es6', 'es6')
         .pipe(rename('dotdotdot.es6.js'))
         .pipe(gulp.dest('dist'));
 };
 
 /** Save plugin to be used with bundlers that support the pkg.module definition. */
-const jsESM = cb => {
+const jsESM = (cb) => {
     return transpile('es5', 'es6')
         .pipe(rename('dotdotdot.esm.js'))
         .pipe(gulp.dest('dist'));
 };
 
 /** Save plugin to be used without UMD pattern or ES6 module. */
-const js = cb => {
+const js = (cb) => {
     return gulp
         .src('dist/dotdotdot.esm.js')
         .pipe(rename('dotdotdot.js'))
@@ -58,19 +58,22 @@ const js = cb => {
         .pipe(gulp.dest('dist'));
 };
 
-const types = cb => {
+const types = (cb) => {
     return gulp
         .src('src/*.ts')
         .pipe(typescript({ declaration: true }))
-        .dts
-        .pipe(gulp.dest('dist'));
+        .dts.pipe(gulp.dest('dist'));
 };
 
-exports.default = gulp.parallel(jsUMD, gulp.series(jsESM, js), jsES6, types);
+const defaultTask = gulp.parallel(jsUMD, gulp.series(jsESM, js), jsES6, types);
+exports.default = defaultTask;
 
 // Watch task 'gulp watch': Starts a watch on JS tasks
-const watch = cb => {
-    gulp.watch('src/*.ts', gulp.parallel(jsUMD, gulp.series(jsESM, js), jsES6, types));
+const watch = (cb) => {
+    gulp.watch(
+        'src/*.ts',
+        gulp.parallel(jsUMD, gulp.series(jsESM, js), jsES6, types)
+    );
     cb();
 };
 exports.watch = watch;

@@ -1,5 +1,5 @@
 /*!
- *	dotdotdot JS 4.0.11
+ *	dotdotdot JS 4.1.0
  *
  *	dotdotdot.frebsite.nl
  *
@@ -12,37 +12,36 @@
 
 /** An object with any value. */
 interface dddLooseObject {
-	[key: string] 	: any
+    [key: string]: any;
 }
 
- /** An object with function values. */
+/** An object with function values. */
 interface dddFunctionObject {
-	[key: string] 	: Function
+    [key: string]: Function;
 }
 
 /** Default options for the class. */
 interface dddOptions {
-	
-	/** The ellipsis to place after the truncated text. */
-	ellipsis 	?: string,
-	
-	/** Function to invoke after the truncate process. */
-	callback	?: Function,
+    /** The ellipsis to place after the truncated text. */
+    ellipsis?: string;
 
-	/** How to truncate: 'node', 'word' (default) or 'letter'. */
-	truncate	?: string,
+    /** Function to invoke after the truncate process. */
+    callback?: Function;
 
-	/** Optional tolerance for the container height. */
-	tolerance	?: number,
+    /** How to truncate: 'node', 'word' (default) or 'letter'. */
+    truncate?: string;
 
-	/** Selector for elements not to remove from the DOM. */
-	keep 		?: string,
+    /** Optional tolerance for the container height. */
+    tolerance?: number;
 
-	/** Whether and when to update the ellipsis: null, 'window' (default) or 'resize' */
-	watch 		?: string,
+    /** Selector for elements not to remove from the DOM. */
+    keep?: string;
 
-	/** The height for the container. If null, the max-height will be read from the CSS properties. */
-	height		?: number
+    /** Whether and when to update the ellipsis: null, 'window' (default) or 'resize' */
+    watch?: string;
+
+    /** The height for the container. If null, the max-height will be read from the CSS properties. */
+    height?: number;
 }
 
 /**
@@ -50,17 +49,17 @@ interface dddOptions {
  */
 export default class Dotdotdot {
     /**	Plugin version. */
-    static version: string = '4.0.11';
+    static version: string = '4.1.0';
 
     /**	Default options. */
     static options: dddOptions = {
         ellipsis: '\u2026 ',
-        callback: function(isTruncated) {},
+        callback: function (isTruncated) {},
         truncate: 'word',
         tolerance: 0,
         keep: null,
         watch: 'window',
-        height: null
+        height: null,
     };
 
     /** Element to truncate */
@@ -136,7 +135,7 @@ export default class Dotdotdot {
 
         //	Create the API.
         this.API = {};
-        ['truncate', 'restore', 'destroy', 'watch', 'unwatch'].forEach(fn => {
+        ['truncate', 'restore', 'destroy', 'watch', 'unwatch'].forEach((fn) => {
             this.API[fn] = () => {
                 return this[fn].call(this);
             };
@@ -194,7 +193,7 @@ export default class Dotdotdot {
 
         //	Restore the original contents.
         this.container.innerHTML = '';
-        this.originalContent.forEach(element => {
+        this.originalContent.forEach((element) => {
             this.container.append(element);
         });
     }
@@ -217,7 +216,7 @@ export default class Dotdotdot {
         /**	The previously measure sizes. */
         var oldSizes = {
             width: null,
-            height: null
+            height: null,
         };
 
         /**
@@ -236,7 +235,7 @@ export default class Dotdotdot {
             ) {
                 let newSizes = {
                     width: element[width],
-                    height: element[height]
+                    height: element[height],
                 };
 
                 if (
@@ -253,7 +252,7 @@ export default class Dotdotdot {
 
         //	Update onWindowResize.
         if (this.options.watch == 'window') {
-            this.resizeEvent = evnt => {
+            this.resizeEvent = (evnt) => {
                 //	Debounce the resize event to prevent it from being called very often.
                 if (this.watchTimeout) {
                     clearTimeout(this.watchTimeout);
@@ -307,7 +306,7 @@ export default class Dotdotdot {
 
         //	Fill the container with all the original content.
         this.container.innerHTML = '';
-        this.originalContent.forEach(element => {
+        this.originalContent.forEach((element) => {
             this.container.append(element.cloneNode(true));
         });
 
@@ -342,7 +341,7 @@ export default class Dotdotdot {
 
         //	Empty the element
         //		-> replace all contents with comments
-        Dotdotdot.$.contents(element).forEach(element => {
+        Dotdotdot.$.contents(element).forEach((element) => {
             if (
                 element.nodeType != 1 ||
                 !(element as HTMLElement).matches('.ddd-keep')
@@ -517,7 +516,7 @@ export default class Dotdotdot {
         }
 
         //	Add "keep" class to nodes to keep.
-        Dotdotdot.$.find(keep, this.container).forEach(elem => {
+        Dotdotdot.$.find(keep, this.container).forEach((elem) => {
             elem.classList.add('ddd-keep');
         });
 
@@ -530,19 +529,19 @@ export default class Dotdotdot {
             'table, thead, tbody, tfoot, tr, dl, ul, ol, video';
 
         [this.container, ...Dotdotdot.$.find('*', this.container)].forEach(
-            element => {
+            (element) => {
                 //	Removes empty Text nodes and joins adjacent Text nodes.
                 element.normalize();
 
                 //  Remove comments first
-                Dotdotdot.$.contents(element).forEach(text => {
+                Dotdotdot.$.contents(element).forEach((text) => {
                     if (text.nodeType == 8) {
                         element.removeChild(text);
                     }
                 });
 
                 //	Loop over all contents and remove nodes that can be removed.
-                Dotdotdot.$.contents(element).forEach(text => {
+                Dotdotdot.$.contents(element).forEach((text) => {
                     //	Remove Text nodes that do not take up space in the DOM.
                     //	This kinda asumes a default display property for the elements in the container.
                     if (text.nodeType == 3) {
@@ -569,7 +568,7 @@ export default class Dotdotdot {
 
         //	Create a clone of all contents.
         let content = [];
-        Dotdotdot.$.contents(this.container).forEach(element => {
+        Dotdotdot.$.contents(this.container).forEach((element) => {
             content.push(element.cloneNode(true));
         });
 
@@ -606,7 +605,7 @@ export default class Dotdotdot {
                 'borderTopWidth',
                 'borderBottomWidth',
                 'paddingTop',
-                'paddingBottom'
+                'paddingBottom',
             ];
 
             for (var a = 0; a < properties.length; a++) {
@@ -649,14 +648,14 @@ export default class Dotdotdot {
         contents: (element?: HTMLElement | Document): Node[] => {
             element = element || document;
             return Array.prototype.slice.call(element.childNodes);
-        }
+        },
     };
 }
 
 //	The jQuery plugin.
-(function($) {
+(function ($) {
     if (typeof $ != 'undefined') {
-        $.fn.dotdotdot = function(options) {
+        $.fn.dotdotdot = function (options) {
             return this.each((e, element) => {
                 let dot = new Dotdotdot(element, options);
                 element['dotdotdot'] = dot.API;
