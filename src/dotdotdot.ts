@@ -37,7 +37,7 @@ interface dddOptions {
     /** Selector for elements not to remove from the DOM. */
     keep?: string;
 
-    /** Whether and when to update the ellipsis: null, 'window' (default) or 'resize' */
+    /** Whether and when to update the ellipsis: null, true or 'window' (default) */
     watch?: string;
 
     /** The height for the container. If null, the max-height will be read from the CSS properties. */
@@ -251,7 +251,7 @@ export default class Dotdotdot {
         };
 
         //	Update onWindowResize.
-        if (this.options.watch == 'window') {
+        if (this.options.watch === 'window') {
             this.resizeEvent = (evnt) => {
                 //	Debounce the resize event to prevent it from being called very often.
                 if (this.watchTimeout) {
