@@ -81,10 +81,10 @@ export default class Dotdotdot {
     API: dddFunctionObject;
 
     /** Storage for the watch timeout, oddly it has a number type. */
-    watchTimeout: number;
+    watchTimeout: ReturnType<typeof setTimeout>;
 
     /** Storage for the watch interval, oddly it has a number type. */
-    watchInterval: number;
+    watchInterval: ReturnType<typeof setInterval>;
 
     /** Storage for the original style attribute. */
     originalStyle: string;
@@ -482,7 +482,7 @@ export default class Dotdotdot {
      */
     _fits(): boolean {
         return (
-            this.container.scrollHeight <=
+            Math.max(this.container.scrollHeight, this.container.offsetHeight, this.container.clientHeight) <=
             this.maxHeight + this.options.tolerance
         );
     }
