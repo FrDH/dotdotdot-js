@@ -51,11 +51,9 @@ const jsESM = (cb) => {
 
 /** Save plugin to be used without UMD pattern or ES6 module. */
 const js = (cb) => {
-    return gulp
-        .src('dist/dotdotdot.esm.js')
-        .pipe(rename('dotdotdot.js'))
-        .pipe(replace('export default Dotdotdot;', ''))
-        .pipe(gulp.dest('dist'));
+    return transpile('es5', 'commonjs')
+    .pipe(rename('dotdotdot.js'))
+    .pipe(gulp.dest('dist'));
 };
 
 const types = (cb) => {
