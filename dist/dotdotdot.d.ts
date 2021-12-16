@@ -51,9 +51,9 @@ export default class Dotdotdot {
     /** The API */
     API: dddFunctionObject;
     /** Storage for the watch timeout, oddly it has a number type. */
-    watchTimeout: number;
+    watchTimeout: ReturnType<typeof setTimeout>;
     /** Storage for the watch interval, oddly it has a number type. */
-    watchInterval: number;
+    watchInterval: ReturnType<typeof setInterval>;
     /** Storage for the original style attribute. */
     originalStyle: string;
     /** Storage for the original HTML. */
