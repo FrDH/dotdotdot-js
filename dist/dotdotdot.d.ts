@@ -117,7 +117,7 @@ export default class Dotdotdot {
      * @param 	{string} text 	The text to add the ellipsis to.
      * @return	{string}		The text with the added ellipsis.
      */
-    _addEllipsis(text: string): string;
+    _addEllipsis(text: string, extraSpace?: boolean): string;
     /**
      * Sanitize and collect the original contents.
      *
