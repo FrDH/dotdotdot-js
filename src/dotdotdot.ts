@@ -441,6 +441,28 @@ export default class Dotdotdot {
                 words.slice(0, a).join(seporator)
             );
 
+            if (!this._fits() && (words[a - 1].indexOf('\n') !== -1)) {
+                const lines = words[a - 1].split('\n');
+                const ellipsisText = this.ellipsis.textContent;
+
+                for (var linesToInclude = lines.length; linesToInclude >= 0; linesToInclude--) {
+                    const beginning = words.slice(0, a - 1).join(seporator);
+                    const alternative = beginning + (beginning ? seporator : '') + lines.slice(0, linesToInclude).join("\n");
+
+                    element.textContent = this._addEllipsis(alternative, true);
+
+                    if (this._fits()) {
+                        break;
+                    }
+
+                    element.textContent = this._addEllipsis(alternative);
+
+                    if (this._fits()) {
+                        break;
+                    }
+                }
+            }
+
             if (this._fits()) {
                 if (this.options.truncate == 'letter') {
                     element.textContent = words.slice(0, a + 1).join(seporator);
@@ -493,14 +515,14 @@ export default class Dotdotdot {
      * @param 	{string} text 	The text to add the ellipsis to.
      * @return	{string}		The text with the added ellipsis.
      */
-    _addEllipsis(text: string): string {
+    _addEllipsis(text: string, extraSpace?: boolean): string {
         var remove = [' ', '\u3000', ',', ';', '.', '!', '?'];
 
         while (remove.indexOf(text.slice(-1)) > -1) {
             text = text.slice(0, -1);
         }
-        text += this.ellipsis.textContent;
 
+        text += (extraSpace ? ' ' : '') + this.ellipsis.textContent;
         return text;
     }
 
