@@ -1,13 +1,13 @@
 /*!
- *	dotdotdot JS 4.1.0
+ *	dotdotdot JS 4.2.0
  *
  *	dotdotdot.frebsite.nl
  *
  *	Copyright (c) Fred Heusschen
  *	www.frebsite.nl
  *
- *	License: CC-BY-NC-4.0
- *	http://creativecommons.org/licenses/by-nc/4.0/
+ *	License: CC-BY-4.0
+ *	http://creativecommons.org/licenses/by/4.0/
  */
 /** An object with function values. */
 interface dddFunctionObject {
